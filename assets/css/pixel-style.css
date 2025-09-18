@@ -25,6 +25,8 @@ body {
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
+    scroll-behavior: smooth;
+    transition: all 0.3s ease;
 }
 
 /* Animated background */
@@ -616,5 +618,341 @@ pre {
     .playlist-item {
         font-size: 0.5rem;
         padding: 0.2rem 0.3rem;
+    }
+}
+
+/* ===== MODERN INTERACTIVE ENHANCEMENTS ===== */
+
+/* Smooth parallax and modern scrolling effects */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced container with better visual hierarchy */
+.pixel-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(0.5px);
+}
+
+/* Enhanced header with floating effect */
+.pixel-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(0, 17, 0, 0.95);
+    border-bottom: 4px solid var(--pixel-border);
+    padding: 1rem;
+    box-shadow: 
+        inset 0 -4px 0 var(--pixel-shadow),
+        0 4px 20px rgba(0, 255, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.pixel-header:hover {
+    box-shadow: 
+        inset 0 -4px 0 var(--pixel-shadow),
+        0 8px 30px rgba(0, 255, 0, 0.3);
+}
+
+/* Enhanced navigation with better interactions */
+.pixel-menu {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.pixel-btn {
+    background: var(--pixel-bg);
+    color: var(--pixel-primary);
+    padding: 0.7rem 1.2rem;
+    text-decoration: none;
+    border: 2px solid var(--pixel-border);
+    font-size: 0.8rem;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: 2px 2px 0 var(--pixel-shadow);
+    overflow: hidden;
+}
+
+.pixel-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.pixel-btn:hover::before {
+    left: 100%;
+}
+
+.pixel-btn:hover {
+    background: var(--pixel-primary);
+    color: var(--pixel-bg);
+    transform: translate(-3px, -3px);
+    box-shadow: 5px 5px 0 var(--pixel-shadow);
+    animation: buttonPulse 0.6s ease;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { transform: translate(-3px, -3px) scale(1); }
+    50% { transform: translate(-3px, -3px) scale(1.05); }
+}
+
+/* Enhanced terminal with better visual effects */
+.pixel-terminal {
+    background: rgba(0, 17, 0, 0.9);
+    border: 4px solid var(--pixel-border);
+    padding: 2rem;
+    box-shadow: 
+        inset 0 0 30px rgba(0, 255, 0, 0.1),
+        0 0 40px rgba(0, 255, 0, 0.2);
+    position: relative;
+    animation: terminalGlow 4s ease-in-out infinite;
+    backdrop-filter: blur(2px);
+}
+
+@keyframes terminalGlow {
+    0%, 100% { 
+        box-shadow: 
+            inset 0 0 30px rgba(0, 255, 0, 0.1),
+            0 0 40px rgba(0, 255, 0, 0.2);
+    }
+    50% { 
+        box-shadow: 
+            inset 0 0 40px rgba(0, 255, 0, 0.15),
+            0 0 50px rgba(0, 255, 0, 0.3);
+    }
+}
+
+/* Enhanced content sections with fade-in animations */
+.pixel-content {
+    flex: 1;
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced interactive elements */
+.pixel-interactive {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pixel-interactive:hover {
+    animation: interactiveGlow 1s ease-in-out infinite;
+}
+
+@keyframes interactiveGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px var(--pixel-primary);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 20px var(--pixel-primary), 0 0 30px var(--pixel-accent);
+        transform: scale(1.02);
+    }
+}
+
+/* Enhanced status bar with modern animations */
+.pixel-status-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pixel-status {
+    color: var(--pixel-secondary);
+    font-size: 0.7rem;
+    animation: statusPulse 2s ease-in-out infinite;
+    position: relative;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 0, 255, 0.1);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+@keyframes statusPulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+}
+
+/* Modern page transitions */
+.page-transition {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.page-transition.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Enhanced particle effects */
+.pixel-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+/* Parallax scrolling effect */
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.parallax-back {
+    transform: translateZ(-10px) scale(2);
+}
+
+.parallax-mid {
+    transform: translateZ(-5px) scale(1.5);
+}
+
+/* Modern hover effects for all interactive elements */
+[class*="pixel-"]:hover {
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Enhanced loading animations */
+.pixel-loading {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--pixel-border);
+    border-top: 3px solid var(--pixel-primary);
+    border-radius: 0;
+    animation: modernSpin 1.2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    position: relative;
+}
+
+.pixel-loading::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 1px solid var(--pixel-accent);
+    animation: modernSpin 2s linear infinite reverse;
+}
+
+@keyframes modernSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Enhanced responsive design */
+@media (max-width: 768px) {
+    .pixel-content {
+        padding: 1rem 0.5rem;
+        animation-delay: 0.2s;
+    }
+    
+    .pixel-terminal {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+    
+    .pixel-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.7rem;
+    }
+    
+    .pixel-status-bar {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .pixel-header {
+        padding: 0.5rem;
+    }
+    
+    .pixel-nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .pixel-menu {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+    
+    .pixel-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
     }
 }
