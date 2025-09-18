@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "PIXEL WORLD - Welcome Player One"
+title: "像素世界 - 欢迎玩家一号"
 ---
 
-# 🎮 WELCOME TO PIXEL WORLD
+# 🎮 欢迎来到像素世界
 
 ```
 ██████╗ ██╗██╗  ██╗███████╗██╗         ██╗    ██╗ ██████╗ ██████╗ ██╗     ██████╗ 
@@ -14,89 +14,98 @@ title: "PIXEL WORLD - Welcome Player One"
 ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝ 
 ```
 
-<span class="pixel-glow">▶ SYSTEM INITIALIZED</span>  
-<span class="pixel-glow">▶ LOADING NOSTALGIA.EXE</span>  
-<span class="pixel-glow">▶ READY PLAYER ONE</span>
+<span class="pixel-glow">▶ 系统已初始化</span>  
+<span class="pixel-glow">▶ 正在加载怀旧情怀.EXE</span>  
+<span class="pixel-glow">▶ 玩家一号准备就绪</span>
 
-## 🕹️ GAME STATUS
+## 🕹️ 游戏状态
 
-**LEVEL:** `RETRO_MASTER`  
-**HP:** `████████████████████` **100/100**  
-**XP:** `██████████░░░░░░░░░░` **5000/10000**  
-**COINS:** `💰 × 9999`
+**等级:** `复古大师`  
+**生命值:** `████████████████████` **100/100**  
+**经验值:** `██████████░░░░░░░░░░` **5000/10000**  
+**金币:** `💰 × 9999`
 
 ---
 
-## 📺 ABOUT THIS WORLD
+## 📺 关于这个世界
 
-Welcome to my **8-bit inspired** digital realm! This pixel paradise is built with:
+欢迎来到我的**8位风格**数字领域！这个像素天堂构建于：
 
-- 🎨 **Retro Aesthetics**: Classic pixel art styling with neon colors
-- 🎵 **Chiptune Vibes**: Interactive sound effects and beeps  
-- ⚡ **Cool Animations**: Matrix rain, glowing effects, and particles
-- 🎮 **Gaming Elements**: Power-ups, status bars, and easter eggs
+- 🎨 **复古美学**: 经典像素艺术风格搭配霓虹色彩
+- 🎵 **芯片音乐氛围**: 交互式音效和提示音  
+- ⚡ **酷炫动画**: 矩阵雨、发光效果和粒子特效
+- 🎮 **游戏元素**: 道具、状态栏和彩蛋
 
-### 🚀 SPECIAL FEATURES
+### 🚀 特殊功能
 
 ```javascript
 const pixelWorld = {
-    graphics: "8-bit style",
-    sounds: "chiptune beeps",
-    effects: ["matrix rain", "particles", "glitch"],
-    easterEgg: "try the konami code! ↑↑↓↓←→←→BA"
+    graphics: "8位风格",
+    sounds: "芯片音效",
+    effects: ["矩阵雨", "粒子特效", "故障效果"],
+    easterEgg: "试试科乐美代码！ ↑↑↓↓←→←→BA"
 };
 ```
 
-## 💾 SYSTEM SPECS
+---
 
-| Component | Details |
-|-----------|---------|
-| **Engine** | Jekyll + GitHub Pages |
-| **Graphics** | CSS3 Pixel Art Animations |
-| **Audio** | Web Audio API Chiptunes |
-| **Effects** | Canvas Matrix Rain |
-| **Controls** | Keyboard + Mouse Support |
+## 💾 系统规格
+
+| 组件 | 详情 |
+|------|------|
+| **引擎** | Jekyll + GitHub Pages |
+| **图形** | CSS3 像素艺术动画 |
+| **音频** | Web Audio API 芯片音乐 |
+| **特效** | Canvas 矩阵雨 |
+| **控制** | 键盘 + 鼠标支持 |
 
 ---
 
-## 🎯 MISSIONS COMPLETED
+## 🎯 已完成任务
 
-- [x] **Initialize Pixel World**
-- [x] **Design Retro Interface** 
-- [x] **Implement Sound System**
-- [x] **Add Visual Effects**
-- [x] **Create Interactive Elements**
-- [x] **Deploy to GitHub Pages**
-
----
-
-## 🏆 ACHIEVEMENTS UNLOCKED
-
-🎮 **Pixel Master** - Created an awesome retro website  
-🎨 **Art Director** - Implemented beautiful pixel art styling  
-🎵 **Sound Engineer** - Added chiptune audio effects  
-⚡ **Effect Wizard** - Created cool visual animations  
-🚀 **Web Developer** - Successfully deployed to GitHub Pages
+- [x] **初始化像素世界**
+- [x] **设计复古界面** 
+- [x] **实现音响系统**
+- [x] **添加视觉特效**
+- [x] **创建交互元素**
+- [x] **部署到 GitHub Pages**
+- [x] **添加音乐播放器**
+- [x] **适配移动设备**
+- [x] **支持中文界面**
 
 ---
 
-## 🎉 BONUS CONTENT
+## 🏆 解锁成就
 
-### Secret Codes:
-- Press the **Konami Code** for a surprise: `↑ ↑ ↓ ↓ ← → ← → B A`
-- Click any button to hear retro sound effects
-- Watch for random glitch effects on the title
+🎮 **像素大师** - 创建了一个超棒的复古网站  
+🎨 **艺术总监** - 实现了美丽的像素艺术风格  
+🎵 **音效工程师** - 添加了芯片音乐音效  
+⚡ **特效向导** - 创建了酷炫的视觉动画  
+🚀 **网页开发者** - 成功部署到 GitHub Pages  
+📱 **移动适配专家** - 完美适配移动设备  
+🌏 **本地化专家** - 添加了中文支持
 
-### Coming Soon:
-- 🎮 **Mini Games**: Snake, Tetris, Pong
-- 🎵 **Music Player**: Chiptune soundtrack
-- 💬 **Guestbook**: Leave pixel messages
-- 🏆 **High Scores**: Competitive leaderboards
+---
+
+## 🎉 额外内容
+
+### 秘密代码:
+- 按下 **科乐美代码** 会有惊喜: `↑ ↑ ↓ ↓ ← → ← → B A`
+- 点击任何按钮可以听到复古音效
+- 注意标题上的随机故障效果
+
+### 功能特色:
+- 🎮 **迷你游戏**: 贪吃蛇、俄罗斯方块、乒乓球
+- 🎵 **音乐播放器**: 芯片音乐原声带
+- 💬 **留言板**: 留下像素消息
+- 🏆 **高分榜**: 竞技排行榜
+- 📱 **移动端优化**: 完美的触摸体验
+- 🌏 **中文界面**: 母语化用户体验
 
 ---
 
 <div class="pixel-interactive">
-<strong>PRESS START TO CONTINUE...</strong>
+<strong>按开始键继续游戏...</strong>
 </div>
 
-*Built with ❤️ and lots of ☕ in the retro spirit of the 80s*
+*用 ❤️ 和大量的 ☕ 构建，致敬80年代的复古精神*
