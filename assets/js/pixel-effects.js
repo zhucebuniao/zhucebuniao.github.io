@@ -1,20 +1,5 @@
 // Pixel Effects JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    // Create floating pixel particles
-    createPixelParticles();
-    
-    // Add click sound effects
-    addSoundEffects();
-    
-    // Typing animation for terminal
-    addTypingAnimation();
-    
-    // Matrix rain effect
-    createMatrixRain();
-    
-    // Add random glitch effects
-    addGlitchEffects();
-});
+// Note: DOMContentLoaded event handling is now managed by theme-switcher.js
 
 function createPixelParticles() {
     const particlesContainer = document.querySelector('.pixel-particles');
