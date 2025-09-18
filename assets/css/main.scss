@@ -8,9 +8,10 @@
 @import "base/reset"; 
 @import "base/typography";
 
-// Component layer (to be created)
-// @import "components/buttons";
-// @import "components/terminal";
+// Component layer
+@import "components/buttons";
+@import "components/posts";
+@import "components/terminal";
 
 // Layout layer (to be created)  
 // @import "layout/header";

@@ -1,0 +1,185 @@
+// Post Components - BEM Methodology
+// Clean, readable typography for blog posts
+
+.post {
+    &__header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--pixel-border);
+    }
+    
+    &__title {
+        color: var(--pixel-primary);
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        text-shadow: 1px 1px 0 var(--pixel-shadow);
+    }
+    
+    &__meta {
+        font-size: 0.7rem;
+        color: var(--pixel-secondary);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    &__date {
+        color: var(--pixel-accent);
+    }
+    
+    &__categories,
+    &__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    &__category,
+    &__tag {
+        padding: 0.2rem 0.5rem;
+        background: rgba(0, 255, 0, 0.1);
+        border: 1px solid var(--pixel-border);
+        border-radius: 2px;
+        font-size: 0.6rem;
+    }
+    
+    &__content {
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        
+        // Enhanced readability for content
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--pixel-primary);
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+            
+            li {
+                margin-bottom: 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        code {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 0.2rem 0.4rem;
+            border: 1px solid var(--pixel-border);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.6rem;
+        }
+        
+        pre {
+            background: var(--pixel-dark);
+            border: 2px solid var(--pixel-border);
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            
+            code {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: 0.7rem;
+            }
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--pixel-accent);
+            background: rgba(255, 255, 0, 0.05);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            
+            p {
+                margin-bottom: 0;
+            }
+        }
+    }
+    
+    &__navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    &__nav {
+        flex: 1;
+        min-width: 200px;
+        
+        &--prev {
+            text-align: left;
+        }
+        
+        &--next {
+            text-align: right;
+        }
+    }
+}
+
+// Page component (simpler than post)
+.page {
+    &__header {
+        margin-bottom: 2rem;
+    }
+    
+    &__title {
+        color: var(--pixel-primary);
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 0 var(--pixel-shadow);
+    }
+    
+    &__description {
+        color: var(--pixel-secondary);
+        font-size: 0.8rem;
+        font-style: italic;
+    }
+    
+    &__content {
+        line-height: 1.6;
+        
+        // Inherit content styles from post
+        @extend .post__content;
+    }
+    
+    &__footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--pixel-border);
+        font-size: 0.7rem;
+        color: var(--pixel-secondary);
+    }
+}
+
+// Responsive adjustments
+@media (max-width: $tablet) {
+    .post {
+        &__meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        &__navigation {
+            flex-direction: column;
+        }
+        
+        &__nav {
+            &--prev,
+            &--next {
+                text-align: center;
+            }
+        }
+    }
+}

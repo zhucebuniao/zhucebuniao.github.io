@@ -1,0 +1,65 @@
+// Button Component Styles - BEM Methodology
+// "Good taste is about making good trade-offs" - Linus Torvalds
+
+.pixel-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--pixel-dark);
+    color: var(--pixel-text);
+    border: 2px solid var(--pixel-border);
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0 var(--pixel-shadow);
+    
+    // Hover state
+    &:hover {
+        background: var(--pixel-border);
+        color: var(--pixel-bg);
+        box-shadow: 4px 4px 0 var(--pixel-shadow);
+        transform: translate(-2px, -2px);
+    }
+    
+    // Active state
+    &:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+    }
+    
+    // Modifiers
+    &--primary {
+        background: var(--pixel-primary);
+        color: var(--pixel-bg);
+        border-color: var(--pixel-primary);
+    }
+    
+    &--secondary {
+        background: var(--pixel-secondary);
+        color: var(--pixel-bg);
+        border-color: var(--pixel-secondary);
+    }
+    
+    &--small {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    &--large {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+// Interactive elements
+.pixel-interactive {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+}
