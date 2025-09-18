@@ -6,7 +6,7 @@
     <title>{{ page.title | default: site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description }}">
     <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/pixel-style.css' | relative_url }}">
+    <!-- Default pixel theme will be loaded by theme switcher -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -41,6 +41,7 @@
     </div>
 
     <div class="pixel-particles"></div>
+    <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/pixel-effects.js' | relative_url }}"></script>
 </body>
 </html>
