@@ -1,0 +1,22 @@
+---
+# Jekyll will compile this to CSS
+---
+
+// Import order is important for CSS cascading
+// Base layer - foundational styles
+@import "base/variables";
+@import "base/reset"; 
+@import "base/typography";
+
+// Component layer (to be created)
+// @import "components/buttons";
+// @import "components/terminal";
+
+// Layout layer (to be created)  
+// @import "layout/header";
+// @import "layout/footer";
+// @import "layout/grid";
+
+// For now, include the existing pixel styles as a temporary measure
+// This will be refactored in subsequent commits
+@import url("pixel-style.css");
