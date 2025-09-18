@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel World Test</title>
+    <title>Enhanced Pixel World Test</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -26,20 +26,59 @@
         </header>
 
         <main class="pixel-content">
-            <div class="pixel-terminal">
-                <h2>Welcome to Pixel World</h2>
-                <p>This is a test page to see current styles.</p>
-                <div class="pixel-interactive">
-                    <strong>Interactive Element</strong>
+            <section class="hero-section" style="text-align: center; margin-bottom: 3rem;">
+                <div class="pixel-loading" style="margin: 1rem auto;"></div>
+                <h2 data-type="欢迎来到增强的像素世界!" style="margin: 1rem 0; color: var(--pixel-primary);"></h2>
+                
+                <div class="pixel-interactive" style="margin: 2rem 0;">
+                    <strong>🎮 现代交互 + 复古风格 🎮</strong>
                 </div>
-            </div>
+            </section>
+
+            <section class="features-section" style="margin-bottom: 3rem;">
+                <div class="pixel-terminal">
+                    <h2 style="color: var(--pixel-accent); margin-bottom: 1.5rem;">🌟 新功能展示</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                        <div class="feature-card pixel-interactive" style="padding: 1rem; border: 2px solid var(--pixel-border); background: rgba(0, 255, 0, 0.05);">
+                            <h3 style="color: var(--pixel-primary); margin-bottom: 0.5rem;">🎨 增强动画</h3>
+                            <p style="font-size: 0.7rem; line-height: 1.4;">流畅的过渡效果和现代交互体验</p>
+                        </div>
+                        
+                        <div class="feature-card pixel-interactive" style="padding: 1rem; border: 2px solid var(--pixel-border); background: rgba(255, 0, 255, 0.05);">
+                            <h3 style="color: var(--pixel-secondary); margin-bottom: 0.5rem;">⚡ 视差滚动</h3>
+                            <p style="font-size: 0.7rem; line-height: 1.4;">平滑的滚动动画和深度层次感</p>
+                        </div>
+                        
+                        <div class="feature-card pixel-interactive" style="padding: 1rem; border: 2px solid var(--pixel-border); background: rgba(255, 255, 0, 0.05);">
+                            <h3 style="color: var(--pixel-accent); margin-bottom: 0.5rem;">🎯 智能响应</h3>
+                            <p style="font-size: 0.7rem; line-height: 1.4;">自适应设计和交互反馈优化</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <div class="demo-buttons" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0;">
+                            <button class="pixel-btn" onclick="this.style.animation='buttonPulse 0.6s ease'">悬停测试</button>
+                            <button class="pixel-btn" onclick="this.style.animation='pixelShake 0.5s ease-in-out'">点击反馈</button>
+                            <button class="pixel-btn" onclick="this.classList.toggle('pixel-glow')">发光切换</button>
+                        </div>
+                        
+                        <div class="pixel-interactive" style="margin: 2rem 0; padding: 1rem; border: 1px dashed var(--pixel-border);">
+                            <p style="font-size: 0.8rem;">💡 移动鼠标查看粒子轨迹效果</p>
+                            <p style="font-size: 0.7rem; color: var(--pixel-secondary); margin-top: 0.5rem;">
+                                测试各种交互功能 • 体验现代化的用户界面
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer class="pixel-footer">
             <div class="pixel-status-bar">
-                <span class="pixel-status">Ready</span>
-                <span class="pixel-status">Level: 2024</span>
-                <span class="pixel-status">Score: 9999</span>
+                <span class="pixel-status">Enhanced Ready</span>
+                <span class="pixel-status">Modern Level: 2024</span>
+                <span class="pixel-status">Interactive Score: 9999+</span>
             </div>
         </footer>
     </div>
@@ -49,5 +88,6 @@
     <script src="./assets/js/theme-switcher.js"></script>
     <script src="./assets/js/pixel-effects.js"></script>
     <script src="./assets/js/music-player.js"></script>
+    <script src="./assets/js/modern-interactions.js"></script>
 </body>
 </html>

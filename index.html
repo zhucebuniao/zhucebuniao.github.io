@@ -3,9 +3,96 @@ layout: default
 title: "像素世界 - 首页"
 ---
 
-<div style="text-align: center; margin-bottom: 2rem;">
+<section class="hero-section" style="text-align: center; margin-bottom: 3rem;">
     <div class="pixel-loading" style="margin: 1rem auto;"></div>
-    <p>正在加载精彩的像素体验...</p>
-</div>
+    <h2 data-type="正在加载精彩的像素体验..." style="margin: 1rem 0; color: var(--pixel-primary);"></h2>
+    
+    <div class="pixel-interactive" style="margin: 2rem 0;">
+        <strong>🎮 欢迎进入像素世界 🎮</strong>
+    </div>
+</section>
 
-{{ content }}
+<section class="features-section" style="margin-bottom: 3rem;">
+    <div class="pixel-terminal">
+        <h2 style="color: var(--pixel-accent); margin-bottom: 1.5rem;">🌟 体验特色</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+            <div class="feature-card pixel-interactive" style="padding: 1rem; border: 2px solid var(--pixel-border); background: rgba(0, 255, 0, 0.05);">
+                <h3 style="color: var(--pixel-primary); margin-bottom: 0.5rem;">🎨 像素艺术</h3>
+                <p style="font-size: 0.7rem; line-height: 1.4;">经典8位风格设计，搭配霓虹色彩和复古美学</p>
+            </div>
+            
+            <div class="feature-card pixel-interactive" style="padding: 1rem; border: 2px solid var(--pixel-border); background: rgba(255, 0, 255, 0.05);">
+                <h3 style="color: var(--pixel-secondary); margin-bottom: 0.5rem;">🎵 芯片音效</h3>
+                <p style="font-size: 0.7rem; line-height: 1.4;">交互式音频反馈和复古游戏音效体验</p>
+            </div>
+            
+            <div class="feature-card pixel-interactive" style="padding: 1rem; border: 2px solid var(--pixel-border); background: rgba(255, 255, 0, 0.05);">
+                <h3 style="color: var(--pixel-accent); margin-bottom: 0.5rem;">⚡ 动态效果</h3>
+                <p style="font-size: 0.7rem; line-height: 1.4;">矩阵雨、粒子特效和流畅的交互动画</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="interaction-demo" style="margin-bottom: 3rem;">
+    <div class="pixel-terminal">
+        <h2 style="color: var(--pixel-primary); margin-bottom: 1.5rem;">🕹️ 交互演示</h2>
+        
+        <div style="text-align: center; margin: 2rem 0;">
+            <div class="demo-buttons" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0;">
+                <button class="pixel-btn" onclick="this.style.animation='buttonPulse 0.6s ease'">悬停效果</button>
+                <button class="pixel-btn" onclick="this.style.animation='pixelShake 0.5s ease-in-out'">点击反馈</button>
+                <button class="pixel-btn" onclick="this.classList.add('pixel-glow')">发光特效</button>
+            </div>
+            
+            <div class="pixel-interactive" style="margin: 2rem 0; padding: 1rem; border: 1px dashed var(--pixel-border);">
+                <p style="font-size: 0.8rem;">💡 尝试悬停和点击上面的按钮体验交互效果</p>
+                <p style="font-size: 0.7rem; color: var(--pixel-secondary); margin-top: 0.5rem;">
+                    移动鼠标查看粒子轨迹 • 使用科乐美代码 ↑↑↓↓←→←→BA 获得惊喜
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="tech-info" style="margin-bottom: 2rem;">
+    <div class="pixel-terminal">
+        <h2 style="color: var(--pixel-accent); margin-bottom: 1.5rem;">🔧 技术实现</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="padding: 1rem; background: rgba(0, 255, 0, 0.1); border-left: 4px solid var(--pixel-primary);">
+                <h4 style="color: var(--pixel-primary); margin-bottom: 0.5rem;">前端技术</h4>
+                <ul style="font-size: 0.7rem; list-style: none; padding: 0;">
+                    <li>• HTML5 + CSS3</li>
+                    <li>• JavaScript ES6+</li>
+                    <li>• Jekyll 静态生成</li>
+                </ul>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255, 0, 255, 0.1); border-left: 4px solid var(--pixel-secondary);">
+                <h4 style="color: var(--pixel-secondary); margin-bottom: 0.5rem;">设计特色</h4>
+                <ul style="font-size: 0.7rem; list-style: none; padding: 0;">
+                    <li>• 响应式布局</li>
+                    <li>• 无障碍设计</li>
+                    <li>• 性能优化</li>
+                </ul>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255, 255, 0, 0.1); border-left: 4px solid var(--pixel-accent);">
+                <h4 style="color: var(--pixel-accent); margin-bottom: 0.5rem;">交互效果</h4>
+                <ul style="font-size: 0.7rem; list-style: none; padding: 0;">
+                    <li>• 平滑滚动</li>
+                    <li>• 视差效果</li>
+                    <li>• 动画反馈</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div style="text-align: center; margin: 3rem 0;">
+    <div class="pixel-interactive">
+        <strong style="font-size: 1.2rem;">🎮 开始探索像素世界的奇妙之旅！ 🎮</strong>
+    </div>
+</div>
