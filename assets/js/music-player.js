@@ -1,37 +1,82 @@
-// Pixel World Music Player
+// Pixel World Music Player - Refactored with "Good Taste"
+// "Good programmers worry about data structures" - Linus
+
+const MUSIC_CONFIG = {
+    TRACKS: [
+        { name: '像素冒险', frequency: [440, 523, 659, 783, 1047] },
+        { name: '复古节拍', frequency: [261, 329, 392, 523, 659] },
+        { name: '芯片调', frequency: [174, 220, 261, 329, 392] },
+        { name: '游戏主题', frequency: [349, 440, 523, 698, 880] }
+    ],
+    DEFAULT_VOLUME: 0.5,
+    NOTE_DURATION: 0.4,
+    NOTE_INTERVAL: 500,
+    LOOP_DELAY: 200,
+    SELECTORS: {
+        PLAYER: '#music-player',
+        CONTENT: '#music-content',
+        TOGGLE: '#music-toggle',
+        PLAY_BTN: '#play-btn',
+        PREV_BTN: '#prev-btn',
+        NEXT_BTN: '#next-btn',
+        STOP_BTN: '#stop-btn',
+        VOLUME_SLIDER: '#volume-slider',
+        VOLUME_DISPLAY: '#volume-display',
+        TRACK_NAME: '#track-name',
+        TRACK_NUMBER: '#track-number',
+        PLAYLIST: '#playlist'
+    },
+    UI: {
+        ICONS: {
+            PLAY: '▶️',
+            PAUSE: '⏸️',
+            PREV: '⏮️',
+            NEXT: '⏭️',
+            STOP: '⏹️'
+        },
+        TOGGLE_TEXT: {
+            HIDE: '隐藏',
+            SHOW: '显示'
+        }
+    }
+};
+
 class PixelMusicPlayer {
     constructor() {
-        this.audioContext = null;
         this.currentTrack = 0;
         this.isPlaying = false;
-        this.volume = 0.5;
-        this.tracks = [
-            { name: '像素冒险', frequency: [440, 523, 659, 783, 1047] },
-            { name: '复古节拍', frequency: [261, 329, 392, 523, 659] },
-            { name: '芯片调', frequency: [174, 220, 261, 329, 392] },
-            { name: '游戏主题', frequency: [349, 440, 523, 698, 880] }
-        ];
+        this.volume = MUSIC_CONFIG.DEFAULT_VOLUME;
+        this.currentOscillator = null;
+        this.tracks = MUSIC_CONFIG.TRACKS;
         this.init();
     }
     
     init() {
+        if (document.querySelector(MUSIC_CONFIG.SELECTORS.PLAYER)) return;
         this.createPlayer();
         this.bindEvents();
     }
     
     createPlayer() {
-        // Check if music player already exists
-        if (document.getElementById('music-player')) {
-            return;
-        }
-        
         const musicSection = document.createElement('div');
         musicSection.id = 'music-player';
         musicSection.className = 'pixel-music-player';
-        musicSection.innerHTML = `
+        musicSection.innerHTML = this.generatePlayerHTML();
+        
+        // Insert after header - simple and clear
+        const header = document.querySelector('.pixel-header');
+        if (header) {
+            header.after(musicSection);
+        }
+    }
+    
+    // Separate HTML generation - single responsibility
+    generatePlayerHTML() {
+        const { ICONS, TOGGLE_TEXT } = MUSIC_CONFIG.UI;
+        return `
             <div class="music-header">
                 <h3>🎵 音乐播放器</h3>
-                <button class="music-toggle-btn" id="music-toggle">隐藏</button>
+                <button class="music-toggle-btn" id="music-toggle">${TOGGLE_TEXT.HIDE}</button>
             </div>
             <div class="music-content" id="music-content">
                 <div class="music-info">
@@ -41,15 +86,15 @@ class PixelMusicPlayer {
                     </div>
                 </div>
                 <div class="music-controls">
-                    <button class="music-btn" id="prev-btn">⏮️</button>
-                    <button class="music-btn play-btn" id="play-btn">▶️</button>
-                    <button class="music-btn" id="next-btn">⏭️</button>
-                    <button class="music-btn" id="stop-btn">⏹️</button>
+                    <button class="music-btn" id="prev-btn">${ICONS.PREV}</button>
+                    <button class="music-btn play-btn" id="play-btn">${ICONS.PLAY}</button>
+                    <button class="music-btn" id="next-btn">${ICONS.NEXT}</button>
+                    <button class="music-btn" id="stop-btn">${ICONS.STOP}</button>
                 </div>
                 <div class="music-volume">
                     <label for="volume-slider">音量:</label>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
-                    <span id="volume-display">50%</span>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="${this.volume}">
+                    <span id="volume-display">${Math.round(this.volume * 100)}%</span>
                 </div>
                 <div class="music-playlist">
                     <h4>播放列表:</h4>
@@ -63,60 +108,41 @@ class PixelMusicPlayer {
                 </div>
             </div>
         `;
-        
-        // Insert after the header
-        const header = document.querySelector('.pixel-header');
-        if (header) {
-            header.after(musicSection);
-        }
     }
     
     bindEvents() {
-        // Control buttons
-        document.getElementById('play-btn').addEventListener('click', () => this.togglePlay());
-        document.getElementById('prev-btn').addEventListener('click', () => this.previousTrack());
-        document.getElementById('next-btn').addEventListener('click', () => this.nextTrack());
-        document.getElementById('stop-btn').addEventListener('click', () => this.stop());
+        // Use configuration selectors - no more magic strings
+        const selectors = MUSIC_CONFIG.SELECTORS;
         
-        // Volume control
-        const volumeSlider = document.getElementById('volume-slider');
-        volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
+        document.querySelector(selectors.PLAY_BTN).addEventListener('click', () => this.togglePlay());
+        document.querySelector(selectors.PREV_BTN).addEventListener('click', () => this.previousTrack());
+        document.querySelector(selectors.NEXT_BTN).addEventListener('click', () => this.nextTrack());
+        document.querySelector(selectors.STOP_BTN).addEventListener('click', () => this.stop());
+        document.querySelector(selectors.VOLUME_SLIDER).addEventListener('input', (e) => this.setVolume(e.target.value));
+        document.querySelector(selectors.TOGGLE).addEventListener('click', () => this.toggleVisibility());
         
-        // Playlist
-        document.getElementById('playlist').addEventListener('click', (e) => {
+        // Playlist event delegation - cleaner approach
+        document.querySelector(selectors.PLAYLIST).addEventListener('click', (e) => {
             if (e.target.classList.contains('playlist-item')) {
-                const trackIndex = parseInt(e.target.dataset.track);
-                this.selectTrack(trackIndex);
+                this.selectTrack(parseInt(e.target.dataset.track));
             }
         });
-        
-        // Toggle player visibility
-        document.getElementById('music-toggle').addEventListener('click', () => this.toggleVisibility());
     }
     
     togglePlay() {
-        if (this.isPlaying) {
-            this.pause();
-        } else {
-            this.play();
-        }
+        this.isPlaying ? this.pause() : this.play();
     }
     
     play() {
-        if (!this.audioContext) {
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        
         this.isPlaying = true;
-        document.getElementById('play-btn').textContent = '⏸️';
-        
+        document.querySelector(MUSIC_CONFIG.SELECTORS.PLAY_BTN).textContent = MUSIC_CONFIG.UI.ICONS.PAUSE;
         this.playChiptune(this.tracks[this.currentTrack].frequency);
         this.updateDisplay();
     }
     
     pause() {
         this.isPlaying = false;
-        document.getElementById('play-btn').textContent = '▶️';
+        document.querySelector(MUSIC_CONFIG.SELECTORS.PLAY_BTN).textContent = MUSIC_CONFIG.UI.ICONS.PLAY;
         
         if (this.currentOscillator) {
             this.currentOscillator.stop();
@@ -130,18 +156,23 @@ class PixelMusicPlayer {
         this.updateDisplay();
     }
     
+    // Track navigation with DRY principle
     nextTrack() {
-        this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
-        if (this.isPlaying) {
-            this.pause();
-            setTimeout(() => this.play(), 100);
-        } else {
-            this.updateDisplay();
-        }
+        this.changeTrack(1);
     }
     
     previousTrack() {
-        this.currentTrack = this.currentTrack === 0 ? this.tracks.length - 1 : this.currentTrack - 1;
+        this.changeTrack(-1);
+    }
+    
+    // Eliminate code duplication in track changing
+    changeTrack(direction) {
+        if (direction > 0) {
+            this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
+        } else {
+            this.currentTrack = this.currentTrack === 0 ? this.tracks.length - 1 : this.currentTrack - 1;
+        }
+        
         if (this.isPlaying) {
             this.pause();
             setTimeout(() => this.play(), 100);
@@ -162,12 +193,13 @@ class PixelMusicPlayer {
     
     setVolume(value) {
         this.volume = parseFloat(value);
-        document.getElementById('volume-display').textContent = Math.round(this.volume * 100) + '%';
+        document.querySelector(MUSIC_CONFIG.SELECTORS.VOLUME_DISPLAY).textContent = Math.round(this.volume * 100) + '%';
     }
     
     updateDisplay() {
-        document.getElementById('track-name').textContent = this.tracks[this.currentTrack].name;
-        document.getElementById('track-number').textContent = `${this.currentTrack + 1}/${this.tracks.length}`;
+        const selectors = MUSIC_CONFIG.SELECTORS;
+        document.querySelector(selectors.TRACK_NAME).textContent = this.tracks[this.currentTrack].name;
+        document.querySelector(selectors.TRACK_NUMBER).textContent = `${this.currentTrack + 1}/${this.tracks.length}`;
         
         // Update playlist highlighting
         document.querySelectorAll('.playlist-item').forEach((item, index) => {
@@ -175,8 +207,9 @@ class PixelMusicPlayer {
         });
     }
     
+    // Use centralized AudioManager instead of local audioContext
     playChiptune(frequencies) {
-        if (!this.audioContext || !this.isPlaying) return;
+        if (!this.isPlaying) return;
         
         let noteIndex = 0;
         const playNote = () => {
@@ -184,53 +217,42 @@ class PixelMusicPlayer {
                 if (this.isPlaying) {
                     // Loop the track
                     noteIndex = 0;
-                    setTimeout(playNote, 200);
+                    setTimeout(playNote, MUSIC_CONFIG.LOOP_DELAY);
                 }
                 return;
             }
             
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
+            this.currentOscillator = AudioManager.createBeep(
+                frequencies[noteIndex], 
+                MUSIC_CONFIG.NOTE_DURATION,
+                this.volume * 0.1
+            );
             
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.value = frequencies[noteIndex];
-            oscillator.type = 'square'; // 8-bit sound
-            
-            gainNode.gain.setValueAtTime(this.volume * 0.1, this.audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.4);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.4);
-            
-            this.currentOscillator = oscillator;
             noteIndex++;
-            
-            setTimeout(playNote, 500);
+            setTimeout(playNote, MUSIC_CONFIG.NOTE_INTERVAL);
         };
         
         playNote();
     }
     
     toggleVisibility() {
-        const content = document.getElementById('music-content');
-        const toggleBtn = document.getElementById('music-toggle');
+        const content = document.querySelector(MUSIC_CONFIG.SELECTORS.CONTENT);
+        const toggleBtn = document.querySelector(MUSIC_CONFIG.SELECTORS.TOGGLE);
+        const { HIDE, SHOW } = MUSIC_CONFIG.UI.TOGGLE_TEXT;
         
         if (content.style.display === 'none') {
             content.style.display = 'block';
-            toggleBtn.textContent = '隐藏';
+            toggleBtn.textContent = HIDE;
         } else {
             content.style.display = 'none';
-            toggleBtn.textContent = '显示';
+            toggleBtn.textContent = SHOW;
         }
     }
 }
 
-// Initialize music player when DOM is loaded
+// Clean initialization - no duplicate checks needed
 document.addEventListener('DOMContentLoaded', function() {
-    // Only initialize if not already done and if no instance exists
-    if (!window.musicPlayer && !document.getElementById('music-player')) {
+    if (!window.musicPlayer && !document.querySelector(MUSIC_CONFIG.SELECTORS.PLAYER)) {
         window.musicPlayer = new PixelMusicPlayer();
     }
 });
