@@ -1,15 +1,17 @@
 # Site Configuration
 title: "像素世界"
-description: "一个复古8位风格的GitHub Pages网站，具有像素艺术风格"
+description: "一个复古8位风格的GitHub Pages网站，具有像素艺术风格和博客功能"
 url: "https://zhucebuniao.github.io"
 baseurl: ""
 lang: "zh-CN"
+author: "像素创造者"
 
 # Build settings
 markdown: kramdown
 highlighter: rouge
 sass:
   style: compressed
+  sass_dir: _sass
 
 # Plugins
 plugins:
@@ -28,12 +30,17 @@ defaults:
       path: ""
       type: "posts"
     values:
-      layout: "default"
+      layout: "post"
+      author: "像素创造者"
   - scope:
       path: ""
       type: "pages"
     values:
-      layout: "default"
+      layout: "page"
+
+# Blog settings
+excerpt_separator: "<!-- more -->"
+show_excerpts: true
 
 # Exclude files
 exclude:

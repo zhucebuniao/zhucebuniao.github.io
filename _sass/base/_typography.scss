@@ -1,0 +1,71 @@
+// Base Typography Styles
+// Following BEM (Block Element Modifier) methodology
+
+// Typography Variables
+$pixel-font-family: 'Press Start 2P', 'Noto Sans SC', monospace, '微软雅黑', 'Microsoft YaHei', '宋体', SimSun, sans-serif;
+$base-line-height: 1.6;
+
+// Base Typography Rules
+body {
+    font-family: $pixel-font-family;
+    line-height: $base-line-height;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    scroll-behavior: smooth;
+    transition: all 0.3s ease;
+}
+
+// Pixel Title Component
+.pixel-title {
+    font-size: 1.5rem;
+    color: var(--pixel-primary);
+    text-shadow: 2px 2px 0 var(--pixel-shadow);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+
+    @keyframes titleGlow {
+        from { 
+            color: var(--pixel-primary);
+            text-shadow: 2px 2px 0 var(--pixel-shadow), 0 0 10px var(--pixel-primary);
+        }
+        to { 
+            color: var(--pixel-accent);
+            text-shadow: 2px 2px 0 var(--pixel-shadow), 0 0 20px var(--pixel-accent);
+        }
+    }
+}
+
+// Text utilities following BEM methodology
+.text {
+    &--glow {
+        text-shadow: 0 0 10px currentColor;
+    }
+    
+    &--shadow {
+        text-shadow: 2px 2px 0 var(--pixel-shadow);
+    }
+    
+    &--center {
+        text-align: center;
+    }
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+    font-family: $pixel-font-family;
+    margin-bottom: 1rem;
+    color: var(--pixel-text);
+}
+
+// Responsive typography
+@media (max-width: 768px) {
+    .pixel-title {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pixel-title {
+        font-size: 0.9rem;
+    }
+}

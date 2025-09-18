@@ -1,0 +1,57 @@
+---
+layout: default
+---
+
+<article class="post">
+    <header class="post__header">
+        <h1 class="post__title">{{ page.title }}</h1>
+        
+        <div class="post__meta">
+            <time class="post__date" datetime="{{ page.date | date_to_xmlschema }}">
+                {{ page.date | date: "%Y年%m月%d日" }}
+            </time>
+            
+            {% if page.author %}
+                <span class="post__author">作者: {{ page.author }}</span>
+            {% endif %}
+            
+            {% if page.categories %}
+                <div class="post__categories">
+                    分类: 
+                    {% for category in page.categories %}
+                        <span class="post__category">{{ category }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% if page.tags %}
+                <div class="post__tags">
+                    标签: 
+                    {% for tag in page.tags %}
+                        <span class="post__tag">#{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </header>
+    
+    <div class="post__content">
+        {{ content }}
+    </div>
+    
+    <footer class="post__footer">
+        <div class="post__navigation">
+            {% if page.previous.url %}
+                <a class="post__nav post__nav--prev pixel-btn" href="{{ page.previous.url | relative_url }}">
+                    ← {{ page.previous.title | truncate: 30 }}
+                </a>
+            {% endif %}
+            
+            {% if page.next.url %}
+                <a class="post__nav post__nav--next pixel-btn" href="{{ page.next.url | relative_url }}">
+                    {{ page.next.title | truncate: 30 }} →
+                </a>
+            {% endif %}
+        </div>
+    </footer>
+</article>

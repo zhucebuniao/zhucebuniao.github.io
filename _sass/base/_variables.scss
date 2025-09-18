@@ -1,0 +1,31 @@
+// CSS Custom Properties (Variables)
+:root {
+    --pixel-primary: #00ff00;
+    --pixel-secondary: #ff00ff;
+    --pixel-accent: #ffff00;
+    --pixel-bg: #000000;
+    --pixel-dark: #001100;
+    --pixel-border: #00aa00;
+    --pixel-text: #ffffff;
+    --pixel-shadow: #004400;
+}
+
+// Sass Variables for reuse
+$pixel-primary: var(--pixel-primary);
+$pixel-secondary: var(--pixel-secondary);
+$pixel-accent: var(--pixel-accent);
+$pixel-bg: var(--pixel-bg);
+$pixel-dark: var(--pixel-dark);
+$pixel-border: var(--pixel-border);
+$pixel-text: var(--pixel-text);
+$pixel-shadow: var(--pixel-shadow);
+
+// Spacing
+$base-spacing: 1rem;
+$small-spacing: 0.5rem;
+$large-spacing: 2rem;
+
+// Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1200px;

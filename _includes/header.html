@@ -1,0 +1,10 @@
+<header class="pixel-header">
+    <div class="pixel-nav">
+        <h1 class="pixel-title">{{ site.title | default: "像素世界" }}</h1>
+        <nav class="pixel-menu">
+            {% for item in site.data.navigation %}
+                <a href="{{ item.url | relative_url }}" class="pixel-btn">{{ item.title }}</a>
+            {% endfor %}
+        </nav>
+    </div>
+</header>

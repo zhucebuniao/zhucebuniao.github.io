@@ -6,27 +6,19 @@
     <title>{{ page.title | default: site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description }}">
     <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
-    <!-- Default pixel theme will be loaded by theme switcher -->
+    
+    <!-- Main stylesheet with Sass processing -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    
+    <!-- Typography fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- Add Chinese font support -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="pixel-container">
-        <header class="pixel-header">
-            <div class="pixel-nav">
-                <h1 class="pixel-title">{{ site.title | default: "像素世界" }}</h1>
-                <nav class="pixel-menu">
-                    <a href="{{ '/' | relative_url }}" class="pixel-btn">首页</a>
-                    <a href="{{ '/#about' | relative_url }}" class="pixel-btn">关于</a>
-                    <a href="{{ '/#features' | relative_url }}" class="pixel-btn">游戏</a>
-                    <a href="{{ '/#music' | relative_url }}" class="pixel-btn">音乐</a>
-                    <a href="{{ '/#contact' | relative_url }}" class="pixel-btn">联系</a>
-                </nav>
-            </div>
-        </header>
+        {% include header.html %}
 
         <main class="pixel-content">
             <div class="pixel-terminal">
@@ -34,13 +26,7 @@
             </div>
         </main>
 
-        <footer class="pixel-footer">
-            <div class="pixel-status-bar">
-                <span class="pixel-status">准备就绪</span>
-                <span class="pixel-status">等级: {{ site.time | date: "%Y" }}</span>
-                <span class="pixel-status">分数: 9999</span>
-            </div>
-        </footer>
+        {% include footer.html %}
     </div>
 
     <div class="pixel-particles"></div>
