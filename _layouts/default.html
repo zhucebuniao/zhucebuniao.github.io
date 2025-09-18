@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/pixel-style.css' | relative_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="pixel-container">
+        <header class="pixel-header">
+            <div class="pixel-nav">
+                <h1 class="pixel-title">{{ site.title | default: "PIXEL WORLD" }}</h1>
+                <nav class="pixel-menu">
+                    <a href="{{ '/' | relative_url }}" class="pixel-btn">HOME</a>
+                    <a href="{{ '/#about' | relative_url }}" class="pixel-btn">ABOUT</a>
+                    <a href="{{ '/#features' | relative_url }}" class="pixel-btn">GAMES</a>
+                    <a href="{{ '/#contact' | relative_url }}" class="pixel-btn">CONTACT</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="pixel-content">
+            <div class="pixel-terminal">
+                {{ content }}
+            </div>
+        </main>
+
+        <footer class="pixel-footer">
+            <div class="pixel-status-bar">
+                <span class="pixel-status">READY</span>
+                <span class="pixel-status">LEVEL: {{ site.time | date: "%Y" }}</span>
+                <span class="pixel-status">SCORE: 9999</span>
+            </div>
+        </footer>
+    </div>
+
+    <div class="pixel-particles"></div>
+    <script src="{{ '/assets/js/pixel-effects.js' | relative_url }}"></script>
+</body>
+</html>
