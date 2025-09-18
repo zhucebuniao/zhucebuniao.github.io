@@ -1,0 +1,25 @@
+---
+layout: default
+---
+
+<article class="page">
+    <header class="page__header">
+        <h1 class="page__title">{{ page.title }}</h1>
+        
+        {% if page.description %}
+            <p class="page__description">{{ page.description }}</p>
+        {% endif %}
+    </header>
+    
+    <div class="page__content">
+        {{ content }}
+    </div>
+    
+    {% if page.show_modified_date and page.last_modified_at %}
+        <footer class="page__footer">
+            <p class="page__modified">
+                最后更新: {{ page.last_modified_at | date: "%Y年%m月%d日" }}
+            </p>
+        </footer>
+    {% endif %}
+</article>

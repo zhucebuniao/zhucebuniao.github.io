@@ -96,3 +96,77 @@ title: "像素世界 - 首页"
         <strong style="font-size: 1.2rem;">🎮 开始探索像素世界的奇妙之旅！ 🎮</strong>
     </div>
 </div>
+
+<!-- 最新博客文章列表 -->
+<section class="blog-section" style="margin-top: 4rem;">
+    <div class="pixel-terminal">
+        <h2 style="color: var(--pixel-accent); margin-bottom: 2rem; text-align: center;">📝 最新文章</h2>
+        
+        {% if site.posts.size > 0 %}
+            <div class="posts-grid" style="display: grid; gap: 1.5rem;">
+                {% for post in site.posts limit: 6 %}
+                    <article class="post-card pixel-interactive" style="
+                        padding: 1.5rem; 
+                        border: 2px solid var(--pixel-border); 
+                        background: rgba(0, 255, 0, 0.03);
+                        transition: all 0.3s ease;
+                    ">
+                        <header class="post-card__header">
+                            <h3 style="margin-bottom: 0.5rem;">
+                                <a href="{{ post.url | relative_url }}" style="
+                                    color: var(--pixel-primary); 
+                                    text-decoration: none;
+                                    font-size: 0.9rem;
+                                ">{{ post.title }}</a>
+                            </h3>
+                            
+                            <div class="post-card__meta" style="
+                                font-size: 0.6rem; 
+                                color: var(--pixel-secondary); 
+                                margin-bottom: 1rem;
+                            ">
+                                <time datetime="{{ post.date | date_to_xmlschema }}">
+                                    {{ post.date | date: "%Y年%m月%d日" }}
+                                </time>
+                                
+                                {% if post.categories.size > 0 %}
+                                    <span style="margin-left: 1rem;">
+                                        📁 {{ post.categories | first }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </header>
+                        
+                        <div class="post-card__content">
+                            <p style="
+                                font-size: 0.7rem; 
+                                line-height: 1.4; 
+                                color: var(--pixel-text);
+                                margin-bottom: 1rem;
+                            ">
+                                {{ post.description | default: post.excerpt | strip_html | truncate: 120 }}
+                            </p>
+                        </div>
+                        
+                        <footer class="post-card__footer">
+                            <a href="{{ post.url | relative_url }}" class="pixel-btn" style="
+                                font-size: 0.6rem;
+                                padding: 0.5rem 1rem;
+                            ">阅读全文 →</a>
+                        </footer>
+                    </article>
+                {% endfor %}
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/blog/" class="pixel-btn" style="padding: 0.8rem 1.5rem;">查看所有文章</a>
+            </div>
+        {% else %}
+            <div style="text-align: center; padding: 2rem;">
+                <p style="color: var(--pixel-secondary); font-size: 0.8rem;">
+                    🚧 精彩内容正在制作中... 敬请期待！
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</section>
