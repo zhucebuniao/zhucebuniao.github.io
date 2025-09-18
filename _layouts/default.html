@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,17 +10,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Add Chinese font support -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="pixel-container">
         <header class="pixel-header">
             <div class="pixel-nav">
-                <h1 class="pixel-title">{{ site.title | default: "PIXEL WORLD" }}</h1>
+                <h1 class="pixel-title">{{ site.title | default: "像素世界" }}</h1>
                 <nav class="pixel-menu">
-                    <a href="{{ '/' | relative_url }}" class="pixel-btn">HOME</a>
-                    <a href="{{ '/#about' | relative_url }}" class="pixel-btn">ABOUT</a>
-                    <a href="{{ '/#features' | relative_url }}" class="pixel-btn">GAMES</a>
-                    <a href="{{ '/#contact' | relative_url }}" class="pixel-btn">CONTACT</a>
+                    <a href="{{ '/' | relative_url }}" class="pixel-btn">首页</a>
+                    <a href="{{ '/#about' | relative_url }}" class="pixel-btn">关于</a>
+                    <a href="{{ '/#features' | relative_url }}" class="pixel-btn">游戏</a>
+                    <a href="{{ '/#music' | relative_url }}" class="pixel-btn">音乐</a>
+                    <a href="{{ '/#contact' | relative_url }}" class="pixel-btn">联系</a>
                 </nav>
             </div>
         </header>
@@ -33,9 +36,9 @@
 
         <footer class="pixel-footer">
             <div class="pixel-status-bar">
-                <span class="pixel-status">READY</span>
-                <span class="pixel-status">LEVEL: {{ site.time | date: "%Y" }}</span>
-                <span class="pixel-status">SCORE: 9999</span>
+                <span class="pixel-status">准备就绪</span>
+                <span class="pixel-status">等级: {{ site.time | date: "%Y" }}</span>
+                <span class="pixel-status">分数: 9999</span>
             </div>
         </footer>
     </div>
@@ -43,5 +46,6 @@
     <div class="pixel-particles"></div>
     <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/pixel-effects.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/music-player.js' | relative_url }}"></script>
 </body>
 </html>

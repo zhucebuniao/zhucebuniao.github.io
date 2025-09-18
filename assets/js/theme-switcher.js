@@ -3,7 +3,7 @@ class ThemeSwitcher {
     constructor() {
         this.themes = {
             'pixel': {
-                name: 'Pixel Art',
+                name: '像素艺术',
                 cssFile: './assets/css/pixel-style.css',
                 jsEffects: true
             },
@@ -133,6 +133,11 @@ class ThemeSwitcher {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme switcher first
     window.themeSwitcher = new ThemeSwitcher();
+    
+    // Initialize music player if not already done
+    if (!window.musicPlayer && typeof PixelMusicPlayer === 'function') {
+        window.musicPlayer = new PixelMusicPlayer();
+    }
     
     // Only initialize pixel effects if pixel theme is active
     if (window.themeSwitcher.currentTheme === 'pixel') {

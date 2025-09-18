@@ -17,7 +17,7 @@
 }
 
 body {
-    font-family: 'Press Start 2P', monospace;
+    font-family: 'Press Start 2P', 'Noto Sans SC', monospace, '微软雅黑', 'Microsoft YaHei', '宋体', SimSun, sans-serif;
     background: var(--pixel-bg);
     color: var(--pixel-text);
     overflow-x: hidden;
@@ -264,20 +264,85 @@ pre {
     .pixel-btn {
         font-size: 0.7rem;
         padding: 0.4rem 0.8rem;
+        min-width: 80px;
+        margin: 0.2rem;
     }
     
     .pixel-nav {
         flex-direction: column;
         text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .pixel-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.3rem;
     }
     
     .pixel-terminal {
         padding: 1rem;
+        margin: 0.5rem;
+        border-width: 2px;
     }
     
     .pixel-status-bar {
         flex-direction: column;
         text-align: center;
+        gap: 0.3rem;
+    }
+    
+    .pixel-content {
+        padding: 1rem 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pixel-title {
+        font-size: 0.9rem;
+    }
+    
+    .pixel-btn {
+        font-size: 0.6rem;
+        padding: 0.3rem 0.6rem;
+        min-width: 70px;
+    }
+    
+    .pixel-terminal {
+        padding: 0.8rem;
+        margin: 0.3rem;
+        border-width: 1px;
+    }
+    
+    .pixel-nav {
+        padding: 0.5rem;
+    }
+    
+    .pixel-footer {
+        padding: 0.5rem;
+    }
+    
+    /* Improve touch targets */
+    .pixel-btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 2px 2px 0 var(--pixel-shadow);
+    }
+}
+
+@media (max-width: 320px) {
+    .pixel-title {
+        font-size: 0.8rem;
+    }
+    
+    .pixel-btn {
+        font-size: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        min-width: 60px;
+    }
+    
+    .pixel-terminal {
+        padding: 0.5rem;
+        margin: 0.2rem;
     }
 }
 
@@ -322,4 +387,234 @@ pre {
 @keyframes pixelSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Music Player Styles */
+.pixel-music-player {
+    background: var(--pixel-dark);
+    border: 2px solid var(--pixel-border);
+    margin: 1rem auto;
+    max-width: 1200px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.music-header {
+    background: var(--pixel-bg);
+    border-bottom: 2px solid var(--pixel-border);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.music-header h3 {
+    color: var(--pixel-primary);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.music-toggle-btn {
+    background: var(--pixel-bg);
+    color: var(--pixel-accent);
+    border: 1px solid var(--pixel-border);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.6rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.music-toggle-btn:hover {
+    background: var(--pixel-primary);
+    color: var(--pixel-bg);
+}
+
+.music-content {
+    padding: 1rem;
+}
+
+.music-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.track-display {
+    background: var(--pixel-bg);
+    border: 1px solid var(--pixel-border);
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.track-name {
+    color: var(--pixel-primary);
+    font-size: 0.7rem;
+}
+
+.track-number {
+    color: var(--pixel-secondary);
+    font-size: 0.6rem;
+}
+
+.music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.music-btn {
+    background: var(--pixel-bg);
+    color: var(--pixel-primary);
+    border: 2px solid var(--pixel-border);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.music-btn:hover {
+    background: var(--pixel-primary);
+    color: var(--pixel-bg);
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 var(--pixel-shadow);
+}
+
+.play-btn {
+    background: var(--pixel-accent);
+    color: var(--pixel-bg);
+}
+
+.music-volume {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+}
+
+.music-volume label {
+    color: var(--pixel-text);
+    font-size: 0.6rem;
+}
+
+#volume-slider {
+    width: 100px;
+    height: 20px;
+    -webkit-appearance: none;
+    background: var(--pixel-bg);
+    border: 1px solid var(--pixel-border);
+    outline: none;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: var(--pixel-primary);
+    cursor: pointer;
+    border: 1px solid var(--pixel-border);
+}
+
+#volume-display {
+    color: var(--pixel-accent);
+    font-size: 0.6rem;
+    min-width: 30px;
+}
+
+.music-playlist h4 {
+    color: var(--pixel-secondary);
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+}
+
+#playlist {
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--pixel-border);
+    background: var(--pixel-bg);
+}
+
+.playlist-item {
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.6rem;
+    border-bottom: 1px solid var(--pixel-dark);
+    color: var(--pixel-text);
+}
+
+.playlist-item:hover {
+    background: var(--pixel-dark);
+    color: var(--pixel-primary);
+}
+
+.playlist-item.active {
+    background: var(--pixel-primary);
+    color: var(--pixel-bg);
+}
+
+/* Music Player Responsive Design */
+@media (max-width: 768px) {
+    .pixel-music-player {
+        margin: 0.5rem;
+    }
+    
+    .music-content {
+        padding: 0.5rem;
+    }
+    
+    .music-controls {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    
+    .music-btn {
+        padding: 0.3rem;
+        font-size: 0.7rem;
+        min-width: 35px;
+    }
+    
+    .track-display {
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+    
+    .music-volume {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .music-header {
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .music-header h3 {
+        font-size: 0.7rem;
+    }
+    
+    .music-toggle-btn {
+        font-size: 0.5rem;
+        padding: 0.1rem 0.3rem;
+    }
+    
+    .music-btn {
+        padding: 0.2rem;
+        font-size: 0.6rem;
+        min-width: 30px;
+    }
+    
+    #volume-slider {
+        width: 80px;
+        height: 15px;
+    }
+    
+    .playlist-item {
+        font-size: 0.5rem;
+        padding: 0.2rem 0.3rem;
+    }
 }

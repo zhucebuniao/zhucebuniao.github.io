@@ -1,8 +1,9 @@
 # Site Configuration
-title: "PIXEL WORLD"
-description: "A retro 8-bit inspired GitHub Pages website with pixel art styling"
+title: "像素世界"
+description: "一个复古8位风格的GitHub Pages网站，具有像素艺术风格"
 url: "https://zhucebuniao.github.io"
 baseurl: ""
+lang: "zh-CN"
 
 # Build settings
 markdown: kramdown
