@@ -1,0 +1,182 @@
+// Syntax Highlighting - Pixel-styled Rouge Theme
+// Based on Monokai but adapted for pixel art aesthetic
+
+// Code block container styling
+.highlight {
+    color: #f8f8f2;
+    background-color: #1a1a1a;
+    border: 2px solid var(--pixel-border);
+    border-radius: 0; // Pixel art = no rounded corners
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    line-height: 1.4;
+    
+    // Terminal-like styling
+    &::before {
+        content: "█ CODE BLOCK █";
+        display: block;
+        color: var(--pixel-primary);
+        font-size: 0.5rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px dashed var(--pixel-border);
+        padding-bottom: 0.3rem;
+    }
+}
+
+// Table styling for line numbers
+.highlight table td { 
+    padding: 5px; 
+    border: none;
+}
+
+.highlight table pre { 
+    margin: 0; 
+}
+
+// Comments - dim green pixel style
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf,
+.highlight .cm, .highlight .c1 {
+    color: #00aa00;
+    font-style: normal; // No italic in pixel art
+}
+
+// Preprocessor directives
+.highlight .cp {
+    color: #00aa00;
+    font-weight: normal;
+}
+
+.highlight .cs {
+    color: #00aa00;
+    font-weight: normal;
+}
+
+// Errors - bright red pixel style
+.highlight .err {
+    color: #ff0040;
+    background-color: #330010;
+}
+
+// Diff colors
+.highlight .gi {
+    color: #ffffff;
+    background-color: #003300;
+}
+
+.highlight .gd {
+    color: #ffffff;
+    background-color: #330000;
+}
+
+// Generic styles
+.highlight .ge {
+    color: #ffffff;
+}
+
+.highlight .gr, .highlight .gt {
+    color: #ff4040;
+}
+
+.highlight .gh, .highlight .go, .highlight .gp {
+    color: #888888;
+}
+
+.highlight .gs {
+    font-weight: normal; // No bold in pixel fonts
+}
+
+.highlight .gu {
+    color: #aaaaaa;
+}
+
+// Keywords - cyan pixel style
+.highlight .k, .highlight .kv, .highlight .kc, .highlight .kd, 
+.highlight .kp, .highlight .kr, .highlight .kt {
+    color: #00ffff;
+    font-weight: normal;
+}
+
+// Special keywords - magenta
+.highlight .kn, .highlight .ow, .highlight .o {
+    color: #ff40ff;
+    font-weight: normal;
+}
+
+// Numbers - bright purple
+.highlight .mf, .highlight .mh, .highlight .il, .highlight .mi, 
+.highlight .mo, .highlight .m, .highlight .mb, .highlight .mx,
+.highlight .se {
+    color: #ff80ff;
+}
+
+// Strings - yellow pixel style
+.highlight .sa {
+    color: #ffff00;
+    font-weight: normal;
+}
+
+.highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2,
+.highlight .sh, .highlight .si, .highlight .sx, .highlight .sr,
+.highlight .s1, .highlight .ss, .highlight .s, .highlight .dl {
+    color: #ffff40;
+}
+
+// Names and identifiers - bright green
+.highlight .na, .highlight .nc, .highlight .nd, .highlight .ne,
+.highlight .nf, .highlight .fm {
+    color: #40ff40;
+    font-weight: normal;
+}
+
+// Built-ins - white
+.highlight .no, .highlight .bp, .highlight .nb, .highlight .ni,
+.highlight .nn, .highlight .vc, .highlight .vg, .highlight .vi,
+.highlight .nv, .highlight .vm, .highlight .w, .highlight .nl {
+    color: #ffffff;
+    font-weight: normal;
+}
+
+// HTML/XML tags - red
+.highlight .nt {
+    color: #ff4040;
+}
+
+// Line numbers styling (if enabled)
+.highlight .lineno {
+    color: var(--pixel-secondary);
+    border-right: 1px solid var(--pixel-border);
+    padding-right: 0.5rem;
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+// Inline code styling (separate from code blocks)
+code:not(.highlight code) {
+    background: rgba(0, 255, 0, 0.1);
+    color: var(--pixel-primary);
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--pixel-border);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    border-radius: 0;
+}
+
+// Responsive adjustments
+@media (max-width: $tablet) {
+    .highlight {
+        font-size: 0.5rem;
+        padding: 0.8rem;
+        
+        &::before {
+            font-size: 0.4rem;
+        }
+    }
+    
+    code:not(.highlight code) {
+        font-size: 0.5rem;
+        padding: 0.1rem 0.3rem;
+    }
+}
