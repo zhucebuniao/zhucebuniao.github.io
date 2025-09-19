@@ -1,10 +1,12 @@
-<header class="pixel-header">
-    <div class="pixel-nav">
-        <h1 class="pixel-title">{{ site.title | default: "像素世界" }}</h1>
-        <nav class="pixel-menu">
+<header class="site-header">
+    <nav class="site-nav">
+        <h1 class="site-title">
+            <a href="/" class="site-title">{{ site.title | default: "极简博客" }}</a>
+        </h1>
+        <ul class="nav-menu">
             {% for item in site.data.navigation %}
-                <a href="{{ item.url | relative_url }}" class="pixel-btn">{{ item.title }}</a>
+                <li><a href="{{ item.url | relative_url }}" class="nav-link">{{ item.title }}</a></li>
             {% endfor %}
-        </nav>
-    </div>
+        </ul>
+    </nav>
 </header>

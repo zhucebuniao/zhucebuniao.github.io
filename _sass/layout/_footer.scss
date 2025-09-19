@@ -1,0 +1,54 @@
+// Footer Layout - Minimalist Footer
+// Simple, clean footer design
+
+.site-footer {
+    background: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0 1rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.footer-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    
+    @media (max-width: $mobile) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+.footer-status {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    &::before {
+        content: "•";
+        color: var(--accent-color);
+    }
+    
+    &:first-child::before {
+        display: none;
+    }
+}
+
+.footer-copyright {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}

@@ -1,31 +1,35 @@
 ---
 layout: default
-title: "404 - Game Over"
+title: "404 - 页面未找到"
 ---
 
-<div style="text-align: center; padding: 2rem;">
-    <h1 class="pixel-glow" style="font-size: 3rem; margin-bottom: 2rem;">404</h1>
+<div class="text-center" style="padding: 4rem 2rem;">
+    <h1 style="font-size: 4rem; margin-bottom: 1rem; color: var(--accent-color);">404</h1>
     
-    <div style="color: #ff00ff; margin-bottom: 2rem;">
-        <p>GAME OVER</p>
-        <p>Page not found in this dimension</p>
+    <div style="margin-bottom: 2rem;">
+        <h2>页面未找到</h2>
+        <p class="text-muted">抱歉，您访问的页面不存在或已被移动。</p>
     </div>
     
     <div style="margin: 2rem 0;">
-        <div class="pixel-interactive">
-            <strong>▶ Try these power-ups:</strong>
+        <p><strong>您可以尝试：</strong></p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+            <a href="/" class="btn">🏠 返回首页</a>
+            <a href="/blog/" class="btn btn--outline">📝 浏览博客</a>
+            <a href="javascript:history.back()" class="btn btn--secondary">⬅️ 返回上页</a>
         </div>
-        <ul style="list-style: none; padding: 0; margin: 1rem 0;">
-            <li>🏠 <a href="/" class="pixel-btn" style="display: inline;">HOME</a></li>
-            <li>🔄 <a href="javascript:history.back()" class="pixel-btn" style="display: inline;">GO BACK</a></li>
-        </ul>
     </div>
     
-    <div style="margin-top: 2rem;">
-        <pre style="font-size: 0.8rem; color: #00ff00;">
-ERROR CODE: 404_PIXEL_NOT_FOUND
-SYSTEM STATUS: CONFUSED
-SUGGESTED ACTION: PRESS START
-        </pre>
+    <div class="card" style="max-width: 500px; margin: 2rem auto; text-align: left;">
+        <h3>可能的原因：</h3>
+        <ul>
+            <li>链接地址输入错误</li>
+            <li>页面已被删除或移动</li>
+            <li>网站结构发生了变化</li>
+        </ul>
+        
+        <p class="text-muted" style="margin-top: 1rem;">
+            如果您认为这是一个错误，请通过GitHub Issues联系我们。
+        </p>
     </div>
 </div>

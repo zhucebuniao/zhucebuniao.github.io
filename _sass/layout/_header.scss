@@ -1,0 +1,63 @@
+// Header Layout - Minimalist Navigation
+// Clean, accessible header design
+
+.site-header {
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    
+    @media (prefers-color-scheme: dark) {
+        background: rgba(33, 37, 41, 0.95);
+    }
+}
+
+.site-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    @media (max-width: $tablet) {
+        gap: 1rem;
+    }
+    
+    @media (max-width: $mobile) {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+// Responsive navigation
+@media (max-width: $mobile) {
+    .site-nav {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .site-title {
+        font-size: 1.25rem;
+    }
+}
