@@ -3,55 +3,71 @@ layout: default
 ---
 
 <article class="post">
-    <header class="post__header">
-        <h1 class="post__title">{{ page.title }}</h1>
+    <header class="post-header" style="margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+        <h1 style="margin-bottom: 1rem;">{{ page.title }}</h1>
         
-        <div class="post__meta">
-            <time class="post__date" datetime="{{ page.date | date_to_xmlschema }}">
-                {{ page.date | date: "%Y年%m月%d日" }}
+        <div class="post-meta text-muted" style="font-size: 0.875rem;">
+            <time datetime="{{ page.date | date_to_xmlschema }}">
+                📅 {{ page.date | date: "%Y年%m月%d日" }}
             </time>
             
             {% if page.author %}
-                <span class="post__author">作者: {{ page.author }}</span>
+                <span style="margin-left: 1rem;">👤 {{ page.author }}</span>
             {% endif %}
             
             {% if page.categories %}
-                <div class="post__categories">
-                    分类: 
+                <div style="margin-top: 0.5rem;">
+                    📁 分类: 
                     {% for category in page.categories %}
-                        <span class="post__category">{{ category }}</span>
+                        <span style="
+                            background: var(--surface-color);
+                            padding: 0.25rem 0.5rem;
+                            border-radius: 4px;
+                            margin-right: 0.5rem;
+                        ">{{ category }}</span>
                     {% endfor %}
                 </div>
             {% endif %}
             
             {% if page.tags %}
-                <div class="post__tags">
-                    标签: 
+                <div style="margin-top: 0.5rem;">
+                    🏷️ 标签: 
                     {% for tag in page.tags %}
-                        <span class="post__tag">#{{ tag }}</span>
+                        <span style="
+                            background: var(--surface-color);
+                            color: var(--text-muted);
+                            padding: 0.25rem 0.5rem;
+                            border-radius: 4px;
+                            font-size: 0.75rem;
+                            margin-right: 0.5rem;
+                        ">#{{ tag }}</span>
                     {% endfor %}
                 </div>
             {% endif %}
         </div>
     </header>
     
-    <div class="post__content">
+    <div class="post-content">
         {{ content }}
     </div>
     
-    <footer class="post__footer">
-        <div class="post__navigation">
+    <footer class="post-footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <div class="post-navigation" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
             {% if page.previous.url %}
-                <a class="post__nav post__nav--prev pixel-btn" href="{{ page.previous.url | relative_url }}">
+                <a class="btn btn--outline" href="{{ page.previous.url | relative_url }}" style="max-width: 45%;">
                     ← {{ page.previous.title | truncate: 30 }}
                 </a>
             {% endif %}
             
             {% if page.next.url %}
-                <a class="post__nav post__nav--next pixel-btn" href="{{ page.next.url | relative_url }}">
+                <a class="btn btn--outline" href="{{ page.next.url | relative_url }}" style="max-width: 45%; margin-left: auto;">
                     {{ page.next.title | truncate: 30 }} →
                 </a>
             {% endif %}
+        </div>
+        
+        <div class="text-center" style="margin-top: 2rem;">
+            <a href="/blog/" class="btn btn--secondary">← 返回博客列表</a>
         </div>
     </footer>
 </article>

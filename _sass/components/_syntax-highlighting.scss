@@ -1,34 +1,23 @@
-// Syntax Highlighting - Pixel-styled Rouge Theme
-// Based on Monokai but adapted for pixel art aesthetic
+// Syntax Highlighting - Clean and Modern Theme
+// Based on GitHub's light/dark theme for accessibility and readability
 
 // Code block container styling
 .highlight {
-    color: #f8f8f2;
-    background-color: #1a1a1a;
-    border: 2px solid var(--pixel-border);
-    border-radius: 0; // Pixel art = no rounded corners
+    color: var(--text-color);
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     padding: 1rem;
-    margin: 1rem 0;
+    margin: 1.25rem 0;
     overflow-x: auto;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.6rem;
-    line-height: 1.4;
-    
-    // Terminal-like styling
-    &::before {
-        content: "█ CODE BLOCK █";
-        display: block;
-        color: var(--pixel-primary);
-        font-size: 0.5rem;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px dashed var(--pixel-border);
-        padding-bottom: 0.3rem;
-    }
+    font-family: $mono-font-family;
+    font-size: 0.875rem;
+    line-height: 1.5;
 }
 
 // Table styling for line numbers
 .highlight table td { 
-    padding: 5px; 
+    padding: 0; 
     border: none;
 }
 
@@ -36,147 +25,116 @@
     margin: 0; 
 }
 
-// Comments - dim green pixel style
+// Comments - muted color
 .highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf,
-.highlight .cm, .highlight .c1 {
-    color: #00aa00;
-    font-style: normal; // No italic in pixel art
+.highlight .cm, .highlight .c1, .highlight .cs {
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 // Preprocessor directives
 .highlight .cp {
-    color: #00aa00;
-    font-weight: normal;
+    color: var(--accent-color);
 }
 
-.highlight .cs {
-    color: #00aa00;
-    font-weight: normal;
-}
-
-// Errors - bright red pixel style
+// Errors - red
 .highlight .err {
-    color: #ff0040;
-    background-color: #330010;
+    color: #d73a49;
+    @media (prefers-color-scheme: dark) {
+        color: #f97583;
+    }
 }
 
 // Diff colors
 .highlight .gi {
-    color: #ffffff;
-    background-color: #003300;
+    color: #28a745;
+    background-color: #f0fff4;
+    @media (prefers-color-scheme: dark) {
+        color: #85e89d;
+        background-color: #003820;
+    }
 }
 
 .highlight .gd {
-    color: #ffffff;
-    background-color: #330000;
+    color: #d73a49;
+    background-color: #ffeef0;
+    @media (prefers-color-scheme: dark) {
+        color: #f97583;
+        background-color: #3f0d0d;
+    }
 }
 
-// Generic styles
-.highlight .ge {
-    color: #ffffff;
-}
-
-.highlight .gr, .highlight .gt {
-    color: #ff4040;
-}
-
-.highlight .gh, .highlight .go, .highlight .gp {
-    color: #888888;
-}
-
-.highlight .gs {
-    font-weight: normal; // No bold in pixel fonts
-}
-
-.highlight .gu {
-    color: #aaaaaa;
-}
-
-// Keywords - cyan pixel style
+// Keywords - purple/blue
 .highlight .k, .highlight .kv, .highlight .kc, .highlight .kd, 
-.highlight .kp, .highlight .kr, .highlight .kt {
-    color: #00ffff;
-    font-weight: normal;
+.highlight .kp, .highlight .kr, .highlight .kt, .highlight .kn {
+    color: #d73a49;
+    @media (prefers-color-scheme: dark) {
+        color: #f97583;
+    }
 }
 
-// Special keywords - magenta
-.highlight .kn, .highlight .ow, .highlight .o {
-    color: #ff40ff;
-    font-weight: normal;
+// Operators
+.highlight .ow, .highlight .o {
+    color: var(--accent-color);
 }
 
-// Numbers - bright purple
+// Numbers - purple
 .highlight .mf, .highlight .mh, .highlight .il, .highlight .mi, 
-.highlight .mo, .highlight .m, .highlight .mb, .highlight .mx,
-.highlight .se {
-    color: #ff80ff;
+.highlight .mo, .highlight .m, .highlight .mb, .highlight .mx {
+    color: #005cc5;
+    @media (prefers-color-scheme: dark) {
+        color: #79b8ff;
+    }
 }
 
-// Strings - yellow pixel style
-.highlight .sa {
-    color: #ffff00;
-    font-weight: normal;
+// Strings - green
+.highlight .sa, .highlight .sb, .highlight .sc, .highlight .sd, 
+.highlight .s2, .highlight .sh, .highlight .si, .highlight .sx, 
+.highlight .sr, .highlight .s1, .highlight .ss, .highlight .s, 
+.highlight .dl, .highlight .se {
+    color: #032f62;
+    @media (prefers-color-scheme: dark) {
+        color: #9ecbff;
+    }
 }
 
-.highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2,
-.highlight .sh, .highlight .si, .highlight .sx, .highlight .sr,
-.highlight .s1, .highlight .ss, .highlight .s, .highlight .dl {
-    color: #ffff40;
-}
-
-// Names and identifiers - bright green
+// Names and identifiers - blue
 .highlight .na, .highlight .nc, .highlight .nd, .highlight .ne,
 .highlight .nf, .highlight .fm {
-    color: #40ff40;
-    font-weight: normal;
+    color: #6f42c1;
+    @media (prefers-color-scheme: dark) {
+        color: #b392f0;
+    }
 }
 
-// Built-ins - white
+// Built-ins and variables
 .highlight .no, .highlight .bp, .highlight .nb, .highlight .ni,
 .highlight .nn, .highlight .vc, .highlight .vg, .highlight .vi,
 .highlight .nv, .highlight .vm, .highlight .w, .highlight .nl {
-    color: #ffffff;
-    font-weight: normal;
+    color: var(--text-color);
 }
 
-// HTML/XML tags - red
+// HTML/XML tags
 .highlight .nt {
-    color: #ff4040;
+    color: #22863a;
+    @media (prefers-color-scheme: dark) {
+        color: #85e89d;
+    }
 }
 
 // Line numbers styling (if enabled)
 .highlight .lineno {
-    color: var(--pixel-secondary);
-    border-right: 1px solid var(--pixel-border);
-    padding-right: 0.5rem;
-    margin-right: 0.5rem;
+    color: var(--text-muted);
+    border-right: 1px solid var(--border-color);
+    padding-right: 0.75rem;
+    margin-right: 0.75rem;
     user-select: none;
-}
-
-// Inline code styling (separate from code blocks)
-code:not(.highlight code) {
-    background: rgba(0, 255, 0, 0.1);
-    color: var(--pixel-primary);
-    padding: 0.2rem 0.4rem;
-    border: 1px solid var(--pixel-border);
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.6rem;
-    border-radius: 0;
 }
 
 // Responsive adjustments
 @media (max-width: $tablet) {
     .highlight {
-        font-size: 0.5rem;
-        padding: 0.8rem;
-        
-        &::before {
-            font-size: 0.4rem;
-        }
-    }
-    
-    code:not(.highlight code) {
-        font-size: 0.5rem;
-        padding: 0.1rem 0.3rem;
+        font-size: 0.75rem;
+        padding: 0.75rem;
     }
 }

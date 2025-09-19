@@ -14,11 +14,6 @@
 @import "components/terminal";
 @import "components/syntax-highlighting";
 
-// Layout layer (to be created)  
-// @import "layout/header";
-// @import "layout/footer";
-// @import "layout/grid";
-
-// For now, include the existing pixel styles as a temporary measure
-// This will be refactored in subsequent commits
-@import url("pixel-style.css");
+// Layout components
+@import "layout/header";
+@import "layout/footer";

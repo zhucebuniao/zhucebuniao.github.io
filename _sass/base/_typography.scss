@@ -1,71 +1,80 @@
-// Base Typography Styles
-// Following BEM (Block Element Modifier) methodology
+// Base Typography Styles - Minimalist Design
+// Clean, readable typography without pixel/retro effects
 
 // Typography Variables
-$pixel-font-family: 'Press Start 2P', 'Noto Sans SC', monospace, '微软雅黑', 'Microsoft YaHei', '宋体', SimSun, sans-serif;
+$base-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
+$heading-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+$mono-font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 $base-line-height: 1.6;
 
 // Base Typography Rules
 body {
-    font-family: $pixel-font-family;
+    font-family: $base-font-family;
     line-height: $base-line-height;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
+    font-size: 16px;
     scroll-behavior: smooth;
-    transition: all 0.3s ease;
 }
 
-// Pixel Title Component
-.pixel-title {
+// Site Title Component
+.site-title {
     font-size: 1.5rem;
-    color: var(--pixel-primary);
-    text-shadow: 2px 2px 0 var(--pixel-shadow);
-    animation: titleGlow 2s ease-in-out infinite alternate;
-
-    @keyframes titleGlow {
-        from { 
-            color: var(--pixel-primary);
-            text-shadow: 2px 2px 0 var(--pixel-shadow), 0 0 10px var(--pixel-primary);
-        }
-        to { 
-            color: var(--pixel-accent);
-            text-shadow: 2px 2px 0 var(--pixel-shadow), 0 0 20px var(--pixel-accent);
-        }
-    }
-}
-
-// Text utilities following BEM methodology
-.text {
-    &--glow {
-        text-shadow: 0 0 10px currentColor;
-    }
+    font-weight: 600;
+    color: var(--primary-color);
+    text-decoration: none;
     
-    &--shadow {
-        text-shadow: 2px 2px 0 var(--pixel-shadow);
-    }
-    
-    &--center {
-        text-align: center;
+    &:hover {
+        color: var(--accent-color);
+        transition: color 0.2s ease;
     }
 }
 
 // Headings
 h1, h2, h3, h4, h5, h6 {
-    font-family: $pixel-font-family;
+    font-family: $heading-font-family;
+    font-weight: 600;
+    line-height: 1.3;
     margin-bottom: 1rem;
-    color: var(--pixel-text);
+    color: var(--primary-color);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+// Text utilities
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); }
+.text-accent { color: var(--accent-color); }
+
+// Code elements
+code, pre {
+    font-family: $mono-font-family;
+    font-size: 0.875rem;
+}
+
+code {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 0.125rem 0.25rem;
+}
+
+pre {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
 }
 
 // Responsive typography
 @media (max-width: 768px) {
-    .pixel-title {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .pixel-title {
-        font-size: 0.9rem;
-    }
+    body { font-size: 14px; }
+    .site-title { font-size: 1.25rem; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
 }

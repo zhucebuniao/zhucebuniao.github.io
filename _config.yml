@@ -1,10 +1,10 @@
 # Site Configuration
-title: "像素世界"
-description: "一个复古8位风格的GitHub Pages网站，具有像素艺术风格和博客功能"
+title: "极简博客"
+description: "一个极简风格的个人博客，专注于内容和可读性"
 url: "https://zhucebuniao.github.io"
 baseurl: ""
 lang: "zh-CN"
-author: "像素创造者"
+author: "博客作者"
 
 # Build settings
 markdown: kramdown

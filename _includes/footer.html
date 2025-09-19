@@ -1,7 +1,12 @@
-<footer class="pixel-footer">
-    <div class="pixel-status-bar">
-        <span class="pixel-status">准备就绪</span>
-        <span class="pixel-status">等级: {{ site.time | date: "%Y" }}</span>
-        <span class="pixel-status">分数: 9999</span>
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-info">
+            <span class="footer-status">博客就绪</span>
+            <span class="footer-status">{{ site.time | date: "%Y" }} 年</span>
+            <span class="footer-status">持续更新中</span>
+        </div>
+        <div class="footer-copyright">
+            © {{ site.time | date: "%Y" }} {{ site.author | default: "博客作者" }}. 保留所有权利。
+        </div>
     </div>
 </footer>

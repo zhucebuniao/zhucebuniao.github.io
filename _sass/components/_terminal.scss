@@ -1,77 +1,81 @@
-// Terminal Component - The signature pixel aesthetic
-// "Simplicity is the ultimate sophistication" - applied to terminal design
+// Layout Component - Clean and minimalist design
+// Simple containers without terminal aesthetics
 
-.pixel-terminal {
-    background: var(--pixel-dark);
-    border: 4px solid var(--pixel-border);
+.card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 
-        inset 0 0 20px rgba(0, 255, 0, 0.1),
-        0 0 20px rgba(0, 255, 0, 0.2);
-    position: relative;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: box-shadow 0.2s ease;
     
-    // Terminal glow effect
-    &::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(45deg, var(--pixel-primary), var(--pixel-accent));
-        border-radius: 4px;
-        z-index: -1;
-        opacity: 0.3;
-        animation: terminalGlow 3s ease-in-out infinite alternate;
+    &:hover {
+        box-shadow: 0 4px 12px var(--shadow-color);
     }
     
-    @keyframes terminalGlow {
-        from { opacity: 0.2; }
-        to { opacity: 0.4; }
-    }
-    
-    // Terminal content styling
+    // Card content styling
     h1, h2, h3, h4, h5, h6 {
-        color: var(--pixel-primary);
-        text-shadow: 0 0 10px currentColor;
+        color: var(--primary-color);
+        margin-bottom: 0.75rem;
     }
     
     p {
-        color: var(--pixel-text);
-        font-size: 0.8rem;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
     
-    // Responsive terminal
+    // Responsive card
     @media (max-width: $mobile) {
         padding: 1rem;
-        border-width: 2px;
+        border-radius: 6px;
     }
 }
 
 // Container layouts
-.pixel-container {
+.container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
-.pixel-content {
+.main-content {
     flex: 1;
     padding: 2rem 1rem;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-    animation: fadeInUp 0.8s ease-out;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+// Grid layouts
+.grid {
+    display: grid;
+    gap: 1.5rem;
+    
+    &--auto-fit {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    &--2-col {
+        grid-template-columns: repeat(2, 1fr);
+        
+        @media (max-width: $tablet) {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    &--3-col {
+        grid-template-columns: repeat(3, 1fr);
+        
+        @media (max-width: $tablet) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        @media (max-width: $mobile) {
+            grid-template-columns: 1fr;
+        }
     }
 }

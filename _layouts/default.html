@@ -9,31 +9,18 @@
     
     <!-- Main stylesheet with Sass processing -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-    
-    <!-- Typography fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="pixel-container">
+    <div class="container">
         {% include header.html %}
 
-        <main class="pixel-content">
-            <div class="pixel-terminal">
+        <main class="main-content">
+            <div class="card">
                 {{ content }}
             </div>
         </main>
 
         {% include footer.html %}
     </div>
-
-    <div class="pixel-particles"></div>
-    <script src="{{ '/assets/js/config.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/pixel-effects.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/music-player.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/modern-interactions.js' | relative_url }}"></script>
 </body>
 </html>
