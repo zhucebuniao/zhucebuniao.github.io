@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器测试</title>
+    <style>
+        :root {
+            --primary-color: #333333;
+            --secondary-color: #666666;
+            --accent-color: #0066cc;
+            --background-color: #ffffff;
+            --surface-color: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background-color);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--surface-color);
+        }
+
+        .test-section h2 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 音乐播放器功能测试</h1>
+        
+        <div class="note">
+            <strong>注意：</strong>由于没有实际的音频文件，这个测试页面展示播放器界面但无法播放音频。在实际使用中，请将真实的音频文件放置在 <code>assets/audio/</code> 目录中。
+        </div>
+
+        <div class="test-section">
+            <h2>标准播放器</h2>
+            <p>完整功能的音乐播放器，包含封面、控制按钮和进度条：</p>
+            <div data-music-player 
+                 data-src="/assets/audio/demo.mp3" 
+                 data-title="像素世界主题曲" 
+                 data-artist="8位音乐制作组" 
+                 data-cover="/assets/images/pixel-cover.jpg">
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>紧凑模式播放器</h2>
+            <p>适合在文章中内联使用的紧凑版本：</p>
+            <div data-music-player 
+                 data-src="/assets/audio/demo.mp3" 
+                 data-title="背景音乐" 
+                 data-artist="复古音效" 
+                 data-compact="true">
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>无封面播放器</h2>
+            <p>简约模式，不显示专辑封面：</p>
+            <div data-music-player 
+                 data-src="/assets/audio/demo.mp3" 
+                 data-title="芯片音效" 
+                 data-artist="像素音乐" 
+                 data-show-cover="false">
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>键盘控制说明</h2>
+            <p>点击任一播放器后，可以使用以下键盘快捷键：</p>
+            <ul>
+                <li><strong>空格键</strong> - 播放/暂停</li>
+                <li><strong>←/→</strong> - 后退/前进 10秒</li>
+                <li><strong>↑/↓</strong> - 增加/减少音量</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Load music player styles -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <!-- Load music player script -->
+    <script src="/assets/js/music-player.js"></script>
+</body>
+</html>
