@@ -23,6 +23,10 @@ permalink: /blog/
                                 📅 {{ post.date | date: "%Y年%m月%d日" }}
                             </time>
                             
+                            <span style="margin-left: 1rem;">
+                                {% include reading-time.html content=post.content %}
+                            </span>
+                            
                             {% if post.author %}
                                 <span style="margin-left: 1rem;">👤 {{ post.author }}</span>
                             {% endif %}

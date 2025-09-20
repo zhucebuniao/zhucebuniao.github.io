@@ -11,6 +11,10 @@ layout: default
                 📅 {{ page.date | date: "%Y年%m月%d日" }}
             </time>
             
+            <span style="margin-left: 1rem;">
+                {% include reading-time.html content=content %}
+            </span>
+            
             {% if page.author %}
                 <span style="margin-left: 1rem;">👤 {{ page.author }}</span>
             {% endif %}

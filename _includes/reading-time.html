@@ -1,0 +1,16 @@
+{% comment %}
+Reading time calculation include
+Calculates estimated reading time based on word count
+Assumes 200 words per minute reading speed
+Usage: {% include reading-time.html content=post.content %}
+       {% include reading-time.html content=content %}
+{% endcomment %}
+
+{% assign words = include.content | strip_html | number_of_words %}
+{% assign reading_time = words | divided_by: 200.0 | ceil %}
+
+{% if reading_time <= 1 %}
+    ⏱️ 少于1分钟阅读
+{% else %}
+    ⏱️ {{ reading_time }}分钟阅读
+{% endif %}
