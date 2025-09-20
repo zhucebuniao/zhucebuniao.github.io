@@ -19,10 +19,7 @@ plugins:
   - jekyll-sitemap
 
 # Collections
-collections:
-  games:
-    output: true
-    permalink: /:collection/:name/
+# collections:
 
 # Defaults
 defaults:
