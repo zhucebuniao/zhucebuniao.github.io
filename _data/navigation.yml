@@ -6,3 +6,5 @@
   url: "/prompts/"
 - title: "关于"
   url: "/about/"
+- title: "提示词生成器"
+  url: "/prompt-generator.html"
