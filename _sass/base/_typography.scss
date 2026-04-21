@@ -1,25 +1,29 @@
-// Base Typography Styles - Minimalist Design
-// Clean, readable typography without pixel/retro effects
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@300;400;500&display=swap');
+
+// Base Typography Styles - Prompt Generator Inspired
 
 // Typography Variables
-$base-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
-$heading-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-$mono-font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+$base-font-family: 'Space Mono', 'SFMono-Regular', Consolas, monospace;
+$heading-font-family: 'Space Mono', monospace;
+$mono-font-family: 'Space Mono', 'SFMono-Regular', Consolas, monospace;
 $base-line-height: 1.6;
 
 // Base Typography Rules
 body {
     font-family: $base-font-family;
     line-height: $base-line-height;
-    font-size: 16px;
+    font-size: 14px;
+    letter-spacing: 0.02em;
     scroll-behavior: smooth;
 }
 
 // Site Title Component
 .site-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
     text-decoration: none;
     
     &:hover {
@@ -31,10 +35,11 @@ body {
 // Headings
 h1, h2, h3, h4, h5, h6 {
     font-family: $heading-font-family;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.3;
     margin-bottom: 1rem;
     color: var(--primary-color);
+    letter-spacing: 0.08em;
 }
 
 h1 { font-size: 2rem; }

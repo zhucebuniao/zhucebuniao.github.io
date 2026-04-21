@@ -4,13 +4,13 @@
 .card {
     background: var(--surface-color);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    transition: box-shadow 0.2s ease;
+    box-shadow: none;
+    transition: border-color 0.2s ease;
     
     &:hover {
-        box-shadow: 0 4px 12px var(--shadow-color);
+        border-color: #2f2f2f;
     }
     
     // Card content styling
@@ -45,7 +45,7 @@
 .main-content {
     flex: 1;
     padding: 2rem 1rem;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     width: 100%;
 }

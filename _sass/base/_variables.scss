@@ -1,29 +1,15 @@
-// CSS Custom Properties (Variables) - Minimalist Design
+// CSS Custom Properties (Variables) - Prompt Generator Inspired
 :root {
-    --primary-color: #333333;
-    --secondary-color: #666666;
-    --accent-color: #0066cc;
-    --background-color: #ffffff;
-    --surface-color: #f8f9fa;
-    --border-color: #e9ecef;
-    --text-color: #212529;
-    --text-muted: #6c757d;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-}
-
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-    :root {
-        --primary-color: #e9ecef;
-        --secondary-color: #adb5bd;
-        --accent-color: #66b3ff;
-        --background-color: #212529;
-        --surface-color: #343a40;
-        --border-color: #495057;
-        --text-color: #f8f9fa;
-        --text-muted: #adb5bd;
-        --shadow-color: rgba(0, 0, 0, 0.3);
-    }
+    --primary-color: #e8e0d4;
+    --secondary-color: #a89a80;
+    --accent-color: #c8a97a;
+    --accent-hover: #d4b88a;
+    --background-color: #0a0a0a;
+    --surface-color: #111111;
+    --border-color: #222222;
+    --text-color: #e8e0d4;
+    --text-muted: #555555;
+    --shadow-color: rgba(0, 0, 0, 0.35);
 }
 
 // Sass Variables for reuse
