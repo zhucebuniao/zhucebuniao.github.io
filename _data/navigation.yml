@@ -1,7 +1,5 @@
 - title: "首页"
   url: "/"
-- title: "工具列表"
-  url: "/#tools"
 - title: "提示词生成器"
   url: "/prompt-generator/"
 - title: "全景 Viewer"
