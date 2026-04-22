@@ -1,136 +1,41 @@
 ---
 layout: default
-title: "极简博客 - 首页"
+title: "私人工具集 - 首页"
 ---
 
 <section class="hero-section text-center" style="margin-bottom: 3rem;">
-    <h1>欢迎来到极简博客</h1>
-    <p class="text-muted" style="font-size: 1.125rem; margin: 1rem 0;">专注内容，追求简洁与可读性</p>
+    <h1>私人使用工具集</h1>
+    <p class="text-muted" style="font-size: 1.125rem; margin: 1rem 0;">仅用于个人效率与创作场景，不对外提供在线服务。</p>
 </section>
 
-<section class="features-section" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 2rem;">✨ 特色功能</h2>
-    
+<section id="tools" class="features-section" style="margin-bottom: 3rem;">
+    <h2 style="margin-bottom: 2rem;">🧰 工具列表</h2>
+
     <div class="grid grid--auto-fit">
-        <div class="card">
-            <h3>📝 专注写作</h3>
-            <p>极简的设计风格，让读者专注于内容本身，提供最佳的阅读体验。</p>
-        </div>
-        
-        <div class="card">
-            <h3>📱 响应式设计</h3>
-            <p>完美适配各种设备，无论是手机、平板还是桌面端都有优秀的展示效果。</p>
-        </div>
-        
-        <div class="card">
-            <h3>🌙 暗色模式</h3>
-            <p>智能适配系统主题，支持明亮和暗黑两种模式，保护您的眼睛。</p>
-        </div>
-        
-        <div class="card">
-            <h3>⚡ 加载迅速</h3>
-            <p>精简的代码和优化的资源，确保页面快速加载，提升用户体验。</p>
-        </div>
-        
-        <div class="card">
-            <h3>♿ 无障碍设计</h3>
-            <p>遵循无障碍设计原则，让所有用户都能轻松访问和使用。</p>
-        </div>
-        
-        <div class="card">
-            <h3>🔧 易于扩展</h3>
-            <p>模块化的架构设计，方便后续功能扩展和主题定制。</p>
-        </div>
+        <article class="card">
+            <h3>✨ 提示词生成器</h3>
+            <p>快速组织输入信息，生成结构化提示词，用于日常创作与 AI 协作。</p>
+            <p class="text-muted" style="font-size: 0.875rem;">最近更新：2026-04-22</p>
+            <a href="{{ '/prompt-generator/' | relative_url }}" class="btn">打开工具</a>
+        </article>
+
+        <article class="card">
+            <h3>🌄 全景 Viewer</h3>
+            <p>用于本地查看和浏览全景素材，方便筛选、对比和快速预览。</p>
+            <p class="text-muted" style="font-size: 0.875rem;">最近更新：2026-04-22</p>
+            <a href="{{ '/panorama-viewer/' | relative_url }}" class="btn">打开工具</a>
+        </article>
     </div>
 </section>
 
 <section class="tech-info" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 2rem;">🔧 技术栈</h2>
-    
-    <div class="grid grid--3-col">
-        <div class="card">
-            <h4>前端技术</h4>
-            <ul style="list-style: none; padding: 0;">
-                <li>• HTML5 + CSS3</li>
-                <li>• Sass (SCSS)</li>
-                <li>• Jekyll 静态生成</li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h4>设计原则</h4>
-            <ul style="list-style: none; padding: 0;">
-                <li>• 响应式布局</li>
-                <li>• 无障碍设计</li>
-                <li>• 性能优化</li>
-            </ul>
-        </div>
-        
-        <div class="card">
-            <h4>用户体验</h4>
-            <ul style="list-style: none; padding: 0;">
-                <li>• 快速加载</li>
-                <li>• 简洁界面</li>
-                <li>• 专注内容</li>
-            </ul>
-        </div>
-    </div>
-</section>
+    <h2 style="margin-bottom: 2rem;">📌 使用说明</h2>
 
-<!-- 最新博客文章列表 -->
-<section class="blog-section" style="margin-top: 4rem;">
-    <h2 style="margin-bottom: 2rem; text-align: center;">📝 最新文章</h2>
-    
-    {% if site.posts.size > 0 %}
-        <div class="grid grid--auto-fit" style="margin-bottom: 2rem;">
-            {% for post in site.posts limit: 6 %}
-                <article class="card">
-                    <header>
-                        <h3 style="margin-bottom: 0.5rem;">
-                            <a href="{{ post.url | relative_url }}" style="
-                                color: var(--primary-color); 
-                                text-decoration: none;
-                            ">{{ post.title }}</a>
-                        </h3>
-                        
-                        <div class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">
-                            <time datetime="{{ post.date | date_to_xmlschema }}">
-                                {{ post.date | date: "%Y年%m月%d日" }}
-                            </time>
-                            
-                            <span style="margin-left: 1rem;">
-                                {% include reading-time.html content=post.content %}
-                            </span>
-                            
-                            {% if post.categories.size > 0 %}
-                                <span style="margin-left: 1rem;">
-                                    📁 {{ post.categories | first }}
-                                </span>
-                            {% endif %}
-                        </div>
-                    </header>
-                    
-                    <div>
-                        <p style="margin-bottom: 1rem;">
-                            {{ post.description | default: post.excerpt | strip_html | truncate: 120 }}
-                        </p>
-                    </div>
-                    
-                    <footer>
-                        <a href="{{ post.url | relative_url }}" class="btn btn--outline">阅读全文 →</a>
-                    </footer>
-                </article>
-            {% endfor %}
-        </div>
-        
-        <div class="text-center">
-            <a href="/blog/" class="btn">查看所有文章</a>
-        </div>
-    {% else %}
-        <div class="card text-center">
-            <p class="text-muted">
-                🚧 精彩内容正在制作中... 敬请期待！
-            </p>
-        </div>
-    {% endif %}
+    <div class="card">
+        <ul style="margin: 0; padding-left: 1.25rem;">
+            <li>本页面定位为私人工具入口，不再承担博客内容发布职能。</li>
+            <li>工具优先服务于个人工作流，功能以“轻量、直接、可复用”为原则。</li>
+            <li>若未来增加更多工具，可继续按卡片形式扩展，不影响现有结构。</li>
+        </ul>
+    </div>
 </section>
