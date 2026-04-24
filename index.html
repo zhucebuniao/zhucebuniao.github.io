@@ -28,14 +28,93 @@ title: "私人工具集 - 首页"
     </div>
 </section>
 
-<section class="tech-info" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 2rem;">📌 使用说明</h2>
-
-    <div class="card">
-        <ul style="margin: 0; padding-left: 1.25rem;">
-            <li>本页面定位为私人工具入口，不再承担博客内容发布职能。</li>
-            <li>工具优先服务于个人工作流，功能以“轻量、直接、可复用”为原则。</li>
-            <li>若未来增加更多工具，可继续按卡片形式扩展，不影响现有结构。</li>
-        </ul>
-    </div>
+<section class="flag-section" style="margin-bottom: 3rem;">
+    <h2 style="margin-bottom: 1rem;">🚩 飘荡的小红旗</h2>
+    <p class="text-muted" style="margin-bottom: 1rem;">使用 Three.js 实现的轻量动态效果。</p>
+    <div id="floating-flag" style="height: 260px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #0f172a, #111827);"></div>
 </section>
+
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
+
+    const container = document.getElementById('floating-flag');
+
+    if (container) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0.5, 0.35, 2.2);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        keyLight.position.set(2, 2, 2);
+        scene.add(keyLight);
+
+        const pole = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.015, 0.015, 1.1, 16),
+            new THREE.MeshStandardMaterial({ color: 0xb0b0b0, metalness: 0.6, roughness: 0.35 })
+        );
+        pole.position.set(-0.8, 0, 0);
+        scene.add(pole);
+
+        const flagWidth = 1.15;
+        const flagHeight = 0.68;
+        const widthSegments = 36;
+        const heightSegments = 18;
+
+        const flagGeometry = new THREE.PlaneGeometry(flagWidth, flagHeight, widthSegments, heightSegments);
+        const basePositions = flagGeometry.attributes.position.array.slice();
+        const normals = flagGeometry.attributes.normal;
+
+        const flagMaterial = new THREE.MeshStandardMaterial({
+            color: 0xd90429,
+            side: THREE.DoubleSide,
+            metalness: 0.03,
+            roughness: 0.8
+        });
+
+        const flag = new THREE.Mesh(flagGeometry, flagMaterial);
+        flag.position.set(-0.2, 0.12, 0);
+        scene.add(flag);
+
+        function animate(time) {
+            const positions = flagGeometry.attributes.position.array;
+            const t = time * 0.001;
+
+            for (let i = 0; i < positions.length; i += 3) {
+                const x = basePositions[i];
+                const y = basePositions[i + 1];
+
+                const distanceFromPole = (x + flagWidth / 2) / flagWidth;
+                const waveAmp = 0.02 + distanceFromPole * 0.1;
+
+                positions[i + 2] = Math.sin(7 * distanceFromPole - t * 2.8 + y * 3.6) * waveAmp;
+                positions[i + 1] = y + Math.sin(4 * distanceFromPole + t * 2.1) * 0.01;
+            }
+
+            flagGeometry.attributes.position.needsUpdate = true;
+            flagGeometry.computeVertexNormals();
+            normals.needsUpdate = true;
+
+            flag.rotation.y = Math.sin(t * 0.8) * 0.08;
+            flag.rotation.x = Math.sin(t * 0.5) * 0.03;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+
+        window.addEventListener('resize', () => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+    }
+</script>
