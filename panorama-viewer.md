@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "全景 Viewer"
-description: "上传 2:1 equirectangular 全景图，在浏览器中进行 360° 查看。"
+title: ""
+description: ""
 permalink: /panorama-viewer/
 no_frame: true
 ---

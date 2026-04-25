@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROMPT.GEN</title>
+<title>Prompt Tool</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@300;400&display=swap');
 
@@ -49,19 +49,6 @@ body::before {
   pointer-events: none;
 }
 
-header {
-  width: 100%;
-  max-width: 780px;
-  margin-bottom: 18px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 20px;
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-}
-
-.logo { font-size: 11px; letter-spacing: 0.35em; color: var(--accent); text-transform: uppercase; }
-.version { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
 .main { width: 100%; max-width: 780px; }
 
 .subject-bar {
@@ -260,14 +247,6 @@ header {
 .output.flash { animation: pulse-border 0.6s ease-out; }
 
 @media (max-width: 768px) {
-  header {
-    margin-bottom: 20px;
-    gap: 8px;
-    padding-bottom: 14px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .categories {
     grid-template-columns: 1fr;
   }
@@ -308,11 +287,6 @@ header {
 </style>
 </head>
 <body>
-
-<header>
-  <span class="logo">Prompt.Gen</span>
-  <span class="version">v0.4 — kpop idol series</span>
-</header>
 
 <div class="main">
   <div class="subject-bar">
