@@ -12,8 +12,6 @@
 </head>
 <body>
     <div class="container">
-        {% include header.html %}
-
         <main class="main-content{% if page.no_frame %} main-content--full{% endif %}">
             {% if page.no_frame %}
                 {{ content }}
