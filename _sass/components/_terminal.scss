@@ -223,6 +223,31 @@
     }
 }
 
+.tool-page__controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tool-page__action {
+    appearance: none;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--secondary-color);
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+    }
+}
+
 .tool-embed {
     overflow: hidden;
     border-radius: 8px;
@@ -240,6 +265,10 @@
     min-height: min(82dvh, 840px);
 }
 
+.tool-embed--expanded iframe {
+    min-height: 100dvh;
+}
+
 @media (min-width: $tablet) {
     .tool-page {
         gap: 0.9rem;
@@ -253,6 +282,11 @@
     .tool-page__note {
         font-size: 0.875rem;
         line-height: 1.6;
+    }
+
+    .tool-page__action {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.68rem;
     }
 
     .tool-embed iframe {
