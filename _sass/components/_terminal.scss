@@ -3,16 +3,10 @@
 
 .card {
     background: var(--surface-color);
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: 2px;
     padding: 1.5rem;
     box-shadow: none;
-    transition: border-color 0.2s ease;
-
-    &:hover {
-        border-color: #2f2f2f;
-    }
-
     h1, h2, h3, h4, h5, h6 {
         color: var(--primary-color);
         margin-bottom: 0.75rem;
