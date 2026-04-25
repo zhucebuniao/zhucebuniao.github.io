@@ -1,60 +1,71 @@
 ---
 layout: default
 title: "私人工具集 - 首页"
+no_frame: true
 ---
 
-<section class="hero-section text-center" style="margin-bottom: 3rem;">
-    <h1>私人使用工具集</h1>
-    <p class="text-muted" style="font-size: 1.125rem; margin: 1rem 0;">仅用于个人效率与创作场景，不对外提供在线服务。</p>
-</section>
+<div class="home-shell">
+    <section class="hero-section text-center section-panel">
+        <p class="section-kicker">PRIVATE TOOLKIT</p>
+        <h1>私人使用工具集</h1>
+        <p class="hero-subtitle">仅用于个人效率与创作场景，不对外提供在线服务。</p>
+    </section>
 
-<section id="tools" class="features-section" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 2rem;">🧰 工具列表</h2>
+    <section id="tools" class="features-section section-panel">
+        <div class="section-head">
+            <h2>🧰 工具列表</h2>
+            <p class="text-muted">两个常用入口，直接打开使用。</p>
+        </div>
 
-    <div class="grid grid--auto-fit">
-        <article class="card">
-            <h3>✨ 提示词生成器</h3>
-            <p>快速组织输入信息，生成结构化提示词，用于日常创作与 AI 协作。</p>
-            <p class="text-muted" style="font-size: 0.875rem;">最近更新：2026-04-22</p>
-            <a href="{{ '/prompt-generator/' | relative_url }}" class="btn">打开工具</a>
-        </article>
+        <div class="grid grid--auto-fit">
+            <article class="tool-card">
+                <h3>✨ 提示词生成器</h3>
+                <p>快速组织输入信息，生成结构化提示词，用于日常创作与 AI 协作。</p>
+                <p class="meta">最近更新：2026-04-22</p>
+                <a href="{{ '/prompt-generator/' | relative_url }}" class="btn">打开工具</a>
+            </article>
 
-        <article class="card">
-            <h3>🌄 全景 Viewer</h3>
-            <p>用于本地查看和浏览全景素材，方便筛选、对比和快速预览。</p>
-            <p class="text-muted" style="font-size: 0.875rem;">最近更新：2026-04-22</p>
-            <a href="{{ '/panorama-viewer/' | relative_url }}" class="btn">打开工具</a>
-        </article>
-    </div>
-</section>
+            <article class="tool-card">
+                <h3>🌄 全景 Viewer</h3>
+                <p>用于本地查看和浏览全景素材，方便筛选、对比和快速预览。</p>
+                <p class="meta">最近更新：2026-04-22</p>
+                <a href="{{ '/panorama-viewer/' | relative_url }}" class="btn">打开工具</a>
+            </article>
+        </div>
+    </section>
 
-<section class="home-gallery" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 1rem;">🖼️ 首页配图素材</h2>
-    <p class="text-muted" style="margin-bottom: 1.5rem;">统一暗色 + 复古像素氛围，可直接用于首页横幅、卡片封面或文章头图。</p>
+    <section class="home-gallery section-panel">
+        <div class="section-head">
+            <h2>🖼️ 首页配图素材</h2>
+            <p class="text-muted">统一暗色 + 复古像素氛围，可直接用于首页横幅、卡片封面或文章头图。</p>
+        </div>
 
-    <div class="grid grid--3-col">
-        <article class="card image-card">
-            <img src="{{ '/assets/images/homepage/scene-cyber-grid.svg' | relative_url }}" alt="赛博网格风格背景图">
-            <p class="text-muted">赛博网格 + 光晕中心，适合作为 Hero Banner。</p>
-        </article>
+        <div class="grid grid--3-col">
+            <article class="media-card">
+                <img src="{{ '/assets/images/homepage/scene-cyber-grid.svg' | relative_url }}" alt="赛博网格风格背景图">
+                <p>赛博网格 + 光晕中心，适合作为 Hero Banner。</p>
+            </article>
 
-        <article class="card image-card">
-            <img src="{{ '/assets/images/homepage/scene-terminal-city.svg' | relative_url }}" alt="终端城市风格背景图">
-            <p class="text-muted">极简线框城市夜景，适合工具卡片封面。</p>
-        </article>
+            <article class="media-card">
+                <img src="{{ '/assets/images/homepage/scene-terminal-city.svg' | relative_url }}" alt="终端城市风格背景图">
+                <p>极简线框城市夜景，适合工具卡片封面。</p>
+            </article>
 
-        <article class="card image-card">
-            <img src="{{ '/assets/images/homepage/scene-mountain-scanline.svg' | relative_url }}" alt="山脉扫描线风格背景图">
-            <p class="text-muted">扫描线山脉构图，适合文章列表视觉分隔。</p>
-        </article>
-    </div>
-</section>
+            <article class="media-card">
+                <img src="{{ '/assets/images/homepage/scene-mountain-scanline.svg' | relative_url }}" alt="山脉扫描线风格背景图">
+                <p>扫描线山脉构图，适合文章列表视觉分隔。</p>
+            </article>
+        </div>
+    </section>
 
-<section class="flag-section" style="margin-bottom: 3rem;">
-    <h2 style="margin-bottom: 1rem;">🚩 飘荡的小红旗</h2>
-    <p class="text-muted" style="margin-bottom: 1rem;">使用 Three.js 实现的轻量动态效果。</p>
-    <div id="floating-flag" style="height: 260px; border-radius: 12px; overflow: hidden; background: linear-gradient(180deg, #0f172a, #111827);"></div>
-</section>
+    <section class="flag-section section-panel">
+        <div class="section-head">
+            <h2>🚩 飘荡的小红旗</h2>
+            <p class="text-muted">使用 Three.js 实现的轻量动态效果。</p>
+        </div>
+        <div id="floating-flag"></div>
+    </section>
+</div>
 
 <script type="module">
     import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';

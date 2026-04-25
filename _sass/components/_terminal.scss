@@ -8,34 +8,31 @@
     padding: 1.5rem;
     box-shadow: none;
     transition: border-color 0.2s ease;
-    
+
     &:hover {
         border-color: #2f2f2f;
     }
-    
-    // Card content styling
+
     h1, h2, h3, h4, h5, h6 {
         color: var(--primary-color);
         margin-bottom: 0.75rem;
     }
-    
+
     p {
         color: var(--text-color);
         margin-bottom: 1rem;
-        
+
         &:last-child {
             margin-bottom: 0;
         }
     }
-    
-    // Responsive card
+
     @media (max-width: $mobile) {
         padding: 1rem;
         border-radius: 6px;
     }
 }
 
-// Container layouts
 .container {
     min-height: 100vh;
     display: flex;
@@ -50,54 +47,181 @@
     width: 100%;
 }
 
-// Grid layouts
+.main-content--full {
+    max-width: 1100px;
+}
+
 .grid {
     display: grid;
     gap: 1.5rem;
-    
+
     &--auto-fit {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
-    
+
     &--2-col {
         grid-template-columns: repeat(2, 1fr);
-        
+
         @media (max-width: $tablet) {
             grid-template-columns: 1fr;
         }
     }
-    
+
     &--3-col {
         grid-template-columns: repeat(3, 1fr);
-        
+
         @media (max-width: $tablet) {
             grid-template-columns: repeat(2, 1fr);
         }
-        
+
         @media (max-width: $mobile) {
             grid-template-columns: 1fr;
         }
     }
 }
 
-.home-gallery {
-    .image-card {
-        padding: 0.75rem;
+.home-shell {
+    display: grid;
+    gap: 1.25rem;
+}
 
-        img {
-            display: block;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            object-fit: cover;
-            border: 1px solid var(--border-color);
-            border-radius: 2px;
-            margin: 0 0 0.875rem 0;
-            box-shadow: none;
-        }
+.section-panel {
+    background: linear-gradient(180deg, rgba(17, 17, 17, 0.94), rgba(17, 17, 17, 0.72));
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.4rem;
+}
 
-        p {
-            font-size: 0.8125rem;
-            margin-bottom: 0;
-        }
+.section-head {
+    margin-bottom: 1rem;
+
+    h2 {
+        margin-bottom: 0.55rem;
     }
+
+    p {
+        margin-bottom: 0;
+        font-size: 0.875rem;
+    }
+}
+
+.section-kicker {
+    color: var(--accent-color);
+    letter-spacing: 0.22em;
+    font-size: 0.68rem;
+    margin-bottom: 0.8rem;
+}
+
+.hero-subtitle {
+    margin: 0 auto;
+    max-width: 42rem;
+    color: var(--secondary-color);
+}
+
+.tool-card,
+.media-card {
+    background: rgba(10, 10, 10, 0.64);
+    border: 1px solid rgba(200, 169, 122, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    h3,
+    p {
+        margin-bottom: 0;
+    }
+
+    .meta {
+        color: var(--secondary-color);
+        font-size: 0.78rem;
+    }
+
+    .btn {
+        margin-top: 0.35rem;
+        width: fit-content;
+    }
+}
+
+.media-card {
+    img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        margin: 0 0 0.75rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.8125rem;
+    }
+}
+
+#floating-flag {
+    height: 260px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: linear-gradient(180deg, #0f172a, #111827);
+}
+
+
+.tool-page {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.2rem;
+    background: linear-gradient(180deg, rgba(17, 17, 17, 0.94), rgba(17, 17, 17, 0.72));
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.tool-page__intro {
+    padding: 0.85rem 1rem;
+    background: rgba(10, 10, 10, 0.62);
+    border: 1px solid rgba(200, 169, 122, 0.18);
+    border-radius: 8px;
+}
+
+.tool-page__intro--split {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    @media (max-width: $tablet) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.tool-page__note {
+    margin: 0;
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.tool-embed {
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: #0a0a0a;
+
+    iframe {
+        width: 100%;
+        min-height: min(100dvh, 980px);
+        border: 0;
+        display: block;
+    }
+}
+
+.tool-embed--tall iframe {
+    min-height: 760px;
 }
