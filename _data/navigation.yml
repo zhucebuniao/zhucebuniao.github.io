@@ -1,6 +1,6 @@
 - title: "首页"
   url: "/"
-- title: "工具一"
+- title: "提示词生成器"
   url: "/prompt-generator/"
-- title: "工具二"
+- title: "全景 Viewer"
   url: "/panorama-viewer/"

@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "工具二"
-description: "上传图片后可在浏览器中查看。"
+title: ""
+description: ""
 permalink: /panorama-viewer/
 no_frame: true
 ---
@@ -14,7 +14,7 @@ no_frame: true
   <div class="tool-embed tool-embed--tall">
     <iframe
       src="{{ '/panorama-viewer.html' | relative_url }}"
-      title="工具二"
+      title="全景 Viewer"
       loading="lazy">
     </iframe>
   </div>
