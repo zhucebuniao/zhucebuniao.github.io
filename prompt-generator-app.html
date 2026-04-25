@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Tool</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@300;400&display=swap');
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #222222;
+  --accent: #c8a97a;
+  --accent2: #7a9fc8;
+  --text: #e8e0d4;
+  --muted: #555;
+  --tag-hair: #8b6f47;
+  --tag-outfit: #4a6b8b;
+  --tag-camera: #5a7a5a;
+  --tag-body: #7a5a7a;
+  --tag-face: #8b4a4a;
+  --tag-expression: #6b7a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 12px calc(22px + env(safe-area-inset-bottom));
+  position: relative;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(200,169,122,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 90%, rgba(122,159,200,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.main { width: 100%; max-width: 780px; }
+
+.subject-bar {
+  padding: 12px;
+  background: rgba(200,169,122,0.05);
+  border: 1px solid rgba(200,169,122,0.2);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.subject-label { font-size: 10px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; white-space: nowrap; }
+.subject-text { font-size: 12px; color: #a89a80; font-family: 'Noto Serif SC', serif; letter-spacing: 0.03em; flex: 1; }
+.subject-lock { font-size: 9px; color: var(--accent); opacity: 0.5; letter-spacing: 0.1em; }
+
+.categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.cat-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s;
+  user-select: none;
+}
+
+.cat-row:hover { border-color: #333; }
+.cat-row.active { border-color: var(--accent); }
+
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.cat-row[data-cat="hair"] .cat-dot { background: var(--tag-hair); }
+.cat-row[data-cat="outfit"] .cat-dot { background: var(--tag-outfit); }
+.cat-row[data-cat="camera"] .cat-dot { background: var(--tag-camera); }
+.cat-row[data-cat="body"] .cat-dot { background: var(--tag-body); }
+.cat-row[data-cat="face"] .cat-dot { background: var(--tag-face); }
+.cat-row[data-cat="expression"] .cat-dot { background: var(--tag-expression); }
+
+.cat-label { font-size: 12px; letter-spacing: 0.1em; color: var(--muted); flex: 1; }
+.cat-row.active .cat-label { color: var(--text); }
+
+.cat-check {
+  width: 18px; height: 18px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--accent);
+  transition: border-color 0.15s;
+}
+
+.cat-row.active .cat-check { border-color: var(--accent); background: rgba(200,169,122,0.1); }
+
+.ar-row {
+  display: flex; align-items: center; gap: 2px;
+  margin-bottom: 14px; margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.ar-label {
+  font-size: 10px; letter-spacing: 0.14em; color: var(--muted);
+  padding: 10px 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ar-btn {
+  padding: 11px 0;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+  cursor: pointer; transition: all 0.15s; flex: 1; text-align: center;
+}
+
+.ar-btn:hover { border-color: #333; color: var(--text); }
+.ar-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,169,122,0.05); }
+
+.controls { display: flex; gap: 8px; margin-bottom: 18px; }
+
+.btn {
+  flex: 1; padding: 14px 10px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  cursor: pointer; transition: all 0.15s; text-transform: uppercase;
+}
+
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+.btn-primary:hover { background: #d4b88a; color: var(--bg); border-color: #d4b88a; }
+
+.output-wrap { position: relative; margin-bottom: 16px; }
+
+.output {
+  width: 100%; min-height: 220px; padding: 16px 14px 38px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Noto Serif SC', serif; font-size: 14px; line-height: 1.8;
+  resize: none; outline: none; transition: border-color 0.2s; letter-spacing: 0.02em;
+}
+
+.output:focus { border-color: #333; }
+
+.output-label {
+  position: absolute; top: -1px; left: 20px;
+  transform: translateY(-50%);
+  background: var(--surface); padding: 0 6px;
+  font-size: 9px; letter-spacing: 0.25em; color: var(--muted); text-transform: uppercase;
+}
+
+.ar-suffix-badge {
+  position: absolute; bottom: 12px; right: 12px;
+  font-size: 9px; letter-spacing: 0.15em; color: var(--accent); opacity: 0.45;
+  font-family: 'Space Mono', monospace;
+}
+
+.tags-strip {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  min-height: 28px; margin-bottom: 20px;
+}
+
+.tag {
+  font-size: 9px; letter-spacing: 0.15em; padding: 4px 8px; border-radius: 2px;
+  text-transform: uppercase; opacity: 0; transform: translateY(4px);
+  animation: fadeTag 0.3s forwards;
+}
+
+@keyframes fadeTag { to { opacity: 1; transform: translateY(0); } }
+
+.tag[data-cat="subject"]    { background: rgba(200,169,122,0.08); color: #c8a97a; border: 1px solid rgba(200,169,122,0.25); }
+.tag[data-cat="face"]       { background: rgba(139,74,74,0.15); color: #c87a7a; border: 1px solid rgba(139,74,74,0.3); }
+.tag[data-cat="expression"] { background: rgba(107,122,58,0.15); color: #aac87a; border: 1px solid rgba(107,122,58,0.3); }
+.tag[data-cat="hair"]       { background: rgba(139,111,71,0.15); color: #c8a47a; border: 1px solid rgba(139,111,71,0.3); }
+.tag[data-cat="outfit"]     { background: rgba(74,107,139,0.15); color: #7aafc8; border: 1px solid rgba(74,107,139,0.3); }
+.tag[data-cat="camera"]     { background: rgba(90,122,90,0.15); color: #7ac87a; border: 1px solid rgba(90,122,90,0.3); }
+.tag[data-cat="body"]       { background: rgba(122,90,122,0.15); color: #c87ac8; border: 1px solid rgba(122,90,122,0.3); }
+
+.history-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px; padding-top: 24px; border-top: 1px solid var(--border);
+}
+
+.history-title { font-size: 9px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
+
+.clear-btn {
+  margin-left: auto; background: none; border: none;
+  font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted);
+  cursor: pointer; letter-spacing: 0.1em; transition: color 0.15s;
+}
+.clear-btn:hover { color: var(--text); }
+
+.history-list { display: flex; flex-direction: column; gap: 2px; }
+
+.hint {
+  margin: -4px 0 14px;
+  font-size: 10px;
+  color: #8c8375;
+  letter-spacing: 0.06em;
+}
+
+.history-item {
+  padding: 13px 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-family: 'Noto Serif SC', serif; font-size: 12px; line-height: 1.75;
+  color: #888; cursor: pointer; transition: all 0.15s; position: relative;
+}
+
+.history-item:hover { color: var(--text); border-color: #333; }
+
+.history-item::after {
+  content: '↑'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 10px; color: var(--muted); opacity: 0; transition: opacity 0.15s;
+}
+
+.history-item:hover::after { opacity: 1; }
+
+.copy-feedback {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--accent); color: var(--bg);
+  padding: 8px 20px; font-size: 10px; letter-spacing: 0.2em;
+  opacity: 0; transition: all 0.2s; pointer-events: none; text-transform: uppercase;
+}
+
+.copy-feedback.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@keyframes pulse-border {
+  0% { border-color: var(--accent); }
+  100% { border-color: var(--border); }
+}
+
+.output.flash { animation: pulse-border 0.6s ease-out; }
+
+@media (max-width: 768px) {
+  .categories {
+    grid-template-columns: 1fr;
+  }
+
+  .ar-label {
+    width: 100%;
+  }
+
+  .ar-btn {
+    flex: 1 1 calc(33.333% - 2px);
+    min-width: 80px;
+  }
+
+  .controls {
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.98), rgba(10,10,10,0.86));
+    padding: 10px 0 calc(12px + env(safe-area-inset-bottom));
+    margin: 0 0 10px;
+    z-index: 10;
+  }
+
+  .btn {
+    min-height: 44px;
+  }
+
+  .output {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .history-item {
+    font-size: 13px;
+    line-height: 1.8;
+    padding-right: 26px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="main">
+  <div class="subject-bar">
+    <span class="subject-label">FIXED</span>
+    <span class="subject-text">Kpop idol like Chinese young woman</span>
+    <span class="subject-lock">⊙ locked</span>
+  </div>
+
+  <div class="categories">
+    <div class="cat-row active" data-cat="face">
+      <div class="cat-dot"></div>
+      <span class="cat-label">脸型 / FACE</span>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-row active" data-cat="expression">
+      <div class="cat-dot"></div>
+      <span class="cat-label">微表情 / EXPRESSION</span>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-row active" data-cat="hair">
+      <div class="cat-dot"></div>
+      <span class="cat-label">发型 / HAIR</span>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-row active" data-cat="outfit">
+      <div class="cat-dot"></div>
+      <span class="cat-label">服饰 / OUTFIT</span>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-row active" data-cat="camera">
+      <div class="cat-dot"></div>
+      <span class="cat-label">镜头 / CAMERA</span>
+      <div class="cat-check">✓</div>
+    </div>
+    <div class="cat-row active" data-cat="body">
+      <div class="cat-dot"></div>
+      <span class="cat-label">形体 / BODY</span>
+      <div class="cat-check">✓</div>
+    </div>
+  </div>
+
+  <div class="ar-row">
+    <span class="ar-label">--AR</span>
+    <button class="ar-btn active" data-ar="9:16">9:16</button>
+    <button class="ar-btn" data-ar="3:4">3:4</button>
+    <button class="ar-btn" data-ar="1:1">1:1</button>
+    <button class="ar-btn" data-ar="4:3">4:3</button>
+    <button class="ar-btn" data-ar="16:9">16:9</button>
+    <button class="ar-btn" data-ar="">none</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" id="genBtn">↻ 随机生成</button>
+    <button class="btn" id="copyBtn">⎘ 复制</button>
+    <button class="btn" id="lockBtn">⊘ 锁定当前</button>
+  </div>
+  <p class="hint">手机端操作建议：点击分类可开关，长按输出区可直接复制文本。</p>
+
+  <div class="output-wrap">
+    <span class="output-label">generated prompt</span>
+    <textarea class="output" id="output" readonly placeholder="点击「随机生成」开始..."></textarea>
+    <span class="ar-suffix-badge" id="arBadge">--ar 9:16</span>
+  </div>
+
+  <div class="tags-strip" id="tagsStrip"></div>
+
+  <div class="history-header">
+    <span class="history-title">最近生成</span>
+    <button class="clear-btn" id="clearHistory">清空</button>
+  </div>
+  <div class="history-list" id="historyList"></div>
+</div>
+
+<div class="copy-feedback" id="copyFeedback">已复制到剪贴板</div>
+
+<script>
+const SUBJECT = "Kpop idol like Chinese young woman";
+
+const data = {
+  face: [
+    "an oval face with soft cheek volume and a gently defined jawline",
+    "smooth facial contours with subtle fullness in the midface and a softly defined chin",
+    "subtle cheek volume, a small, gently tapered chin, and fine features",
+    "a delicate, compact facial structure with soft, rounded contours",
+    "full rounded face with plump cheeks and a short, smooth chin",
+    "heart-shaped face, wider forehead tapering to a pointed soft chin, high cheekbones",
+    "long oval face, strong cheekbones, angular but softened jawline",
+    "diamond face shape with prominent cheekbones, narrow forehead and chin",
+    "square face with a defined jaw, softened by full cheeks and gentle temples",
+  ],
+  expression: [
+    "lips slightly parted, the tip of the tongue just visible behind the lower teeth, eyes unfocused",
+    "one corner of the mouth pulling upward asymmetrically, eyes steady and direct",
+    "lower lip pushed forward a fraction, chin slightly raised, gaze downward and slow",
+    "a controlled half-smile that doesn't reach the eyes, jaw slightly set",
+    "nostrils flared almost imperceptibly, lips pressed together, a stillness before speaking",
+    "eyes narrowed at the outer corners, a faint crease between the brows, mouth neutral",
+    "eyebrows raised unevenly—one arched, one flat—lips in a soft neutral line",
+    "the muscles around the mouth relaxed but eyes intensely focused, a held-breath quality",
+    "a fleeting micro-smile caught mid-formation, cheeks just beginning to lift",
+    "eyes slightly widened, pupils fully visible, lips parted without expression—suspended surprise",
+    "gaze averted 30° to the side, jaw unclenched, a subtle softness at the mouth corners",
+    "upper lip curled faintly at one side, eyes hooded and low, chin tilted down",
+  ],
+  hair: [
+    "hair gathered and pinned with a lacquered wooden hairpin through the center, a few strands framing the face, clean nape visible",
+    "loose half-up half-down, two thin face-framing strands pulled forward, the rest falling naturally behind the shoulders",
+    "blunt straight bob cut at jaw level, ends slightly inward-curled, center part, hair swinging with movement",
+    "low loose bun at the nape, several strands escaping around the temples, effortless and slightly undone",
+    "curtain bangs parted down the middle, falling softly over the inner corners of the eyebrows, rest of hair down",
+    "sleek hair pulled back flat against the skull into a low ponytail, severe and clean, nothing framing the face",
+    "wavy textured hair loose, volume concentrated at mid-length, fine strands catching light at the crown",
+    "side-parted hair, one heavy curtain falling over the cheek and jaw, asymmetric and face-obscuring",
+    "two loose braids falling forward over the collarbones, wispy flyaways at the crown, soft and undone",
+    "pixie-adjacent short cut, tapered at the nape, longer on top with a slight forward sweep across the forehead",
+    "long straight hair worn completely down, no styling, center part razor-sharp, ends grazing the lower back",
+    "space buns placed low and wide behind the ears, small and tight, face fully exposed, a few short wisps at the temples",
+  ],
+  outfit: [
+    "thin fabric spaghetti strap crop top and garter stockings",
+    "spaghetti strap ribbed knit bodycon dress",
+    "deep-v neck",
+    "one-piece bodysuit, thin shoulder straps with subtle side cutouts",
+    "semi-sheer short black lace robe, lightweight material, no underwear/minimal coverage",
+    "sheer lace bralette with ruffles and a small cartoon print, along with pink lace-edged panties",
+    "white lace lingerie, sheer fabric, transparent clothing, see-through",
+    "lace crop top, long sleeves, bell sleeves, lace trim, front bow, tied with ribbon, open front",
+    "white lace shorts, high-leg, satin panel, lace panties, bow on panties",
+    "white choker, ribbon choker",
+    "delicate floral print halter top, featuring an open-back design with thin tie-up straps, flared babydoll hem, soft summer aesthetic",
+    "苏绣红色肚兜",
+    "light fabric hugging enormous breasts and accentuating deep cleavage, ultra form-fitting around thick thighs with fabric stretched tightly",
+    "micro triangle sheer dudou, ultra minimal coverage, barely-there fabric, ultra-thin string straps, wide spacing between cups, string thong bottom",
+    "oversized white dress shirt worn open with nothing underneath, hem grazing the upper thigh, collar loose and wide",
+    "black mesh long-sleeve top, opaque bra underneath visible as a shadow, high-waist micro shorts",
+    "vintage silk slip dress, bias-cut, thin adjustable straps, fabric pooling slightly at the hem, intimate dressing-room feel",
+    "knitted tube top stretched across the chest, wide ribbing, no straps, paired with low-rise wide-leg trousers",
+    "sports bra with a front zipper half-undone, high-cut compression shorts, athletic and functional",
+    "sheer organza blouse fully buttoned but transparent, bralette visible beneath, tucked into a pleated mini skirt",
+  ],
+  camera: [
+    "tight framing close-up with minimal background space",
+    "low-angle dominance, camera at hip level looking up, subject looming",
+    "intimate close-range wide-angle, slight lens distortion at frame edges",
+    "close-range medium close-up, subject fills most of the frame, shallow depth of field",
+    "wide shot from a moderate distance, full body visible with environmental context",
+    "camera positioned slightly above eye level, with a mild downward tilt",
+    "voyeuristic low angle, partially obscured foreground element",
+    "广角高机位俯拍, 慢门动态模糊, 主体静止锁定, 透视畸变强化的街头纪实风格",
+    "high-angle surveillance, subject unaware, foreshortened figure",
+    "extreme close-up on face only, forehead and chin cropped, pores and texture visible",
+    "dutch angle 15°, horizon tilted, slight unease without full disorientation",
+    "shot through glass or translucent surface, subject slightly diffused, reflections overlapping",
+    "over-the-shoulder framing, anonymous back figure in foreground, subject in mid-distance facing camera",
+    "long lens compression, background flattened into a shallow plane, subject isolated from environment",
+  ],
+  body: [
+    "enormous breasts, wasp waist, massive hips and thick ass, rounded soft shoulders",
+    "slender frame, narrow waist, long legs, subtle shoulder definition, minimal hip flare",
+    "petite build with soft proportions, slightly rounded belly, short limbs, compact overall silhouette",
+    "athletic shoulders, flat stomach, moderate hips, lean but not angular, defined clavicle",
+    "full hourglass figure, heavy bust, cinched waist, wide rounded hips, thighs touching",
+    "long-limbed and willowy, shoulders slightly wider than hips, flat chest, visible ribcage at sides",
+    "top-heavy build, full bust relative to narrow hips, short torso, legs proportionally long",
+    "bottom-heavy, modest chest, wide pelvis, thick thighs tapering to slender calves, soft belly",
+    "small-framed with delicate bone structure, collarbones prominent, wrists and ankles fine, no pronounced curves",
+    "softly padded overall—rounded shoulders, full arms, gentle belly, wide hips, thighs with visible weight",
+    "tall and broad-shouldered, chest full, waist defined but not extreme, strong calves and thighs",
+    "dancer's build, long neck, square shoulders, flat hips, defined thighs, high and tight glutes",
+  ],
+};
+
+const catOrder = ['face', 'expression', 'hair', 'outfit', 'camera', 'body'];
+let locked = false;
+let history = [];
+let activeCategories = new Set(catOrder);
+let currentAR = '9:16';
+
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function buildPrompt(parts) {
+  const base = [SUBJECT, ...parts].join(', ');
+  return currentAR ? `${base} --ar ${currentAR}` : base;
+}
+
+function stripAR(str) {
+  return str.replace(/\s*--ar\s+\S+$/, '');
+}
+
+function generate() {
+  if (locked) return;
+  const active = catOrder.filter(c => activeCategories.has(c));
+  if (active.length === 0) return;
+
+  const parts = [];
+  const tagMeta = [{ cat: 'subject' }];
+
+  for (const cat of active) {
+    parts.push(pick(data[cat]));
+    tagMeta.push({ cat });
+  }
+
+  const result = buildPrompt(parts);
+  const output = document.getElementById('output');
+  output.value = result;
+  output.classList.remove('flash');
+  void output.offsetWidth;
+  output.classList.add('flash');
+
+  renderTags(tagMeta);
+  addHistory(result);
+}
+
+function renderTags(tags) {
+  const strip = document.getElementById('tagsStrip');
+  strip.innerHTML = '';
+  tags.forEach((t, i) => {
+    const el = document.createElement('span');
+    el.className = 'tag';
+    el.setAttribute('data-cat', t.cat);
+    el.textContent = t.cat;
+    el.style.animationDelay = (i * 0.05) + 's';
+    strip.appendChild(el);
+  });
+}
+
+function addHistory(text) {
+  history.unshift(text);
+  if (history.length > 6) history.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  list.innerHTML = '';
+  history.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'history-item';
+    el.textContent = item.length > 140 ? item.slice(0, 140) + '…' : item;
+    el.onclick = () => {
+      document.getElementById('output').value = item;
+      renderTags([]);
+    };
+    list.appendChild(el);
+  });
+}
+
+document.querySelectorAll('.cat-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const cat = row.dataset.cat;
+    if (activeCategories.has(cat)) {
+      if (activeCategories.size === 1) return;
+      activeCategories.delete(cat);
+      row.classList.remove('active');
+    } else {
+      activeCategories.add(cat);
+      row.classList.add('active');
+    }
+  });
+});
+
+document.querySelectorAll('.ar-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ar-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAR = btn.dataset.ar;
+    document.getElementById('arBadge').textContent = currentAR ? `--ar ${currentAR}` : '';
+    const output = document.getElementById('output');
+    if (output.value) {
+      const base = stripAR(output.value);
+      output.value = currentAR ? `${base} --ar ${currentAR}` : base;
+    }
+  });
+});
+
+document.getElementById('genBtn').addEventListener('click', generate);
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const text = document.getElementById('output').value;
+  if (!text) return;
+  const showCopied = () => {
+    const fb = document.getElementById('copyFeedback');
+    fb.classList.add('show');
+    setTimeout(() => fb.classList.remove('show'), 1800);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text, showCopied));
+  } else {
+    fallbackCopy(text, showCopied);
+  }
+});
+
+function fallbackCopy(text, onSuccess) {
+  const temp = document.createElement('textarea');
+  temp.value = text;
+  temp.setAttribute('readonly', '');
+  temp.style.position = 'absolute';
+  temp.style.left = '-9999px';
+  document.body.appendChild(temp);
+  temp.select();
+  try {
+    document.execCommand('copy');
+    onSuccess();
+  } finally {
+    document.body.removeChild(temp);
+  }
+}
+
+document.getElementById('lockBtn').addEventListener('click', () => {
+  locked = !locked;
+  const btn = document.getElementById('lockBtn');
+  btn.textContent = locked ? '⊙ 已锁定' : '⊘ 锁定当前';
+  btn.style.borderColor = locked ? 'var(--accent2)' : '';
+  btn.style.color = locked ? 'var(--accent2)' : '';
+});
+
+document.getElementById('clearHistory').addEventListener('click', () => {
+  history = [];
+  renderHistory();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && !e.target.matches('textarea')) {
+    e.preventDefault();
+    generate();
+  }
+});
+</script>
+
+</body>
+</html>

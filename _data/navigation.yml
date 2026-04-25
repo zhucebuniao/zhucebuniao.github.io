@@ -1,2 +1,6 @@
 - title: "首页"
   url: "/"
+- title: "工具一"
+  url: "/prompt-generator/"
+- title: "工具二"
+  url: "/panorama-viewer/"
