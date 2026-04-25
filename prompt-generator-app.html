@@ -49,6 +49,29 @@ body::before {
   pointer-events: none;
 }
 
+.home-link {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 12px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 1px solid rgba(200,169,122,0.35);
+  background: rgba(17,17,17,0.82);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.home-link:hover {
+  border-color: var(--accent);
+  color: #e0c59a;
+}
+
 .main { width: 100%; max-width: 780px; }
 
 .subject-bar {
@@ -287,6 +310,7 @@ body::before {
 </style>
 </head>
 <body>
+<a class="home-link" href="./">← 返回首页</a>
 
 <div class="main">
   <div class="subject-bar">
