@@ -93,7 +93,6 @@
 
 .section-panel {
     background: linear-gradient(180deg, rgba(17, 17, 17, 0.94), rgba(17, 17, 17, 0.72));
-    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 1rem;
 }
@@ -133,7 +132,6 @@
 .tool-card,
 .media-card {
     background: rgba(10, 10, 10, 0.64);
-    border: 1px solid rgba(200, 169, 122, 0.2);
     border-radius: 8px;
     padding: 1rem;
 }
@@ -202,10 +200,9 @@
 }
 
 .tool-page__intro {
-    padding: 0.85rem;
-    background: rgba(10, 10, 10, 0.62);
-    border: 1px solid rgba(200, 169, 122, 0.18);
-    border-radius: 8px;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
 }
 
 .tool-page__intro--split {
@@ -225,12 +222,16 @@
     color: var(--secondary-color);
     font-size: 1rem;
     line-height: 1.65;
+
+    a {
+        color: var(--accent-color);
+        text-underline-offset: 2px;
+    }
 }
 
 .tool-embed {
     overflow: hidden;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
     background: #0a0a0a;
 
     iframe {
