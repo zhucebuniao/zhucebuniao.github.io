@@ -3,8 +3,9 @@
 
   const gate = document.querySelector('[data-gate]');
   const enterBtn = document.querySelector('[data-enter]');
-  const viewBtn = document.querySelector('[data-view-toggle]');
-  const soundBtn = document.querySelector('[data-sound-toggle]');
+  const sidebar = document.querySelector('[data-sidebar]');
+  const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
+  const sidebarCloseTriggers = document.querySelectorAll('[data-sidebar-close], [data-sidebar-link]');
   const revealItems = document.querySelectorAll('[data-reveal]');
   const tiltCards = document.querySelectorAll('[data-tilt]');
 
@@ -49,20 +50,40 @@
   const unlockExperience = () => {
     document.body.classList.add('experience-entered');
     gate.setAttribute('aria-hidden', 'true');
+    sidebarToggle?.focus();
     playUiBeep(600);
+  };
+
+  const openSidebar = () => {
+    document.body.classList.add('sidebar-open');
+    sidebar?.setAttribute('aria-hidden', 'false');
+    playUiBeep(500);
+  };
+
+  const closeSidebar = () => {
+    document.body.classList.remove('sidebar-open');
+    sidebar?.setAttribute('aria-hidden', 'true');
+    playUiBeep(360);
   };
 
   enterBtn.addEventListener('click', unlockExperience);
 
-  viewBtn?.addEventListener('click', () => {
-    document.body.classList.toggle('experience-view-mode');
-    playUiBeep(430);
+  sidebarToggle?.addEventListener('click', () => {
+    if (document.body.classList.contains('sidebar-open')) {
+      closeSidebar();
+      return;
+    }
+    openSidebar();
   });
 
-  soundBtn?.addEventListener('click', () => {
-    state.soundEnabled = !state.soundEnabled;
-    soundBtn.textContent = state.soundEnabled ? 'Sound On' : 'Sound Off';
-    playUiBeep(state.soundEnabled ? 680 : 320);
+  sidebarCloseTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', closeSidebar);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+      closeSidebar();
+    }
   });
 
   const observer = new IntersectionObserver((entries) => {

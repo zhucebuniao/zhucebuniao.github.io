@@ -6,14 +6,21 @@ no_frame: true
 
 <div class="experience-gate" data-gate>
     <div class="experience-gate__bg" aria-hidden="true"></div>
-    <p class="experience-gate__tip">在画面里寻找入口</p>
-    <button class="experience-gate__enter" type="button" data-enter aria-label="Enter experience">Enter</button>
+    <button class="experience-gate__enter" type="button" data-enter aria-label="Enter experience"></button>
 </div>
 
-<div class="experience-controls" aria-label="Experience controls">
-    <button class="experience-controls__btn" type="button" data-view-toggle>View</button>
-    <button class="experience-controls__btn" type="button" data-sound-toggle>Sound Off</button>
-</div>
+<button class="home-sidebar-trigger" type="button" aria-label="打开导航菜单" data-sidebar-toggle>…</button>
+
+<aside class="home-sidebar" data-sidebar aria-hidden="true">
+    <div class="home-sidebar__backdrop" data-sidebar-close></div>
+    <nav class="home-sidebar__panel" aria-label="工具导航">
+        <button class="home-sidebar__close" type="button" aria-label="关闭导航菜单" data-sidebar-close>×</button>
+        <p class="home-sidebar__title">工具模块</p>
+        <a href="#tools" class="home-sidebar__link" data-sidebar-link>进入工具区</a>
+        <a href="{{ '/prompt-generator/' | relative_url }}" class="home-sidebar__link" data-sidebar-link>提示词生成器</a>
+        <a href="{{ '/panorama-viewer/' | relative_url }}" class="home-sidebar__link" data-sidebar-link>全景 Viewer</a>
+    </nav>
+</aside>
 
 <div class="home-shell home-shell--immersive" data-experience-root>
     <section id="tools" class="features-section section-panel" data-reveal>
