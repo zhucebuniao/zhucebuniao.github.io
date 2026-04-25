@@ -4,21 +4,54 @@ title: "私人工具集 - 首页"
 no_frame: true
 ---
 
-<div class="home-shell">
-    <section id="tools" class="features-section section-panel">
+<div class="experience-gate" data-gate>
+    <p class="experience-gate__since">Since 2026</p>
+    <h1 class="experience-gate__title">私人工具集</h1>
+    <button class="experience-gate__enter" type="button" data-enter>Enter</button>
+    <p class="experience-gate__tip">点击 Enter 开始交互体验 · 可在右下角切换 View / Sound</p>
+</div>
+
+<div class="experience-controls" aria-label="Experience controls">
+    <button class="experience-controls__btn" type="button" data-view-toggle>View</button>
+    <button class="experience-controls__btn" type="button" data-sound-toggle>Sound Off</button>
+</div>
+
+<div class="home-shell home-shell--immersive" data-experience-root>
+    <section id="tools" class="features-section section-panel" data-reveal>
+        <header class="section-head">
+            <p class="section-kicker">01. TOOLS</p>
+            <h2>挑选一个入口，立即开始。</h2>
+            <p class="hero-subtitle">参考 y-n10 的入场流程与沉浸式滚动反馈，做了更轻量的交互化首页。</p>
+        </header>
 
         <div class="grid grid--auto-fit">
-            <article class="tool-card">
+            <article class="tool-card" data-tilt>
                 <h3>✨ 提示词生成器</h3>
                 <p>快速组织输入信息，生成结构化提示词，用于日常创作与 AI 协作。</p>
                 <a href="{{ '/prompt-generator/' | relative_url }}" class="btn">打开工具</a>
             </article>
 
-            <article class="tool-card">
+            <article class="tool-card" data-tilt>
                 <h3>🌄 全景 Viewer</h3>
                 <p>用于本地查看和浏览全景素材，方便筛选、对比和快速预览。</p>
                 <a href="{{ '/panorama-viewer/' | relative_url }}" class="btn">打开工具</a>
             </article>
         </div>
     </section>
+
+    <section class="section-panel section-panel--about" data-reveal>
+        <header class="section-head">
+            <p class="section-kicker">02. INTERACTION</p>
+            <h2>交互方式（复制版）</h2>
+        </header>
+
+        <ul class="interaction-points">
+            <li>入场 Gate：首次必须点击 Enter 才进入主内容。</li>
+            <li>分段显隐：滚动到可视区时内容渐显，保留“讲述感”。</li>
+            <li>视图切换：支持 View 模式切换，强化专注阅读。</li>
+            <li>声音开关：开启后在操作时提供轻微反馈音。</li>
+        </ul>
+    </section>
 </div>
+
+<script src="{{ '/assets/js/home-experience.js' | relative_url }}" defer></script>
