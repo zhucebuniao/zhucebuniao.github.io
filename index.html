@@ -5,15 +5,10 @@ no_frame: true
 ---
 
 <div class="home-shell">
-    <section class="hero-section text-center section-panel">
-        <p class="section-kicker">PRIVATE TOOLKIT</p>
-        <h1>私人使用工具集</h1>
-        <p class="hero-subtitle">仅用于个人效率与创作场景，不对外提供在线服务。</p>
-    </section>
-
     <section id="tools" class="features-section section-panel">
         <div class="section-head">
-            <h2>🧰 工具列表</h2>
+            <p class="section-kicker">PRIVATE TOOLKIT</p>
+            <h1>私人使用工具集</h1>
             <p class="text-muted">两个常用入口，直接打开使用。</p>
         </div>
 
@@ -21,133 +16,14 @@ no_frame: true
             <article class="tool-card">
                 <h3>✨ 提示词生成器</h3>
                 <p>快速组织输入信息，生成结构化提示词，用于日常创作与 AI 协作。</p>
-                <p class="meta">最近更新：2026-04-22</p>
                 <a href="{{ '/prompt-generator/' | relative_url }}" class="btn">打开工具</a>
             </article>
 
             <article class="tool-card">
                 <h3>🌄 全景 Viewer</h3>
                 <p>用于本地查看和浏览全景素材，方便筛选、对比和快速预览。</p>
-                <p class="meta">最近更新：2026-04-22</p>
                 <a href="{{ '/panorama-viewer/' | relative_url }}" class="btn">打开工具</a>
             </article>
         </div>
     </section>
-
-    <section class="home-gallery section-panel">
-        <div class="section-head">
-            <h2>🖼️ 首页配图素材</h2>
-            <p class="text-muted">统一暗色 + 复古像素氛围，可直接用于首页横幅、卡片封面或文章头图。</p>
-        </div>
-
-        <div class="grid grid--3-col">
-            <article class="media-card">
-                <img src="{{ '/assets/images/homepage/scene-cyber-grid.svg' | relative_url }}" alt="赛博网格风格背景图">
-                <p>赛博网格 + 光晕中心，适合作为 Hero Banner。</p>
-            </article>
-
-            <article class="media-card">
-                <img src="{{ '/assets/images/homepage/scene-terminal-city.svg' | relative_url }}" alt="终端城市风格背景图">
-                <p>极简线框城市夜景，适合工具卡片封面。</p>
-            </article>
-
-            <article class="media-card">
-                <img src="{{ '/assets/images/homepage/scene-mountain-scanline.svg' | relative_url }}" alt="山脉扫描线风格背景图">
-                <p>扫描线山脉构图，适合文章列表视觉分隔。</p>
-            </article>
-        </div>
-    </section>
-
-    <section class="flag-section section-panel">
-        <div class="section-head">
-            <h2>🚩 飘荡的小红旗</h2>
-            <p class="text-muted">使用 Three.js 实现的轻量动态效果。</p>
-        </div>
-        <div id="floating-flag"></div>
-    </section>
 </div>
-
-<script type="module">
-    import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
-
-    const container = document.getElementById('floating-flag');
-
-    if (container) {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-        camera.position.set(0.5, 0.35, 2.2);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
-
-        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-        const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
-        keyLight.position.set(2, 2, 2);
-        scene.add(keyLight);
-
-        const pole = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.015, 0.015, 1.1, 16),
-            new THREE.MeshStandardMaterial({ color: 0xb0b0b0, metalness: 0.6, roughness: 0.35 })
-        );
-        pole.position.set(-0.8, 0, 0);
-        scene.add(pole);
-
-        const flagWidth = 1.15;
-        const flagHeight = 0.68;
-        const widthSegments = 36;
-        const heightSegments = 18;
-
-        const flagGeometry = new THREE.PlaneGeometry(flagWidth, flagHeight, widthSegments, heightSegments);
-        const basePositions = flagGeometry.attributes.position.array.slice();
-        const normals = flagGeometry.attributes.normal;
-
-        const flagMaterial = new THREE.MeshStandardMaterial({
-            color: 0xd90429,
-            side: THREE.DoubleSide,
-            metalness: 0.03,
-            roughness: 0.8
-        });
-
-        const flag = new THREE.Mesh(flagGeometry, flagMaterial);
-        flag.position.set(-0.2, 0.12, 0);
-        scene.add(flag);
-
-        function animate(time) {
-            const positions = flagGeometry.attributes.position.array;
-            const t = time * 0.001;
-
-            for (let i = 0; i < positions.length; i += 3) {
-                const x = basePositions[i];
-                const y = basePositions[i + 1];
-
-                const distanceFromPole = (x + flagWidth / 2) / flagWidth;
-                const waveAmp = 0.02 + distanceFromPole * 0.1;
-
-                positions[i + 2] = Math.sin(7 * distanceFromPole - t * 2.8 + y * 3.6) * waveAmp;
-                positions[i + 1] = y + Math.sin(4 * distanceFromPole + t * 2.1) * 0.01;
-            }
-
-            flagGeometry.attributes.position.needsUpdate = true;
-            flagGeometry.computeVertexNormals();
-            normals.needsUpdate = true;
-
-            flag.rotation.y = Math.sin(t * 0.8) * 0.08;
-            flag.rotation.x = Math.sin(t * 0.5) * 0.03;
-
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-
-        requestAnimationFrame(animate);
-
-        window.addEventListener('resize', () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        });
-    }
-</script>
