@@ -9,7 +9,7 @@ no_frame: true
 <section class="tool-page">
   <div class="tool-page__intro tool-page__intro--split">
     <p class="tool-page__note">
-      使用说明：点击下方按钮进入全屏查看器，或直接在本页嵌入窗口中上传全景图（建议 2:1 比例）。
+      使用说明：优先为手机端手势操作优化。可先点按钮进入全屏查看器，也可直接在下方嵌入窗口上传全景图（建议 2:1 比例）。
     </p>
 
     <a href="{{ '/panorama-viewer.html' | relative_url }}" target="_blank" rel="noopener" class="btn">
