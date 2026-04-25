@@ -27,31 +27,35 @@
 
     .toolbar {
       position: fixed;
-      top: 16px;
+      bottom: max(10px, env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%);
       z-index: 20;
-      display: inline-flex;
-      align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: min(92vw, 560px);
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.62);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
     }
 
     .upload-btn {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 12px;
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
       border-radius: 8px;
       background: #2e7bff;
       color: #fff;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       border: none;
       transition: transform 0.15s ease, background 0.2s ease;
@@ -63,10 +67,10 @@
     #fileInput { display: none; }
 
     .tips {
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.4;
       color: rgba(255, 255, 255, 0.85);
-      white-space: nowrap;
+      text-align: center;
     }
 
     .toast {
@@ -96,6 +100,31 @@
       padding: 24px;
       pointer-events: none;
     }
+
+    @media (min-width: 768px) {
+      .toolbar {
+        top: 16px;
+        bottom: auto;
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+        max-width: min(92vw, 960px);
+        padding: 10px 14px;
+      }
+
+      .upload-btn {
+        width: auto;
+        min-height: auto;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .tips {
+        font-size: 13px;
+        white-space: nowrap;
+        text-align: left;
+      }
+    }
   </style>
 </head>
 <body>
@@ -104,7 +133,7 @@
   <div class="toolbar">
     <label class="upload-btn" for="fileInput">上传全景图</label>
     <input id="fileInput" type="file" accept="image/*" />
-    <span class="tips">拖拽/单指旋转 · 滚轮/双指缩放（建议 2:1 equirectangular）</span>
+    <span class="tips">单指拖动旋转 · 双指缩放（建议 2:1 equirectangular）</span>
   </div>
 
   <div id="placeholder" class="placeholder">
