@@ -1,0 +1,40 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A0A0A"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="fog" x1="800" y1="330" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C8A97A" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#C8A97A" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#fog)"/>
+
+  <g opacity="0.55" stroke="#A89A80" stroke-width="1">
+    <path d="M0 520H1600"/>
+    <path d="M0 552H1600"/>
+    <path d="M0 584H1600"/>
+    <path d="M0 616H1600"/>
+    <path d="M0 648H1600"/>
+    <path d="M0 680H1600"/>
+    <path d="M0 712H1600"/>
+    <path d="M0 744H1600"/>
+    <path d="M0 776H1600"/>
+    <path d="M0 808H1600"/>
+  </g>
+
+  <g fill="#0F172A" stroke="#E8E0D4" stroke-width="2.2" opacity="0.88">
+    <path d="M210 640L470 300L690 640Z"/>
+    <path d="M540 640L850 240L1130 640Z"/>
+    <path d="M900 640L1210 330L1450 640Z"/>
+  </g>
+
+  <g opacity="0.85" stroke="#C8A97A" stroke-width="2">
+    <path d="M470 300L540 640"/>
+    <path d="M850 240L900 640"/>
+    <path d="M1130 640L1210 330"/>
+  </g>
+</svg>
