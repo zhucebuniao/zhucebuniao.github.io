@@ -3,17 +3,18 @@
   --bg:#0b0b0e;
   --surface:#121216;
   --border:rgba(255,255,255,0.06);
+  --border-hover:rgba(255,255,255,0.1);
   --ink:#e4e4ea;
   --ink-muted:rgba(255,255,255,0.45);
-  --ink-faint:rgba(255,255,255,0.1);
+  --ink-faint:rgba(255,255,255,0.12);
   --orange:#fb923c;
   --blue:#7c8aff;
   --rose:#f472b6;
   --green:#4ade80;
-  --orange-glow:rgba(251,146,60,0.06);
-  --blue-glow:rgba(124,138,255,0.06);
-  --rose-glow:rgba(244,114,182,0.06);
-  --green-glow:rgba(74,222,128,0.06);
+  --orange-glow:rgba(251,146,60,0.08);
+  --blue-glow:rgba(124,138,255,0.08);
+  --rose-glow:rgba(244,114,182,0.08);
+  --green-glow:rgba(74,222,128,0.08);
   --font:'Inter',system-ui,-apple-system,sans-serif;
   --font-chinese:'Ma Shan Zheng',serif;
   --font-mono:'JetBrains Mono','SF Mono',monospace;
@@ -25,58 +26,77 @@ body{
   font-family:var(--font);background:var(--bg);color:var(--ink);
   min-height:100%;line-height:1.7;
   -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(255,255,255,0.02) 0%,transparent 100%);
 }
-.page{max-width:640px;margin:0 auto;padding:0 20px;min-height:100vh;display:flex;flex-direction:column}
+.page{max-width:640px;margin:0 auto;padding:0 24px;min-height:100vh;display:flex;flex-direction:column}
 
 /* Header */
 .top{
   display:flex;align-items:center;gap:20px;
-  padding:28px 0 24px;border-bottom:1px solid var(--border);
+  padding:28px 0 20px;border-bottom:1px solid var(--border);
 }
-.logo{display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink)}
-.logo-text{font-family:var(--font-chinese);font-size:18px;letter-spacing:1px}
-.logo-moon{font-size:16px}
-.nav{display:flex;gap:0;margin-left:auto}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.logo-moon{font-size:18px;transition:transform .3s ease}
+.logo:hover .logo-moon{transform:rotate(-8deg)}
+.logo-text{font-family:var(--font-chinese);font-size:20px;letter-spacing:1px}
+.nav{display:flex;gap:2px;margin-left:auto;background:var(--surface);border-radius:8px;padding:2px}
 .nav-link{
   font-size:12px;text-decoration:none;color:var(--ink-muted);
-  padding:4px 12px;border-radius:var(--radius-sm);transition:.2s;
-  letter-spacing:.3px;
+  padding:5px 10px;border-radius:6px;transition:.2s;
+  letter-spacing:.3px;font-weight:450;
 }
-.nav-link:hover{color:var(--ink);background:rgba(255,255,255,0.03)}
-.nav-link.active{color:var(--ink);background:rgba(255,255,255,0.04)}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,0.04)}
+.nav-link.active{color:var(--ink);background:rgba(255,255,255,0.06)}
 
 /* Main */
-.main{flex:1;padding:40px 0}
+.main{flex:1;padding:36px 0}
 
-/* Index */
-.entry-list{display:flex;flex-direction:column;gap:20px}
+/* Index cards */
+.entry-list{display:flex;flex-direction:column;gap:10px}
 .entry{
-  display:flex;align-items:flex-start;gap:14px;
-  padding:16px 20px;border-radius:var(--radius-md);
+  display:flex;align-items:stretch;gap:0;
   text-decoration:none;color:inherit;transition:.2s;
-  border:1px solid transparent;
+  border-radius:var(--radius-md);overflow:hidden;
 }
-.entry:hover{background:rgba(255,255,255,0.02);border-color:var(--border)}
-.entry-icon{font-size:20px;line-height:1.4;flex-shrink:0;width:28px;text-align:center}
-.entry-body{flex:1;min-width:0}
-.entry-date{font-size:11px;color:var(--ink-faint);font-weight:400;letter-spacing:.3px}
+.entry-bar{
+  width:3px;border-radius:3px;flex-shrink:0;margin:12px 0;
+  transition:width .2s,opacity .2s;opacity:.6;
+}
+.entry:hover .entry-bar{width:4px;opacity:1}
+.entry-bar.dream{background:var(--orange)}
+.entry-bar.travel{background:var(--blue)}
+.entry-bar.novel{background:var(--rose)}
+.entry-bar.diary{background:var(--green)}
+.entry-body{
+  flex:1;min-width:0;padding:14px 16px;
+  border-radius:0 var(--radius-md) var(--radius-md) 0;
+  transition:background .2s;
+}
+.entry:hover .entry-body{background:rgba(255,255,255,0.015)}
+.entry-top{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.entry-tag{
+  font-size:9px;font-weight:500;letter-spacing:.5px;
+  padding:1px 7px;border-radius:8px;text-transform:uppercase;
+}
+.entry-tag.dream{color:var(--orange);background:var(--orange-glow)}
+.entry-tag.travel{color:var(--blue);background:var(--blue-glow)}
+.entry-tag.novel{color:var(--rose);background:var(--rose-glow)}
+.entry-tag.diary{color:var(--green);background:var(--green-glow)}
+.entry-date{font-size:10px;color:var(--ink-faint);font-weight:400;letter-spacing:.2px}
 .entry-title{
-  font-size:15px;font-weight:500;margin-top:1px;
+  font-size:15px;font-weight:500;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
-.entry-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:6px;flex-shrink:0;margin-top:9px}
-.entry-dot.dream{background:var(--orange)}
-.entry-dot.travel{background:var(--blue)}
-.entry-dot.novel{background:var(--rose)}
-.entry-dot.diary{background:var(--green)}
+.entry-dot{display:none}
 
 /* Single post */
 .post-page{padding:0}
-.post-date{font-size:11px;color:var(--ink-faint);letter-spacing:.3px}
-.post-title{font-size:22px;font-weight:500;margin:6px 0 8px;line-height:1.4}
+.post-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.post-date{font-size:11px;color:var(--ink-faint);letter-spacing:.3px;margin-bottom:6px}
+.post-title{font-size:24px;font-weight:500;line-height:1.35;margin-bottom:8px}
 .post-tag{
   display:inline-block;font-size:10px;letter-spacing:.5px;font-weight:500;
-  padding:2px 10px;border-radius:12px;margin-bottom:28px;
+  padding:2px 10px;border-radius:12px;
 }
 .post-tag:empty{display:none}
 .post-tag.dream{color:var(--orange);background:var(--orange-glow)}
@@ -86,8 +106,9 @@ body{
 .post-body{
   font-size:15px;color:var(--ink);line-height:1.9;
 }
-.post-body p{margin-bottom:1.2em}
+.post-body p{margin-bottom:1.3em}
 .post-body p:last-child{margin-bottom:0}
+.post-body img{max-width:100%;height:auto;border-radius:var(--radius-md);margin:1.5em 0;display:block}
 .post-nav{
   display:flex;justify-content:space-between;gap:12px;
   margin-top:40px;padding-top:24px;border-top:1px solid var(--border);
@@ -100,17 +121,16 @@ body{
 
 /* Archive pages */
 .archive-header{margin-bottom:28px}
-.archive-title{font-size:18px;font-weight:500;margin-bottom:4px}
+.archive-title{font-size:20px;font-weight:500;margin-bottom:4px}
 .archive-desc{font-size:13px;color:var(--ink-muted)}
-.archive-list{display:flex;flex-direction:column;gap:12px}
+.archive-list{display:flex;flex-direction:column;gap:6px}
 .archive-item{
   display:flex;align-items:center;gap:12px;
-  padding:12px 16px;border-radius:var(--radius-md);
+  padding:10px 14px;border-radius:var(--radius-md);
   text-decoration:none;color:inherit;transition:.2s;
-  border:1px solid transparent;
 }
-.archive-item:hover{background:rgba(255,255,255,0.02);border-color:var(--border)}
-.archive-item-date{font-size:11px;color:var(--ink-faint);flex-shrink:0;width:70px}
+.archive-item:hover{background:rgba(255,255,255,0.015)}
+.archive-item-date{font-size:11px;color:var(--ink-faint);flex-shrink:0;width:70px;font-variant-numeric:tabular-nums}
 .archive-item-title{font-size:14px;font-weight:400;flex:1}
 
 /* About */
@@ -120,8 +140,7 @@ body{
 /* Footer */
 .bottom{
   text-align:center;padding:24px 0 32px;
-  color:var(--ink-faint);font-size:12px;
-  border-top:1px solid var(--border);
+  color:var(--ink-faint);font-size:12px;letter-spacing:.5px;
 }
 
 /* Empty state */
@@ -129,14 +148,16 @@ body{
 
 /* Mobile */
 @media(max-width:480px){
-  .page{padding:0 16px}
-  .top{padding:20px 0 16px;gap:12px}
-  .logo-text{font-size:16px}
-  .nav-link{padding:4px 8px;font-size:11px}
-  .main{padding:28px 0}
-  .entry{padding:14px 14px}
+  .page{padding:0 14px}
+  .top{padding:20px 0 16px;gap:10px;flex-wrap:wrap}
+  .logo-text{font-size:17px}
+  .nav{background:none;padding:0;gap:0}
+  .nav-link{padding:5px 7px;font-size:11px}
+  .main{padding:24px 0}
+  .entry-body{padding:12px 14px}
   .entry-title{font-size:14px}
   .post-title{font-size:20px}
   .post-body{font-size:14px}
-  .archive-item-date{width:60px;font-size:10px}
+  .post-body img{border-radius:var(--radius-sm)}
+  .archive-item-date{width:55px;font-size:10px}
 }

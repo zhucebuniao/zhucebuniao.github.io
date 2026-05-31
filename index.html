@@ -6,10 +6,21 @@ title: "梦与远方"
 <div class="entry-list">
   {% assign sorted = site.posts | sort: 'date' | reverse %}
   {% for post in sorted limit:30 %}
+    {% assign cat = post.category %}
     <a href="{{ post.url | relative_url }}" class="entry">
-      <span class="entry-dot {{ post.category }}"></span>
+      <span class="entry-bar {{ cat }}"></span>
       <div class="entry-body">
-        <div class="entry-date">{{ post.date | date: "%Y 年 %m 月 %d 日" }}</div>
+        <div class="entry-top">
+          <span class="entry-tag {{ cat }}">
+            {% if cat == 'dream' %}梦
+            {% elsif cat == 'travel' %}游记
+            {% elsif cat == 'novel' %}小说
+            {% elsif cat == 'diary' %}日记
+            {% else %}{{ cat }}
+            {% endif %}
+          </span>
+          <span class="entry-date">{{ post.date | date: "%Y 年 %m 月 %d 日" }}</span>
+        </div>
         <div class="entry-title">{{ post.title }}</div>
       </div>
     </a>

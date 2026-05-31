@@ -2,11 +2,19 @@
 layout: default
 ---
 <article class="post-page">
-  <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
-    {{ page.date | date: "%Y 年 %m 月 %d 日" }}
-  </time>
-  <h1 class="post-title">{{ page.title }}</h1>
-  <div class="post-tag">{{ page.category }}</div>
+  <div class="post-header">
+    <div class="post-date">{{ page.date | date: "%Y 年 %m 月 %d 日" }}</div>
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% assign cat = page.category %}
+    <span class="post-tag {{ cat }}">
+      {% if cat == 'dream' %}梦
+      {% elsif cat == 'travel' %}游记
+      {% elsif cat == 'novel' %}小说
+      {% elsif cat == 'diary' %}日记
+      {% else %}{{ cat }}
+      {% endif %}
+    </span>
+  </div>
   <div class="post-body">
     {{ content }}
   </div>
