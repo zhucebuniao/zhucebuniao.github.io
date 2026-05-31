@@ -9,9 +9,11 @@
   --orange:#fb923c;
   --blue:#7c8aff;
   --rose:#f472b6;
+  --green:#4ade80;
   --orange-glow:rgba(251,146,60,0.06);
   --blue-glow:rgba(124,138,255,0.06);
   --rose-glow:rgba(244,114,182,0.06);
+  --green-glow:rgba(74,222,128,0.06);
   --font:'Inter',system-ui,-apple-system,sans-serif;
   --font-chinese:'Ma Shan Zheng',serif;
   --font-mono:'JetBrains Mono','SF Mono',monospace;
@@ -66,6 +68,7 @@ body{
 .entry-dot.dream{background:var(--orange)}
 .entry-dot.travel{background:var(--blue)}
 .entry-dot.novel{background:var(--rose)}
+.entry-dot.diary{background:var(--green)}
 
 /* Single post */
 .post-page{padding:0}
@@ -79,6 +82,7 @@ body{
 .post-tag.dream{color:var(--orange);background:var(--orange-glow)}
 .post-tag.travel{color:var(--blue);background:var(--blue-glow)}
 .post-tag.novel{color:var(--rose);background:var(--rose-glow)}
+.post-tag.diary{color:var(--green);background:var(--green-glow)}
 .post-body{
   font-size:15px;color:var(--ink);line-height:1.9;
 }
