@@ -4,6 +4,7 @@ url: "https://zhucebuniao.github.io"
 baseurl: ""
 lang: "zh-CN"
 author: "zhucebuniao"
+future: true
 
 markdown: kramdown
 
