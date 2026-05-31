@@ -1,94 +1,22 @@
 ---
 layout: default
-title: "私人工具集 - 首页"
-no_frame: true
+title: "梦与远方"
 ---
 
-<div class="experience-gate" data-gate aria-label="进入体验页">
-    <div class="experience-gate__bg" aria-hidden="true"></div>
-    <div class="experience-gate__grid" aria-hidden="true"></div>
-
-    <section class="experience-gate__content" aria-label="ENTER PAGE">
-        <p class="experience-gate__kicker">BEYOND<br>THE SURFACE</p>
-        <h1 class="experience-gate__title">有些出口，<br>是为了更好的探索。</h1>
-        <p class="experience-gate__hint">点击右下角的洞<br>开启旅程</p>
-    </section>
-
-    <button class="experience-gate__enter" type="button" data-enter aria-label="进入新页面">
-        <span class="experience-gate__enter-ring" aria-hidden="true"></span>
-        <span class="experience-gate__enter-label">SCROLL +</span>
-    </button>
+<div class="entry-list">
+  {% assign sorted = site.posts | sort: 'date' | reverse %}
+  {% for post in sorted limit:30 %}
+    <a href="{{ post.url | relative_url }}" class="entry">
+      <span class="entry-dot {{ post.category }}"></span>
+      <div class="entry-body">
+        <div class="entry-date">{{ post.date | date: "%Y 年 %m 月 %d 日" }}</div>
+        <div class="entry-title">{{ post.title }}</div>
+      </div>
+    </a>
+  {% endfor %}
 </div>
 
-<button class="home-sidebar-trigger" type="button" aria-label="打开导航菜单" data-sidebar-toggle>…</button>
-
-<aside class="home-sidebar" data-sidebar aria-hidden="true">
-    <div class="home-sidebar__backdrop" data-sidebar-close></div>
-    <nav class="home-sidebar__panel" aria-label="探索导航">
-        <button class="home-sidebar__close" type="button" aria-label="关闭导航菜单" data-sidebar-close>×</button>
-
-        <header class="home-sidebar__brand">
-            <span class="home-sidebar__avatar" aria-hidden="true"></span>
-            <div>
-                <p class="home-sidebar__brand-title">EXPLORER</p>
-                <p class="home-sidebar__brand-id">ID: 1024</p>
-            </div>
-        </header>
-
-        <a href="#tools" class="home-sidebar__item is-active" data-sidebar-link>
-            <span class="home-sidebar__index">01</span>
-            <span><strong>HOME</strong><small>首页</small></span>
-        </a>
-        <a href="{{ '/blog/' | relative_url }}" class="home-sidebar__item" data-sidebar-link>
-            <span class="home-sidebar__index">02</span>
-            <span><strong>STORIES</strong><small>故事</small></span>
-        </a>
-        <a href="{{ '/prompt-generator/' | relative_url }}" class="home-sidebar__item" data-sidebar-link>
-            <span class="home-sidebar__index">03</span>
-            <span><strong>COLLECTION</strong><small>提示词工具</small></span>
-        </a>
-        <a href="{{ '/panorama-viewer/' | relative_url }}" class="home-sidebar__item" data-sidebar-link>
-            <span class="home-sidebar__index">04</span>
-            <span><strong>NOTES</strong><small>全景 Viewer</small></span>
-        </a>
-        <a href="{{ '/about/' | relative_url }}" class="home-sidebar__item" data-sidebar-link>
-            <span class="home-sidebar__index">05</span>
-            <span><strong>ABOUT</strong><small>关于</small></span>
-        </a>
-    </nav>
-</aside>
-
-<div class="home-shell home-shell--immersive" data-experience-root>
-    <section id="tools" class="features-section section-panel" data-reveal>
-        <div class="home-stage" aria-hidden="true">
-            <span class="home-stage__line home-stage__line--v"></span>
-            <span class="home-stage__line home-stage__line--h"></span>
-            <span class="home-stage__badge">02</span>
-            <span class="home-stage__label">EXPLORE<br>THE WORLD</span>
-            <span class="home-stage__block home-stage__block--blue"></span>
-            <span class="home-stage__block home-stage__block--red"></span>
-        </div>
-
-        <header class="section-head section-head--hero">
-            <p class="section-kicker">002</p>
-            <h2>探索世界，<br>也探索自己。</h2>
-            <p class="section-desc">VIEW MORE →</p>
-        </header>
-
-        <div class="grid grid--auto-fit">
-            <article class="tool-card" data-tilt>
-                <h3>✨ 提示词生成器</h3>
-                <p>快速组织输入信息，生成结构化提示词，用于日常创作与 AI 协作。</p>
-                <a href="{{ '/prompt-generator/' | relative_url }}" class="btn">打开工具</a>
-            </article>
-
-            <article class="tool-card" data-tilt>
-                <h3>🌄 全景 Viewer</h3>
-                <p>用于本地查看和浏览全景素材，方便筛选、对比和快速预览。</p>
-                <a href="{{ '/panorama-viewer/' | relative_url }}" class="btn">打开工具</a>
-            </article>
-        </div>
-    </section>
-</div>
-
-<script src="{{ '/assets/js/home-experience.js' | relative_url }}" defer></script>
+{% assign count = site.posts | size %}
+{% if count == 0 %}
+  <div class="empty">还没有内容 ✦</div>
+{% endif %}

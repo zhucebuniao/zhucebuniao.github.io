@@ -1,50 +1,24 @@
-# Site Configuration
-title: "Zhuce 工具箱"
-description: "一个私人使用的轻量工具集网页"
+title: "梦与远方"
+description: "梦境与游记"
 url: "https://zhucebuniao.github.io"
 baseurl: ""
 lang: "zh-CN"
 author: "zhucebuniao"
 
-# Build settings
 markdown: kramdown
-highlighter: rouge
-sass:
-  style: compressed
-  sass_dir: _sass
 
-# Plugins
-plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-
-# Collections
-# collections:
-
-# Defaults
 defaults:
   - scope:
       path: ""
       type: "posts"
     values:
       layout: "post"
-      author: "像素创造者"
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "page"
 
-# Blog settings
-excerpt_separator: "<!-- more -->"
-show_excerpts: true
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
 
-# Exclude files
 exclude:
   - Gemfile
   - Gemfile.lock
-  - node_modules
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+  - README.md

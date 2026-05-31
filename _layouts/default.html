@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title | default: site.title }}</title>
-    <meta name="description" content="{{ page.description | default: site.description }}">
-    <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
-    
-    <!-- Main stylesheet with Sass processing -->
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Ma+Shan+Zheng&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  {% feed_meta %}
 </head>
 <body>
-    <div class="container">
-        <main class="main-content{% if page.no_frame %} main-content--full{% endif %}">
-            {% if page.no_frame %}
-                {{ content }}
-            {% else %}
-            <div class="card">
-                {{ content }}
-            </div>
-            {% endif %}
-        </main>
+  <div class="page">
+    <header class="top">
+      <a href="{{ '/' | relative_url }}" class="logo">
+        <span class="logo-moon">🌙</span>
+        <span class="logo-text">梦与远方</span>
+      </a>
+      <nav class="nav">
+        <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">首页</a>
+        <a href="{{ '/dreams' | relative_url }}" class="nav-link {% if page.url contains '/dreams' %}active{% endif %}">梦</a>
+        <a href="{{ '/travels' | relative_url }}" class="nav-link {% if page.url contains '/travels' %}active{% endif %}">游记</a>
+        <a href="{{ '/about' | relative_url }}" class="nav-link {% if page.url contains '/about' %}active{% endif %}">关于</a>
+      </nav>
+    </header>
 
-        {% include footer.html %}
-    </div>
-    
+    <main class="main">
+      {{ content }}
+    </main>
+
+    <footer class="bottom">
+      <span>✦</span>
+    </footer>
+  </div>
 </body>
 </html>
