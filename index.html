@@ -3,11 +3,36 @@ layout: default
 title: "梦与远方"
 ---
 
+{% assign dreams  = site.posts | where: "category", "dream"  | size %}
+{% assign travels = site.posts | where: "category", "travel" | size %}
+{% assign novels  = site.posts | where: "category", "novel"  | size %}
+{% assign diaries = site.posts | where: "category", "diary"  | size %}
+
+<section class="hero">
+  <div class="hero-glyph"><span class="star">✦</span> &nbsp;&nbsp;✦&nbsp;&nbsp; <span class="star">✦</span></div>
+  <h1 class="hero-title">梦与远方</h1>
+  <p class="hero-sub">夜里写下的，白天去过的地方</p>
+  <div class="hero-stats">
+    <span class="hero-stat dream"><span class="num">{{ dreams }}</span>梦</span>
+    <span class="hero-stat travel"><span class="num">{{ travels }}</span>游记</span>
+    <span class="hero-stat novel"><span class="num">{{ novels }}</span>小说</span>
+    <span class="hero-stat diary"><span class="num">{{ diaries }}</span>日记</span>
+  </div>
+  <div class="filter" role="group" aria-label="按分类筛选">
+    <button class="chip active" data-filter="all" type="button">全部</button>
+    <button class="chip" data-filter="dream" type="button">梦</button>
+    <button class="chip" data-filter="travel" type="button">游记</button>
+    <button class="chip" data-filter="novel" type="button">小说</button>
+    <button class="chip" data-filter="diary" type="button">日记</button>
+  </div>
+</section>
+
+<div class="list-label">近期 ✦</div>
 <div class="entry-list">
   {% assign sorted = site.posts | sort: 'date' | reverse %}
   {% for post in sorted limit:30 %}
     {% assign cat = post.category %}
-    <a href="{{ post.url | relative_url }}" class="entry">
+    <a href="{{ post.url | relative_url }}" class="entry reveal" data-category="{{ cat }}">
       <span class="entry-bar {{ cat }}"></span>
       <div class="entry-body">
         <div class="entry-top">

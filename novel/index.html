@@ -4,14 +4,16 @@ title: "小说"
 permalink: /novel/
 ---
 
+{% assign novels = site.posts | where: "category", "novel" %}
 <div class="archive-header">
   <h1 class="archive-title">小说</h1>
-  <p class="archive-desc">赫妹的连载故事</p>
+  <p class="archive-desc">梦见海洋的人 · 连载已完结</p>
+  <p class="archive-count">共 {{ novels | size }} 章</p>
 </div>
 
 <div class="archive-list">
-  {% assign novels = site.posts | where: "category", "novel" | sort: "date" | reverse %}
-  {% for post in novels %}
+  {% assign sorted = novels | sort: "date" | reverse %}
+  {% for post in sorted %}
     <a href="{{ post.url | relative_url }}" class="archive-item">
       <span class="archive-item-date">{{ post.date | date: "%m/%d" }}</span>
       <span class="archive-item-title">{{ post.title }}</span>

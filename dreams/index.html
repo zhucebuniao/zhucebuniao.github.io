@@ -4,14 +4,16 @@ title: "梦"
 permalink: /dreams/
 ---
 
+{% assign dreams = site.posts | where: "category", "dream" %}
 <div class="archive-header">
   <h1 class="archive-title">梦</h1>
   <p class="archive-desc">凌晨三点的自言自语</p>
+  <p class="archive-count">共 {{ dreams | size }} 篇</p>
 </div>
 
 <div class="archive-list">
-  {% assign dreams = site.posts | where: "category", "dream" | sort: "date" | reverse %}
-  {% for post in dreams %}
+  {% assign sorted = dreams | sort: "date" | reverse %}
+  {% for post in sorted %}
     <a href="{{ post.url | relative_url }}" class="archive-item">
       <span class="archive-item-date">{{ post.date | date: "%m/%d" }}</span>
       <span class="archive-item-title">{{ post.title }}</span>
