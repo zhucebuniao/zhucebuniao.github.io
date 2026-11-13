@@ -1,0 +1,246 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllPosts, type EnrichedPost } from '../../utils/posts';
+
+export async function getStaticPaths() {
+  const allPosts = await getAllPosts();
+  return allPosts.map((post, idx) => ({
+    params: { id: post.id },
+    props: {
+      post,
+      prevPost: idx < allPosts.length - 1 ? allPosts[idx + 1] : null,
+      nextPost: idx > 0 ? allPosts[idx - 1] : null,
+      relatedCityPosts: post.city
+        ? allPosts.filter((p) => p.city?.name === post.city?.name && p.id !== post.id)
+        : [],
+    },
+  }));
+}
+
+interface Props {
+  post: EnrichedPost;
+  prevPost: EnrichedPost | null;
+  nextPost: EnrichedPost | null;
+  relatedCityPosts: EnrichedPost[];
+}
+
+const { post, prevPost, nextPost, relatedCityPosts } = Astro.props;
+const { Content, headings } = await render(post.entry);
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+<BaseLayout
+  title={post.subtitle ? `${post.title} · ${post.subtitle}` : post.title}
+  description={post.excerpt}
+  pageCat={post.category}
+>
+  <div class="reading-progress-bar" id="reading-progress" aria-hidden="true"></div>
+
+  <div class="article-layout">
+    <div>
+      <article class="bento-card article-main">
+        <header class="article-header">
+          <div class="article-eyebrow">
+            <a href={post.categoryMeta.href} class={`cat-pill ${post.category}`} style="text-decoration:none;">
+              <span>{post.categoryMeta.icon}</span>
+              <span>{post.categoryMeta.label}</span>
+            </a>
+
+            {post.city && (
+              <a
+                href="/travels/"
+                class="cat-pill travel"
+                style="text-decoration:none;background:rgba(255,255,255,0.05);color:var(--ink-secondary);"
+              >
+                📍 {post.city.province} · {post.city.name}
+              </a>
+            )}
+
+            <span class="article-meta-item">📅 {post.dateFormatted}</span>
+            <span class="article-meta-item">✍️ {post.wordCount} 字 · 约 {post.readingMinutes} 分钟阅读</span>
+          </div>
+
+          <h1 class="article-title" transition:name={`title-${post.id}`}>
+            {post.title}
+          </h1>
+
+          {post.subtitle && (
+            <p class="article-subtitle">{post.subtitle}</p>
+          )}
+
+          <!-- Mobile-only quick reading bar & collapsible TOC -->
+          <div class="mobile-reading-bar">
+            <div class="font-size-controls" style="width:168px;">
+              <button type="button" class="font-btn" data-set-font="sm" style="font-size:11.5px;padding:4px 0;">紧凑</button>
+              <button type="button" class="font-btn active" data-set-font="md" style="font-size:12.5px;padding:4px 0;">标准</button>
+              <button type="button" class="font-btn" data-set-font="lg" style="font-size:13.5px;padding:4px 0;">舒展</button>
+            </div>
+            {tocHeadings.length > 0 && (
+              <details class="mobile-toc-details">
+                <summary>📑 章节目录 ({tocHeadings.length})</summary>
+                <ul class="toc-list" style="margin-top:8px;max-height:36vh;">
+                  {tocHeadings.map((h) => (
+                    <li style={h.depth === 3 ? 'padding-left:10px;' : ''}>
+                      <a href={`#${h.slug}`} class="toc-link">
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
+        </header>
+
+        <div class="prose">
+          <Content />
+        </div>
+      </article>
+
+      <!-- Previous & Next Article Cards -->
+      <nav class="post-neighbors" aria-label="上下篇导航">
+        {prevPost ? (
+          <a href={prevPost.url} class="bento-card neighbor-card prev">
+            <span class="neighbor-dir">
+              ← 更早一篇 · <span style={`color:${prevPost.categoryMeta.accentVar}`}>{prevPost.categoryMeta.label}</span>
+            </span>
+            <span class="neighbor-title">{prevPost.title}</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);">{prevPost.dateFormatted}</span>
+          </a>
+        ) : <div />}
+
+        {nextPost ? (
+          <a href={nextPost.url} class="bento-card neighbor-card next">
+            <span class="neighbor-dir">
+              <span style={`color:${nextPost.categoryMeta.accentVar}`}>{nextPost.categoryMeta.label}</span> · 更新一篇 →
+            </span>
+            <span class="neighbor-title">{nextPost.title}</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);">{nextPost.dateFormatted}</span>
+          </a>
+        ) : <div />}
+      </nav>
+    </div>
+
+    <!-- Sticky Sidebar: Reading Controls, TOC & City Footprints -->
+    <aside class="article-sidebar">
+      <div class="bento-card sidebar-card">
+        <div class="sidebar-label">
+          <span>阅读偏好</span>
+          <span>Aa</span>
+        </div>
+        <div class="font-size-controls">
+          <button type="button" class="font-btn" data-set-font="sm" style="font-size:12px;">紧凑</button>
+          <button type="button" class="font-btn active" data-set-font="md" style="font-size:14px;">标准</button>
+          <button type="button" class="font-btn" data-set-font="lg" style="font-size:16px;">舒展</button>
+        </div>
+      </div>
+
+      {tocHeadings.length > 0 && (
+        <div class="bento-card sidebar-card">
+          <div class="sidebar-label">
+            <span>章节目录</span>
+            <span>{tocHeadings.length} 节</span>
+          </div>
+          <ul class="toc-list">
+            {tocHeadings.map((h) => (
+              <li style={h.depth === 3 ? 'padding-left:10px;' : ''}>
+                <a href={`#${h.slug}`} class="toc-link" data-toc-link={h.slug}>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {post.city && relatedCityPosts.length > 0 && (
+        <div class="bento-card sidebar-card">
+          <div class="sidebar-label">
+            <span>📍 同在 {post.city.name}</span>
+            <span>{relatedCityPosts.length} 篇</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            {relatedCityPosts.map((rp) => (
+              <a href={rp.url} class="city-post-link" style="padding:6px 8px;">
+                <span style="font-family:var(--font-serif);font-size:13px;">{rp.subtitle || rp.title}</span>
+                <span class="date">{rp.shortDate}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <button
+        type="button"
+        id="back-to-top-btn"
+        class="bento-card sidebar-card"
+        style="cursor:pointer;text-align:center;font-size:12.5px;color:var(--ink-secondary);padding:12px;"
+      >
+        ↑ 回到页面顶部
+      </button>
+    </aside>
+  </div>
+
+  <script is:inline>
+    function initArticleView() {
+      // 1. Reading progress bar
+      const bar = document.getElementById('reading-progress');
+      const article = document.querySelector('.article-main');
+      if (bar && article) {
+        const updateProgress = () => {
+          const rect = article.getBoundingClientRect();
+          const total = article.offsetHeight - window.innerHeight * 0.6;
+          const scrolled = -rect.top;
+          const pct = total > 0 ? Math.max(0, Math.min(100, (scrolled / total) * 100)) : 100;
+          bar.style.width = `${pct}%`;
+        };
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+      }
+
+      // 2. Font size controls
+      const fontBtns = document.querySelectorAll('[data-set-font]');
+      const curSize = document.documentElement.getAttribute('data-font-size') || 'md';
+      fontBtns.forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-set-font') === curSize);
+        if (btn.dataset.bound) return;
+        btn.dataset.bound = 'true';
+        btn.addEventListener('click', () => {
+          const size = btn.getAttribute('data-set-font');
+          document.documentElement.setAttribute('data-font-size', size);
+          localStorage.setItem('zyf-font-size', size);
+          fontBtns.forEach((b) => b.classList.toggle('active', b.getAttribute('data-set-font') === size));
+        });
+      });
+
+      // 3. Back to top
+      const topBtn = document.getElementById('back-to-top-btn');
+      if (topBtn && !topBtn.dataset.bound) {
+        topBtn.dataset.bound = 'true';
+        topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      }
+
+      // 4. TOC Scroll Spy
+      const tocLinks = document.querySelectorAll('[data-toc-link]');
+      if (tocLinks.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                tocLinks.forEach((link) => {
+                  link.classList.toggle('active', link.getAttribute('data-toc-link') === id);
+                });
+              }
+            });
+          },
+          { rootMargin: '-80px 0px -65% 0px' }
+        );
+        document.querySelectorAll('.prose h2[id], .prose h3[id]').forEach((h) => io.observe(h));
+      }
+    }
+
+    initArticleView();
+    document.addEventListener('astro:page-load', initArticleView);
+  </script>
+</BaseLayout>

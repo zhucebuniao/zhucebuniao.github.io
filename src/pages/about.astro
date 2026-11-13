@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllPosts, groupTravelsByCity } from '../utils/posts';
+
+const allPosts = await getAllPosts();
+const totalWords = allPosts.reduce((sum, p) => sum + p.wordCount, 0);
+const cities = groupTravelsByCity(allPosts);
+---
+<BaseLayout title="关于" description="关于梦与远方 · 写给自己看的角落">
+  <div class="bento-hero">
+    <article class="bento-card bento-intro" style="grid-column: span 8; padding: 40px 44px;">
+      <div>
+        <div class="intro-badge">✦ ABOUT THIS CORNER</div>
+        <h1 class="intro-title" style="font-size:40px;margin-bottom:20px;">关于「梦与远方」</h1>
+        <div class="prose" style="font-size:16px;">
+          <p>这里是一个写给自己看的角落。</p>
+          <p>
+            白天去远方，夜里做奇怪又温柔的梦。<strong>梦境</strong>是凌晨醒来随手记下的微光，<strong>游记</strong>是想把去过的山海与古镇留下点什么，<strong>小说</strong>是在讲一个关于灯塔、海底城和母亲的故事，<strong>日记</strong>是田里的草木和心里的话。
+          </p>
+          <p>
+            没有什么宏大的目的，只是不想让那些转瞬即逝的东西就这么散掉。如果你偶然路过这片星空，恰好读到了某一段，那就当我们也在某个瞬间，有过一点交集。
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--glass-border);font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);">
+        ✦ Built with Astro · Starry Night & Aurora Bento Design System
+      </div>
+    </article>
+
+    <aside class="bento-side-stack" style="grid-column: span 4;">
+      <div class="bento-card spotlight-card" style="justify-content:center;gap:14px;">
+        <div class="sidebar-label" style="margin-bottom:0;">✦ 站点星群统计</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--c-dream);">{allPosts.length}</div>
+            <div style="font-size:12px;color:var(--ink-muted);">总文章数</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--c-travel);">{cities.length}</div>
+            <div style="font-size:12px;color:var(--ink-muted);">漫游城市</div>
+          </div>
+          <div style="grid-column:span 2;">
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--c-novel);">
+              {(totalWords / 1000).toFixed(1)}k
+            </div>
+            <div style="font-size:12px;color:var(--ink-muted);">累计写下字数（约 {totalWords.toLocaleString()} 字）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-card spotlight-card" style="gap:10px;">
+        <div class="sidebar-label" style="margin-bottom:0;">✦ 快捷键与小贴士</div>
+        <div style="font-size:13px;color:var(--ink-secondary);line-height:1.75;">
+          <div>• 按 <kbd class="search-kbd">⌘K</kbd> 或 <kbd class="search-kbd">Ctrl+K</kbd> 随时唤醒全局搜索</div>
+          <div>• 点击右上角太阳/月亮图标切换「暗夜极光 / 晨曦纸感」主题</div>
+          <div>• 文章页右侧可调节正文字号与章节目录跳转</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>

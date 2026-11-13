@@ -1,0 +1,181 @@
+---
+import type { CitySummary } from '../utils/posts';
+
+interface Props {
+  cities: CitySummary[];
+  compact?: boolean;
+}
+
+const { cities, compact = false } = Astro.props;
+const defaultCity = cities[0];
+
+const clientData = cities.map((c) => ({
+  name: c.city.name,
+  province: c.city.province,
+  region: c.city.region,
+  poeticNote: c.city.poeticNote,
+  mapX: c.city.mapX,
+  mapY: c.city.mapY,
+  count: c.posts.length,
+  posts: c.posts.map((p) => ({
+    title: p.subtitle ? `${p.title} · ${p.subtitle}` : p.title,
+    url: p.url,
+    date: p.dateFormatted,
+  })),
+}));
+
+// Connect cities in chronological or geographical constellation lines
+const constellationPoints = cities.map((c) => `${c.city.mapX},${c.city.mapY}`).join(' ');
+---
+<section class="bento-card footprint-bento" data-footprint-widget>
+  <div class="map-stage">
+    <svg class="china-svg" viewBox="60 80 680 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="游记足迹星图">
+      <defs>
+        <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="var(--c-travel)" stop-opacity="0.55" />
+          <stop offset="100%" stop-color="var(--c-travel)" stop-opacity="0" />
+        </radialGradient>
+        <pattern id="starGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+        </pattern>
+      </defs>
+
+      <!-- Subtle celestial coordinate grid -->
+      <rect x="60" y="80" width="680" height="440" fill="url(#starGrid)" />
+
+      <!-- Stylized China Horizon Contour -->
+      <path
+        d="M110,195 C140,145 215,125 280,148 C345,168 415,155 480,135 C540,115 610,95 665,120 C705,140 715,190 680,225 C645,255 660,305 665,345 C668,385 638,425 595,450 C550,475 520,495 495,492 C465,488 440,475 405,472 C375,468 355,430 325,405 C280,375 215,365 165,320 C120,280 90,235 110,195 Z"
+        fill="rgba(56, 189, 248, 0.03)"
+        stroke="rgba(56, 189, 248, 0.16)"
+        stroke-width="1.2"
+        stroke-dasharray="6 4"
+      />
+
+      <!-- Constellation lines connecting visited cities -->
+      <polyline points={constellationPoints} class="map-constellation-line" />
+
+      <!-- Visited City Nodes -->
+      {cities.map((item, idx) => (
+        <g
+          class={`map-node ${idx === 0 ? 'active' : ''}`}
+          data-city-node={item.city.name}
+          transform={`translate(${item.city.mapX}, ${item.city.mapY})`}
+        >
+          <circle r="24" fill="transparent" />
+          <circle r="18" fill="url(#nodeGlow)" />
+          <circle r={Math.min(11, 5 + item.posts.length)} class="pulse-ring" />
+          <circle r={Math.min(7, 3.5 + item.posts.length * 0.5)} class="core-dot" />
+          <text
+            y={item.city.mapY > 400 ? 16 : -11}
+            text-anchor="middle"
+            class="map-node-label"
+          >
+            {item.city.name}
+          </text>
+        </g>
+      ))}
+    </svg>
+    <div style="position:absolute;bottom:10px;left:14px;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-muted);pointer-events:none;">
+      ✦ 漫游星图 · 已点亮 {cities.length} 座城 / 共 {cities.reduce((s, c) => s + c.posts.length, 0)} 篇游记（点击星点切换）
+    </div>
+  </div>
+
+  <div class="footprint-panel">
+    <div class="footprint-header">
+      <div class="footprint-title">
+        <span>🧭</span>
+        <span>远方足迹 · 城市漫游墙</span>
+      </div>
+      {compact && (
+        <a href="/travels/" style="font-size:12.5px;color:var(--c-travel);text-decoration:none;">
+          全部游记 →
+        </a>
+      )}
+    </div>
+
+    <div class="city-chips-wall">
+      {cities.map((item, idx) => (
+        <button
+          type="button"
+          class={`city-chip ${idx === 0 ? 'active' : ''}`}
+          data-city-chip={item.city.name}
+        >
+          <span>{item.city.name}</span>
+          <span class="count">{item.posts.length}</span>
+        </button>
+      ))}
+    </div>
+
+    {defaultCity && (
+      <div class="city-detail-box" data-city-detail>
+        <div>
+          <div class="city-detail-top">
+            <span class="city-detail-name" data-detail-name>
+              {defaultCity.city.province} · {defaultCity.city.name}
+            </span>
+            <span class="city-detail-region" data-detail-region>
+              {defaultCity.city.region} · {defaultCity.posts.length} 篇
+            </span>
+          </div>
+          <p class="city-detail-note" data-detail-note>{defaultCity.city.poeticNote}</p>
+        </div>
+        <div class="city-post-links" data-detail-posts>
+          {defaultCity.posts.map((p) => (
+            <a href={p.url} class="city-post-link">
+              <span>✦ {p.subtitle ? `${p.title} · ${p.subtitle}` : p.title}</span>
+              <span class="date">{p.dateFormatted}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+
+  <script is:inline define:vars={{ clientData }}>
+    function initFootprintWidgets() {
+      const widgets = document.querySelectorAll('[data-footprint-widget]');
+      widgets.forEach((widget) => {
+        if (widget.dataset.bound === 'true') return;
+        widget.dataset.bound = 'true';
+
+        const nodes = widget.querySelectorAll('[data-city-node]');
+        const chips = widget.querySelectorAll('[data-city-chip]');
+        const nameEl = widget.querySelector('[data-detail-name]');
+        const regionEl = widget.querySelector('[data-detail-region]');
+        const noteEl = widget.querySelector('[data-detail-note]');
+        const postsEl = widget.querySelector('[data-detail-posts]');
+
+        function selectCity(cityName) {
+          const info = clientData.find((c) => c.name === cityName);
+          if (!info) return;
+
+          nodes.forEach((n) => n.classList.toggle('active', n.getAttribute('data-city-node') === cityName));
+          chips.forEach((c) => c.classList.toggle('active', c.getAttribute('data-city-chip') === cityName));
+
+          if (nameEl) nameEl.textContent = `${info.province} · ${info.name}`;
+          if (regionEl) regionEl.textContent = `${info.region} · ${info.count} 篇`;
+          if (noteEl) noteEl.textContent = info.poeticNote;
+          if (postsEl) {
+            postsEl.innerHTML = info.posts
+              .map(
+                (p) =>
+                  `<a href="${p.url}" class="city-post-link"><span>✦ ${p.title}</span><span class="date">${p.date}</span></a>`
+              )
+              .join('');
+          }
+        }
+
+        nodes.forEach((node) => {
+          node.addEventListener('click', () => selectCity(node.getAttribute('data-city-node')));
+        });
+        chips.forEach((chip) => {
+          chip.addEventListener('click', () => selectCity(chip.getAttribute('data-city-chip')));
+        });
+      });
+    }
+
+    initFootprintWidgets();
+    document.addEventListener('astro:page-load', initFootprintWidgets);
+  </script>
+</section>

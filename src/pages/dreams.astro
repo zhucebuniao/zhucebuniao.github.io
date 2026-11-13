@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { CATEGORIES, getAllPosts } from '../utils/posts';
+
+const allPosts = await getAllPosts();
+const posts = allPosts.filter((p) => p.category === 'dream');
+const meta = CATEGORIES.dream;
+
+// Group by month
+const months = Array.from(new Set(posts.map((p) => p.month)));
+---
+<BaseLayout title={meta.label} description={meta.description} pageCat="dream">
+  <section class="bento-card archive-hero" style="background:radial-gradient(circle at 90% 20%, rgba(192,132,252,0.18), transparent 60%), var(--surface);">
+    <div>
+      <div class="intro-badge" style="margin-bottom:10px;">✦ {meta.enLabel} ARCHIVE</div>
+      <h1 class="archive-hero-title">
+        <span>{meta.icon}</span>
+        <span>{meta.label} · {meta.tagline}</span>
+      </h1>
+      <p class="archive-hero-desc">{meta.description}</p>
+    </div>
+    <div style="font-family:var(--font-mono);text-align:right;">
+      <div style="font-size:32px;font-weight:600;color:var(--c-dream);">{posts.length}</div>
+      <div style="font-size:12px;color:var(--ink-muted);">已记录梦境</div>
+    </div>
+  </section>
+
+  {months.map((month) => (
+    <div class="archive-month-group">
+      <div class="archive-month-label">✦ {month}</div>
+      <div class="posts-grid">
+        {posts.filter((p) => p.month === month).map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    </div>
+  ))}
+</BaseLayout>

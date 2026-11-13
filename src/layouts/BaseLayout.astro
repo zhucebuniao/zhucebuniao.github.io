@@ -1,0 +1,363 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import SearchModal from '../components/SearchModal.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pageCat?: string;
+}
+
+const {
+  title = '梦与远方',
+  description = '夜里写下的梦境，白天去过的远方 · 暗夜极光文学博客',
+  pageCat = 'all',
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const fullTitle = title === '梦与远方' ? '梦与远方 · 夜与远行的星群档案' : `${title} · 梦与远方`;
+---
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-font-size="md">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="alternate" type="application/rss+xml" title="梦与远方 RSS" href="/rss.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;450;500;600&family=Ma+Shan+Zheng&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <ClientRouter />
+
+  <script is:inline>
+    function applyPreferences() {
+      const savedTheme = localStorage.getItem('zyf-theme') || 'dark';
+      const savedFont = localStorage.getItem('zyf-font-size') || 'md';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.setAttribute('data-font-size', savedFont);
+    }
+    applyPreferences();
+    document.addEventListener('astro:after-swap', applyPreferences);
+  </script>
+</head>
+<body data-page-cat={pageCat}>
+  <!-- Persistent Ambient Cosmos & Starfield -->
+  <div class="cosmos-backdrop" transition:persist="cosmos">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+    <div class="aurora-blob b3"></div>
+  </div>
+  <canvas id="starfield-canvas" transition:persist="starfield" aria-hidden="true"></canvas>
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <div class="site-shell">
+    <header class="top-nav-wrap">
+      <nav class="top-nav" aria-label="主导航">
+        <a href="/" class="brand-link">
+          <span class="brand-orb">🌙</span>
+          <span class="brand-title">梦与远方</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="/" class={`nav-item ${pathname === '/' ? 'active' : ''}`}>首页</a>
+          <a href="/dreams/" class={`nav-item ${pathname.startsWith('/dreams') ? 'active' : ''}`}>
+            <span class="dot dream"></span>梦境
+          </a>
+          <a href="/travels/" class={`nav-item ${pathname.startsWith('/travels') ? 'active' : ''}`}>
+            <span class="dot travel"></span>游记
+          </a>
+          <a href="/novel/" class={`nav-item ${pathname.startsWith('/novel') ? 'active' : ''}`}>
+            <span class="dot novel"></span>小说
+          </a>
+          <a href="/diary/" class={`nav-item ${pathname.startsWith('/diary') ? 'active' : ''}`}>
+            <span class="dot diary"></span>日记
+          </a>
+          <a href="/about/" class={`nav-item ${pathname.startsWith('/about') ? 'active' : ''}`}>关于</a>
+        </div>
+
+        <div class="nav-actions">
+          <button type="button" class="search-trigger" id="open-search-btn" aria-label="打开搜索">
+            <span class="search-icon" style="display:inline-flex;align-items:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+            <span>搜索</span>
+            <kbd class="search-kbd">⌘K</kbd>
+          </button>
+
+          <button type="button" class="icon-btn" id="theme-toggle-btn" title="切换星空暗色 / 晨曦浅色" aria-label="切换主题">
+            <span id="theme-icon">✦</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div>✦ 梦与远方 · 夜里写下的梦，白天去过的地方</div>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <a href="/rss.xml" style="color:var(--ink-muted);text-decoration:none;">RSS 订阅</a>
+        <a href="/about/" style="color:var(--ink-muted);text-decoration:none;">关于角落</a>
+      </div>
+    </footer>
+  </div>
+
+  <SearchModal />
+
+  <!-- Global Image Lightbox -->
+  <div id="lightbox" class="lightbox-backdrop" role="dialog" aria-modal="true" aria-label="图片预览">
+    <img id="lightbox-img" class="lightbox-img" src="" alt="" />
+    <div id="lightbox-caption" class="lightbox-caption"></div>
+  </div>
+
+  <!-- Starfield Canvas Script (runs once and persists across transitions) -->
+  <script is:inline>
+    (function initStarfield() {
+      const canvas = document.getElementById('starfield-canvas');
+      if (!canvas || canvas.dataset.initialized === 'true') return;
+      canvas.dataset.initialized = 'true';
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      const starCount = Math.min(110, Math.floor((width * height) / 14000));
+      const stars = Array.from({ length: starCount }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 1.35 + 0.3,
+        alpha: Math.random() * 0.65 + 0.15,
+        speed: (Math.random() * 0.012 + 0.004) * (Math.random() > 0.5 ? 1 : -1),
+        driftY: -Math.random() * 0.08 - 0.02,
+      }));
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, { passive: true });
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        for (const s of stars) {
+          s.alpha += s.speed;
+          if (s.alpha > 0.85 || s.alpha < 0.12) s.speed = -s.speed;
+          s.y += s.driftY;
+          if (s.y < 0) s.y = height;
+
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = isLight
+            ? `rgba(90, 70, 140, ${s.alpha * 0.45})`
+            : `rgba(232, 226, 255, ${s.alpha})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+
+  <!-- Interactive UI Controller: Theme, Search (⌘K), Spotlight, Lightbox -->
+  <script is:inline>
+    let cachedSearchIndex = null;
+
+    async function loadSearchIndex() {
+      if (cachedSearchIndex) return cachedSearchIndex;
+      try {
+        const res = await fetch('/search.json');
+        cachedSearchIndex = await res.json();
+        return cachedSearchIndex;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function highlightText(text, query) {
+      if (!query) return escapeHtml(text);
+      const safeText = escapeHtml(text);
+      const safeQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return safeText.replace(new RegExp(`(${safeQ})`, 'gi'), '<mark class="search-highlight">$1</mark>');
+    }
+
+    function setupPageInteractions() {
+      // 1. Theme toggle
+      const themeBtn = document.getElementById('theme-toggle-btn');
+      const themeIcon = document.getElementById('theme-icon');
+      function updateThemeIcon() {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        if (themeIcon) themeIcon.textContent = cur === 'dark' ? '☀️' : '🌙';
+      }
+      updateThemeIcon();
+
+      if (themeBtn && !themeBtn.dataset.bound) {
+        themeBtn.dataset.bound = 'true';
+        themeBtn.addEventListener('click', () => {
+          const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = cur === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('zyf-theme', next);
+          updateThemeIcon();
+        });
+      }
+
+      // 2. Spotlight hover effect on Bento cards
+      document.querySelectorAll('.bento-card').forEach((card) => {
+        if (card.dataset.spotBound) return;
+        card.dataset.spotBound = 'true';
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        });
+      });
+
+      // 3. Search Modal
+      const modal = document.getElementById('search-modal');
+      const openBtn = document.getElementById('open-search-btn');
+      const closeBtn = document.getElementById('search-close-btn');
+      const input = document.getElementById('search-input');
+      const resultsBox = document.getElementById('search-results');
+
+      async function openSearch() {
+        if (!modal) return;
+        modal.classList.add('open');
+        setTimeout(() => input && input.focus(), 40);
+        const data = await loadSearchIndex();
+        if (input && !input.value.trim()) {
+          renderSearchResults(data.slice(0, 8), '');
+        }
+      }
+
+      function closeSearch() {
+        if (!modal) return;
+        modal.classList.remove('open');
+      }
+
+      function renderSearchResults(items, q) {
+        if (!resultsBox) return;
+        if (!items.length) {
+          resultsBox.innerHTML = `<div style="padding:28px 16px;text-align:center;color:var(--ink-muted);font-size:13.5px;">未找到与「${escapeHtml(q)}」相关的文章 ✦</div>`;
+          return;
+        }
+        resultsBox.innerHTML = items
+          .map((item) => {
+            let snippet = item.excerpt;
+            if (q && item.plainText) {
+              const idx = item.plainText.toLowerCase().indexOf(q.toLowerCase());
+              if (idx !== -1) {
+                const start = Math.max(0, idx - 24);
+                snippet = (start > 0 ? '…' : '') + item.plainText.slice(start, idx + 64) + '…';
+              }
+            }
+            return `
+              <a href="${item.url}" class="search-result-item">
+                <div class="search-result-top">
+                  <span class="search-result-title">${highlightText(item.title, q)}${item.subtitle ? ' · ' + highlightText(item.subtitle, q) : ''}</span>
+                  <span class="cat-pill ${item.category}" style="font-size:10px;padding:2px 8px;">${item.categoryLabel}${item.city ? ' · ' + item.city : ''}</span>
+                </div>
+                <div class="search-result-snippet">${highlightText(snippet, q)}</div>
+              </a>
+            `;
+          })
+          .join('');
+      }
+
+      if (openBtn && !openBtn.dataset.bound) {
+        openBtn.dataset.bound = 'true';
+        openBtn.addEventListener('click', openSearch);
+      }
+      if (closeBtn && !closeBtn.dataset.bound) {
+        closeBtn.dataset.bound = 'true';
+        closeBtn.addEventListener('click', closeSearch);
+      }
+      if (modal && !modal.dataset.bound) {
+        modal.dataset.bound = 'true';
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeSearch();
+        });
+      }
+      if (input && !input.dataset.bound) {
+        input.dataset.bound = 'true';
+        input.addEventListener('input', async () => {
+          const q = input.value.trim();
+          const data = await loadSearchIndex();
+          if (!q) {
+            renderSearchResults(data.slice(0, 8), '');
+            return;
+          }
+          const lower = q.toLowerCase();
+          const matched = data.filter(
+            (item) =>
+              item.title.toLowerCase().includes(lower) ||
+              (item.subtitle && item.subtitle.toLowerCase().includes(lower)) ||
+              (item.city && item.city.toLowerCase().includes(lower)) ||
+              item.categoryLabel.includes(lower) ||
+              item.plainText.toLowerCase().includes(lower)
+          );
+          renderSearchResults(matched.slice(0, 15), q);
+        });
+      }
+
+      // 4. Image Lightbox in articles
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      document.querySelectorAll('.prose img').forEach((img) => {
+        if (img.dataset.lbBound) return;
+        img.dataset.lbBound = 'true';
+        img.addEventListener('click', () => {
+          if (!lightbox || !lightboxImg) return;
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt || '';
+          if (lightboxCaption) lightboxCaption.textContent = img.alt || '';
+          lightbox.classList.add('open');
+        });
+      });
+      if (lightbox && !lightbox.dataset.bound) {
+        lightbox.dataset.bound = 'true';
+        lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+      }
+    }
+
+    // Global keyboard shortcut ⌘K / Ctrl+K & ESC
+    if (!window.__zyfKeyBound) {
+      window.__zyfKeyBound = true;
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          const modal = document.getElementById('search-modal');
+          if (modal && modal.classList.contains('open')) {
+            modal.classList.remove('open');
+          } else {
+            const btn = document.getElementById('open-search-btn');
+            if (btn) btn.click();
+          }
+        } else if (e.key === 'Escape') {
+          const modal = document.getElementById('search-modal');
+          if (modal) modal.classList.remove('open');
+          const lb = document.getElementById('lightbox');
+          if (lb) lb.classList.remove('open');
+        }
+      });
+    }
+
+    setupPageInteractions();
+    document.addEventListener('astro:page-load', setupPageInteractions);
+  </script>
+</body>
+</html>
