@@ -1,0 +1,257 @@
+(() => {
+  const RM = Boolean(window.RM);
+  const HOOKS = (window.SCROLL_HOOKS = window.SCROLL_HOOKS || []);
+
+  // ------------------------------------------------------------------------
+  // 1. Hero 4-character scatter on scroll (#3, after drop animation ends)
+  // ------------------------------------------------------------------------
+  const ttlChars = Array.from(document.querySelectorAll('#ttl b'));
+  const fly = [
+    [-1, -0.7, -24],
+    [-0.35, -1, 18],
+    [0.45, -0.9, -16],
+    [1, -0.6, 26],
+  ];
+  let heroAnimDone = RM;
+  if (ttlChars.length && !RM) {
+    let finished = 0;
+    ttlChars.forEach((b) => {
+      b.addEventListener(
+        'animationend',
+        () => {
+          finished++;
+          if (finished >= ttlChars.length) heroAnimDone = true;
+        },
+        { once: true }
+      );
+    });
+    // Fallback if user scrolls after initial drop duration
+    setTimeout(() => {
+      heroAnimDone = true;
+    }, 1700);
+
+    HOOKS.push((y) => {
+      if (RM || !heroAnimDone) return;
+      const p = Math.min(1, Math.max(0, y / window.innerHeight));
+      for (let i = 0; i < ttlChars.length; i++) {
+        const b = ttlChars[i];
+        if (p <= 0.001) {
+          b.style.transform = '';
+          b.style.opacity = '';
+          continue;
+        }
+        const [fx, fy, deg] = fly[i] || [0, -1, 0];
+        b.style.animation = 'none';
+        b.style.transform = `translate3d(${fx * 60 * p}vw, ${fy * 70 * p}vh, 0) rotate(${deg * p}deg) scale(${1 + p * 0.6})`;
+        b.style.opacity = String(Math.max(0, 1 - p * 1.15));
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 2. Stat Counters (#7)
+  // ------------------------------------------------------------------------
+  const statNums = document.querySelectorAll('#stats .n[data-n]');
+  if (statNums.length && 'IntersectionObserver' in window) {
+    const cio = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target;
+          const target = Number(el.dataset.n || 0);
+          cio.unobserve(el);
+          if (RM) {
+            el.textContent = String(target);
+            continue;
+          }
+          const start = performance.now();
+          const dur = 1400;
+          const tick = (now) => {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 4);
+            el.textContent = String(Math.round(target * eased));
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.6 }
+    );
+    statNums.forEach((n) => cio.observe(n));
+  }
+
+  // ------------------------------------------------------------------------
+  // 3. Recent 8 Horizontal Scroll (#8) - No per-card getBoundingClientRect in loop
+  // ------------------------------------------------------------------------
+  const hz = document.getElementById('hz');
+  const rail = document.getElementById('rail');
+  const hzb = document.getElementById('hzb');
+  const hCards = rail ? Array.from(rail.querySelectorAll('.hc')) : [];
+  let railMax = 0;
+  let cardCenters = [];
+
+  function measureHorizontal() {
+    if (!rail) return;
+    railMax = Math.max(0, rail.scrollWidth - window.innerWidth);
+    cardCenters = hCards.map((c) => c.offsetLeft + c.offsetWidth * 0.5);
+  }
+  measureHorizontal();
+  window.addEventListener('resize', measureHorizontal, { passive: true });
+
+  if (hz && rail) {
+    HOOKS.push(() => {
+      const r = hz.getBoundingClientRect();
+      const total = Math.max(1, hz.offsetHeight - window.innerHeight);
+      const p = Math.min(1, Math.max(0, -r.top / total));
+      const tx = p * railMax;
+      rail.style.transform = `translate3d(${-tx}px, 0, 0)`;
+      if (hzb) hzb.style.transform = `scaleX(${p})`;
+
+      if (RM) return;
+      const halfW = window.innerWidth * 0.5;
+      for (let i = 0; i < hCards.length; i++) {
+        const screenCenter = cardCenters[i] - tx;
+        const off = Math.max(-1.2, Math.min(1.2, (screenCenter - halfW) / halfW));
+        const absOff = Math.abs(off);
+        hCards[i].style.transform = `rotate(${off * 14}deg) translateY(${absOff * 90}px) scale(${1 - absOff * 0.18})`;
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 4. Archive Filtering & Search Highlight (§7.1, §10.4)
+  // ------------------------------------------------------------------------
+  const catBtns = Array.from(document.querySelectorAll('.filters [data-cat]'));
+  const cityBtns = Array.from(document.querySelectorAll('#cloud .city[data-city]'));
+  const qInput = document.getElementById('q');
+  const cntEl = document.getElementById('cnt');
+  const emptyEl = document.getElementById('empty');
+  const archiveEl = document.getElementById('archive');
+  const monthGroups = Array.from(document.querySelectorAll('#list .month-group'));
+  const cards = Array.from(document.querySelectorAll('#list .card'));
+  const totalPosts = cards.length;
+
+  let cat = 'all';
+  let city = null;
+  let q = '';
+
+  const esc = (s) =>
+    String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+  const hl = (text, query) => {
+    const safe = esc(text);
+    if (!query) return safe;
+    const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return safe.replace(re, '<mark>$1</mark>');
+  };
+
+  function render() {
+    let shown = 0;
+    for (const card of cards) {
+      const okCat = cat === 'all' || card.dataset.c === cat;
+      const okCity = !city || card.dataset.city === city;
+      const okQ = !q || (card.dataset.q || '').includes(q);
+      const vis = okCat && okCity && okQ;
+      card.hidden = !vis;
+      if (vis) {
+        shown++;
+        const tEl = card.querySelector('.card-title');
+        const stEl = card.querySelector('.card-st');
+        const exEl = card.querySelector('.card-ex');
+        if (tEl) tEl.innerHTML = hl(card.dataset.title || '', q);
+        if (stEl) stEl.innerHTML = hl(card.dataset.st || '', q);
+        if (exEl) {
+          const rawEx = card.dataset.ex || '';
+          exEl.innerHTML = hl(rawEx, q) + (rawEx.length >= 80 ? '…' : '');
+        }
+      }
+    }
+
+    for (const group of monthGroups) {
+      const hasVisible = Boolean(group.querySelector('.card:not([hidden])'));
+      group.hidden = !hasVisible;
+    }
+
+    if (cntEl) {
+      cntEl.textContent = `${shown} / ${totalPosts} 篇${city ? ' · ' + city : ''}`;
+    }
+    if (emptyEl) {
+      emptyEl.hidden = shown > 0;
+    }
+
+    catBtns.forEach((b) => {
+      const active = b.dataset.cat === cat;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+    cityBtns.forEach((b) => {
+      const active = b.dataset.city === city;
+      b.classList.toggle('sel', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+
+    if (window.observeReveal) window.observeReveal(document.getElementById('list'));
+  }
+
+  catBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const next = btn.dataset.cat || 'all';
+      cat = next;
+      if (next !== 'all' && next !== 'travel') {
+        city = null;
+      }
+      render();
+    });
+  });
+
+  cityBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.city || '';
+      if (city === name) {
+        city = null;
+      } else {
+        city = name;
+        cat = 'travel';
+        archiveEl?.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' });
+      }
+      render();
+    });
+  });
+
+  if (qInput) {
+    qInput.addEventListener('input', () => {
+      q = qInput.value.trim();
+      render();
+    });
+  }
+
+  // Hero "读一个梦" CTA
+  const dreamBtn = document.getElementById('hero-dream-btn');
+  if (dreamBtn) {
+    dreamBtn.addEventListener('click', () => {
+      cat = 'dream';
+      city = null;
+      render();
+      archiveEl?.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' });
+    });
+  }
+
+  // "/" shortcut to focus search
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== qInput && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName || '')) {
+      e.preventDefault();
+      archiveEl?.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' });
+      qInput?.focus();
+    }
+  });
+
+  // Support ?cat= from redirects
+  const urlCat = new URLSearchParams(window.location.search).get('cat');
+  if (urlCat && ['dream', 'travel', 'novel', 'diary'].includes(urlCat)) {
+    cat = urlCat;
+    render();
+  }
+})();

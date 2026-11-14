@@ -1,0 +1,122 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { CN, CI, type PostItem } from '../lib/posts';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  post: PostItem;
+  toc: Heading[];
+  prev: PostItem | null;
+  next: PostItem | null;
+}
+
+const { post, toc, prev, next } = Astro.props;
+const readMin = Math.max(1, Math.round(post.w / 350));
+const titleChars = [...post.t];
+---
+<BaseLayout
+  title={post.st ? `${post.t} · ${post.st}` : post.t}
+  description={post.ex}
+>
+  <header class={`rhero ${post.c}`}>
+    <div class="rhero-inner">
+      <div class="rhero-tags">
+        <span class={`tag ${post.c}`}>{CI[post.c]} {CN[post.c]}</span>
+        {post.loc && <span class="tag">📍 {post.loc}</span>}
+        <span class="tag">📅 {post.d}</span>
+        <span class="tag">✍️ {post.w} 字 · 约 {readMin} 分钟</span>
+      </div>
+      <h1 aria-label={post.t}>
+        {titleChars.map((ch, i) => (
+          <span aria-hidden="true" style={`animation-delay:${i * 80}ms`}>{ch}</span>
+        ))}
+      </h1>
+      {post.st && <p class="rhero-sub">{post.st}</p>}
+    </div>
+  </header>
+
+  <div class="mq alt" aria-hidden="true">
+    <div class="track">
+      <div class="chunk">
+        <span>{CI[post.c]} {CN[post.c]}</span><span class="sep"></span>
+        <span>{post.t}</span><span class="sep"></span>
+        <span>{post.d}</span><span class="sep"></span>
+        <span>{post.w} 字</span><span class="sep"></span>
+        {post.loc && (
+          <>
+            <span>{post.loc}</span><span class="sep"></span>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <div class="rbody">
+    <aside class="toc" aria-label="阅读辅助">
+      <div class="toc-box">
+        <div class="toc-title">
+          <span>字号</span>
+          <span>Aa</span>
+        </div>
+        <div class="fs-row" role="group" aria-label="正文字号切换">
+          <button type="button" class="btn" data-fs="17">小</button>
+          <button type="button" class="btn on" data-fs="19">中</button>
+          <button type="button" class="btn" data-fs="22">大</button>
+        </div>
+      </div>
+
+      {toc.length > 0 && (
+        <nav class="toc-box" aria-label="章节目录">
+          <div class="toc-title">
+            <span>目录</span>
+            <span>{toc.length} 节</span>
+          </div>
+          <ul class="toc-list">
+            {toc.map((h) => (
+              <li>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </aside>
+
+    <article class="prose" id="article">
+      <slot />
+    </article>
+  </div>
+
+  <nav class="next" aria-label="上下篇导航">
+    {prev ? (
+      <a href={prev.u} class="next-card">
+        <span class="next-dir">← 更早一篇 · {CI[prev.c]} {CN[prev.c]} · {prev.d}</span>
+        <span class="next-t">{prev.t}</span>
+      </a>
+    ) : <div />}
+
+    {next ? (
+      <a href={next.u} class="next-card" style="text-align:right;">
+        <span class="next-dir">{next.d} · {CI[next.c]} {CN[next.c]} · 更新一篇 →</span>
+        <span class="next-t">{next.t}</span>
+      </a>
+    ) : <div />}
+  </nav>
+
+  <div class="pct" aria-label="阅读进度">
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="bg" cx="50" cy="50" r="44"></circle>
+      <circle id="arc" cx="50" cy="50" r="44"></circle>
+    </svg>
+    <span class="pct-num" id="pct-num">0%</span>
+  </div>
+
+  <script slot="scripts">
+    import '../scripts/read.js';
+  </script>
+</BaseLayout>

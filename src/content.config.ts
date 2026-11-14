@@ -10,8 +10,12 @@ const posts = defineCollection({
   schema: z.object({
     layout: z.string().optional(),
     title: z.string(),
+    subtitle: z.string().optional(),
     date: z.coerce.date(),
     category: z.enum(['dream', 'travel', 'novel', 'diary']).default('dream'),
+    city: z.string().optional(),
+    location: z.string().optional(),
+    excerpt: z.string().optional(),
     description: z.string().optional(),
     tags: z.array(z.string()).optional(),
   }),

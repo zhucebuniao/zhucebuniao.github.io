@@ -1,163 +1,211 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
-import TravelMap from '../components/TravelMap.astro';
-import { getAllPosts, groupTravelsByCity } from '../utils/posts';
+import { getPosts, getCityStats, CN, CI, hashRot, type PostItem } from '../lib/posts';
 
-const allPosts = await getAllPosts();
-const dreams = allPosts.filter((p) => p.category === 'dream');
-const travels = allPosts.filter((p) => p.category === 'travel');
-const novels = allPosts.filter((p) => p.category === 'novel');
-const diaries = allPosts.filter((p) => p.category === 'diary');
+const posts = await getPosts();
+const cities = getCityStats(posts);
+const counts = {
+  dream: posts.filter((p) => p.c === 'dream').length,
+  travel: posts.filter((p) => p.c === 'travel').length,
+  novel: posts.filter((p) => p.c === 'novel').length,
+  diary: posts.filter((p) => p.c === 'diary').length,
+};
+const totalWords = posts.reduce((sum, p) => sum + p.w, 0);
+const recent8 = posts.slice(0, 8);
 
-const latestDream = dreams[0];
-const latestTravel = travels[0];
-const citySummaries = groupTravelsByCity(allPosts);
+// Group archive posts by YYYY.MM
+const monthMap = new Map<string, PostItem[]>();
+for (const p of posts) {
+  const ym = p.d.slice(0, 7);
+  const arr = monthMap.get(ym) ?? [];
+  arr.push(p);
+  monthMap.set(ym, arr);
+}
+const months = Array.from(monthMap.entries());
 ---
-<BaseLayout title="梦与远方">
-  <!-- Bento Hero Grid -->
-  <section class="bento-hero">
-    <!-- Main Intro Bento Card -->
-    <div class="bento-card bento-intro">
-      <div>
-        <div class="intro-badge">
-          <span>✦</span>
-          <span>COSMOS & HORIZON · 梦境与远行档案</span>
-        </div>
-        <h1 class="intro-title">梦与远方</h1>
-        <p class="intro-subtitle">
-          夜里在星群间拾起凌晨三点的梦境，白天去山海与古镇淋一场不打算躲的雨。这里存放着那些转瞬即逝的微光、风声与故事。
-        </p>
-      </div>
-
-      <div class="intro-stats-grid">
-        <a href="/dreams/" class="stat-pill dream">
-          <span class="num">{dreams.length}</span>
-          <span class="lbl"><span>梦境</span><span>🌙</span></span>
-        </a>
-        <a href="/travels/" class="stat-pill travel">
-          <span class="num">{travels.length}</span>
-          <span class="lbl"><span>游记</span><span>🧭</span></span>
-        </a>
-        <a href="/novel/" class="stat-pill novel">
-          <span class="num">{novels.length}</span>
-          <span class="lbl"><span>小说</span><span>🌊</span></span>
-        </a>
-        <a href="/diary/" class="stat-pill diary">
-          <span class="num">{diaries.length}</span>
-          <span class="lbl"><span>日记</span><span>🌱</span></span>
-        </a>
-      </div>
+<BaseLayout title="梦与远方" description="夜里写下的梦境，白天去过的远方" totalPosts={posts.length}>
+  <section id="hero">
+    <h1 id="ttl" aria-label="梦与远方">
+      <b aria-hidden="true">梦</b>
+      <b aria-hidden="true">与</b>
+      <b aria-hidden="true">远</b>
+      <b aria-hidden="true">方</b>
+    </h1>
+    <p class="hero-sub">夜里写下的梦境，白天去过的远方。</p>
+    <div class="hero-cta">
+      <button type="button" class="btn o" id="hero-dream-btn">🌙 读一个梦</button>
+      <a href="#archive" class="btn on">📚 浏览全部</a>
     </div>
-
-    <!-- Side Stack: Latest Dream & Latest Travel -->
-    <div class="bento-side-stack">
-      {latestDream && (
-        <a href={latestDream.url} class="bento-card spotlight-card dream-spot">
-          <div>
-            <div class="spot-header">
-              <span class="spot-badge dream">🌙 最新梦境</span>
-              <span>{latestDream.dateFormatted}</span>
-            </div>
-            <h2 class="spot-title">{latestDream.title}</h2>
-            <p class="spot-excerpt">{latestDream.excerpt}</p>
-          </div>
-          <div style="margin-top:12px;font-size:12px;color:var(--c-dream);font-family:var(--font-mono);">
-            潜入梦境 →
-          </div>
-        </a>
-      )}
-
-      {latestTravel && (
-        <a href={latestTravel.url} class="bento-card spotlight-card travel-spot">
-          <div>
-            <div class="spot-header">
-              <span class="spot-badge travel">
-                🧭 最新远行 {latestTravel.city ? `· ${latestTravel.city.name}` : ''}
-              </span>
-              <span>{latestTravel.dateFormatted}</span>
-            </div>
-            <h2 class="spot-title">
-              {latestTravel.subtitle ? `${latestTravel.title} · ${latestTravel.subtitle}` : latestTravel.title}
-            </h2>
-            <p class="spot-excerpt">{latestTravel.excerpt}</p>
-          </div>
-          <div style="margin-top:12px;font-size:12px;color:var(--c-travel);font-family:var(--font-mono);">
-            踏上旅途 →
-          </div>
-        </a>
-      )}
+    <div class="badge spin" aria-label={`共 ${posts.length} 篇文章，${cities.length} 座城市`}>
+      <span>{posts.length} 篇</span>
+      <span>{cities.length} 座城</span>
     </div>
-
-    <!-- Full-width Travel Constellation Map & City Wall -->
-    <TravelMap cities={citySummaries} compact={true} />
+    <div class="scroll-hint" aria-hidden="true">↓ 往下滚</div>
   </section>
 
-  <!-- All Posts Stream with Instant Category Filter -->
-  <section id="stream">
-    <div class="feed-section-head">
-      <h2 class="section-heading">
-        <span class="sparkle">✦</span>
-        <span>全部篇章</span>
-        <span id="visible-count" style="font-family:var(--font-mono);font-size:13px;color:var(--ink-muted);font-weight:400;">
-          ({allPosts.length})
-        </span>
-      </h2>
+  <div class="mq" id="mq1" aria-hidden="true">
+    <div class="track">
+      <div class="chunk">
+        {cities.map((c) => (
+          <>
+            <span>🧭 {c.name} · {c.count}</span>
+            <span class="sep"></span>
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
 
-      <div class="filter-tabs" role="tablist" aria-label="按分类筛选文章">
-        <button type="button" class="filter-tab active" data-filter="all">
-          全部 <span style="opacity:0.65;font-size:11px;">{allPosts.length}</span>
-        </button>
-        <button type="button" class="filter-tab" data-filter="dream">
-          🌙 梦境 <span style="opacity:0.65;font-size:11px;">{dreams.length}</span>
-        </button>
-        <button type="button" class="filter-tab" data-filter="travel">
-          🧭 游记 <span style="opacity:0.65;font-size:11px;">{travels.length}</span>
-        </button>
-        <button type="button" class="filter-tab" data-filter="novel">
-          🌊 小说 <span style="opacity:0.65;font-size:11px;">{novels.length}</span>
-        </button>
-        <button type="button" class="filter-tab" data-filter="diary">
-          🌱 日记 <span style="opacity:0.65;font-size:11px;">{diaries.length}</span>
-        </button>
+  <div class="mq alt" aria-hidden="true">
+    <div class="track">
+      <div class="chunk">
+        <span>🌙 梦境 {counts.dream}</span><span class="sep"></span>
+        <span>🧭 游记 {counts.travel}</span><span class="sep"></span>
+        <span>🌊 小说 {counts.novel}</span><span class="sep"></span>
+        <span>🌱 日记 {counts.diary}</span><span class="sep"></span>
+        <span>📚 存档 {posts.length} 篇</span><span class="sep"></span>
+      </div>
+    </div>
+  </div>
+
+  <section class="wrap" aria-label="站点统计">
+    <div id="stats">
+      <div class="stat rv">
+        <div class="n" data-n={posts.length}>{posts.length}</div>
+        <div class="l">篇存档</div>
+      </div>
+      <div class="stat rv" style="transition-delay:80ms">
+        <div class="n" data-n={cities.length}>{cities.length}</div>
+        <div class="l">座漫游城市</div>
+      </div>
+      <div class="stat rv" style="transition-delay:160ms">
+        <div class="n" data-n={counts.dream}>{counts.dream}</div>
+        <div class="l">个夜半梦境</div>
+      </div>
+      <div class="stat rv" style="transition-delay:240ms">
+        <div class="n" data-n={Math.round(totalWords / 1000)}>{Math.round(totalWords / 1000)}</div>
+        <div class="l">千字写作</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hz" aria-label="最近 8 篇文章">
+    <div class="pin">
+      <div class="hz-head">
+        <h2 class="sec sk">最近 <em>8</em> 篇</h2>
+        <span class="tag">← 横向漫游 →</span>
+      </div>
+      <div id="rail">
+        {recent8.map((p, idx) => (
+          <a href={p.u} class="hc">
+            <div class="hc-top">
+              <span class="hc-num">{String(idx + 1).padStart(2, '0')}</span>
+              <span class={`tag ${p.c}`}>{CI[p.c]} {CN[p.c]}</span>
+            </div>
+            <div>
+              <h3>{p.t}</h3>
+              {p.st && <p style="margin-top:6px;font-weight:800;">{p.st}</p>}
+              <p style="margin-top:10px;">{p.ex.slice(0, 72)}{p.ex.length > 72 ? '…' : ''}</p>
+            </div>
+            <div class="hc-foot">
+              <span>{p.d}</span>
+              <span>{p.loc || `${p.w} 字`}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="hz-prog" aria-hidden="true">
+        <div id="hzb"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cities" class="wrap" style="max-width:none;padding:96px 24px;" aria-label="漫游城市">
+    <div style="max-width:1220px;margin:0 auto;">
+      <h2 class="sec sk">{cities.length} 座城，<em>{counts.travel}</em> 场远行</h2>
+      <div id="cloud">
+        {cities.map((c, i) => (
+          <button
+            type="button"
+            class="city rv"
+            data-city={c.name}
+            aria-pressed="false"
+            style={`font-size:${18 + c.count * 6}px;--rot:${hashRot(c.name)}deg;transition-delay:${i * 40}ms`}
+          >
+            {c.name}<sup>{c.count}</sup>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="archive" class="wrap" aria-label="文章归档">
+    <h2 class="sec sk">全部 <em>归档</em></h2>
+
+    <div class="tools">
+      <div class="filters" role="group" aria-label="分类筛选">
+        <button type="button" class="btn on" data-cat="all" aria-pressed="true">全部 ({posts.length})</button>
+        <button type="button" class="btn" data-cat="dream" aria-pressed="false">🌙 梦境 ({counts.dream})</button>
+        <button type="button" class="btn" data-cat="travel" aria-pressed="false">🧭 游记 ({counts.travel})</button>
+        <button type="button" class="btn" data-cat="novel" aria-pressed="false">🌊 小说 ({counts.novel})</button>
+        <button type="button" class="btn" data-cat="diary" aria-pressed="false">🌱 日记 ({counts.diary})</button>
+      </div>
+      <div class="search-wrap">
+        <input
+          id="q"
+          type="search"
+          placeholder="搜索标题 / 摘要 / 地点（按 / 聚焦）"
+          aria-label="搜索文章"
+          autocomplete="off"
+        />
+        <span id="cnt" aria-live="polite">{posts.length} / {posts.length} 篇</span>
       </div>
     </div>
 
-    <div class="posts-grid" id="home-posts-grid">
-      {allPosts.map((post) => (
-        <PostCard post={post} />
+    <div id="list">
+      {months.map(([ym, items]) => (
+        <div class="month-group" data-ym={ym}>
+          <div class="month">
+            <span class="month-big">{ym}</span>
+            <span class="month-tag">{items.length} 篇</span>
+          </div>
+          <div class="grid">
+            {items.map((p, idx) => (
+              <a
+                href={p.u}
+                class="card rv"
+                data-c={p.c}
+                data-city={p.city}
+                data-q={`${p.t} ${p.st} ${p.ex} ${p.loc}`}
+                data-title={p.t}
+                data-st={p.st}
+                data-ex={p.ex.slice(0, 80)}
+                style={`--rot:${p.rot}deg;transition-delay:${(idx % 4) * 70}ms`}
+              >
+                <div class="card-top">
+                  <span class={`tag ${p.c}`}>{CI[p.c]} {CN[p.c]}</span>
+                  {p.loc && <span class="tag">{p.loc}</span>}
+                </div>
+                <div>
+                  <h3 class="card-title">{p.t}</h3>
+                  {p.st && <p class="st card-st">{p.st}</p>}
+                  <p class="ex card-ex" style="margin-top:8px;">{p.ex.slice(0, 80)}{p.ex.length > 80 ? '…' : ''}</p>
+                </div>
+                <div class="card-foot">
+                  <span>{p.d}</span>
+                  <span>{p.w} 字</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
+
+    <div id="empty" hidden>没有找到匹配的文章 ✦ 换个关键词或分类试试</div>
   </section>
 
-  <script is:inline>
-    function initHomeFilter() {
-      const tabs = document.querySelectorAll('.filter-tab[data-filter]');
-      const cards = document.querySelectorAll('#home-posts-grid .post-card');
-      const countEl = document.getElementById('visible-count');
-      if (!tabs.length || !cards.length) return;
-
-      tabs.forEach((tab) => {
-        if (tab.dataset.bound === 'true') return;
-        tab.dataset.bound = 'true';
-        tab.addEventListener('click', () => {
-          const filter = tab.getAttribute('data-filter');
-          tabs.forEach((t) => t.classList.remove('active'));
-          tab.classList.add('active');
-
-          let visible = 0;
-          cards.forEach((card) => {
-            const cat = card.getAttribute('data-category');
-            const match = filter === 'all' || cat === filter;
-            card.classList.toggle('is-hidden', !match);
-            if (match) visible++;
-          });
-          if (countEl) countEl.textContent = `(${visible})`;
-        });
-      });
-    }
-
-    initHomeFilter();
-    document.addEventListener('astro:page-load', initHomeFilter);
+  <script slot="scripts">
+    import '../scripts/home.js';
   </script>
 </BaseLayout>

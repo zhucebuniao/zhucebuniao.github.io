@@ -10,6 +10,12 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  redirects: {
+    '/dreams': '/?cat=dream#archive',
+    '/travels': '/?cat=travel#archive',
+    '/novel': '/?cat=novel#archive',
+    '/diary': '/?cat=diary#archive',
+  },
   markdown: {
     shikiConfig: {
       theme: 'tokyo-night',

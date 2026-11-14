@@ -1,62 +1,91 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getAllPosts, groupTravelsByCity } from '../utils/posts';
+import { getPosts, getCityStats } from '../lib/posts';
 
-const allPosts = await getAllPosts();
-const totalWords = allPosts.reduce((sum, p) => sum + p.wordCount, 0);
-const cities = groupTravelsByCity(allPosts);
+const posts = await getPosts();
+const cities = getCityStats(posts);
+const counts = {
+  dream: posts.filter((p) => p.c === 'dream').length,
+  travel: posts.filter((p) => p.c === 'travel').length,
+  novel: posts.filter((p) => p.c === 'novel').length,
+  diary: posts.filter((p) => p.c === 'diary').length,
+};
+
+const fillText =
+  '这里是一个写给自己看的角落。白天去远方，夜里做奇怪又温柔的梦。梦境是凌晨醒来随手记下的微光，游记是把去过的山海与古镇留在纸上，小说是在讲一个关于灯塔、海底城和母亲的故事，日记是田里的草木和心里的话。没有宏大的目的，只是不想让那些转瞬即逝的星群就这么散掉。';
+const keywords = ['梦境', '游记', '小说', '日记', '山海', '灯塔', '星群', '角落'];
+
+// Precompute which character indices belong to keywords
+const hlFlags = new Array(fillText.length).fill(false);
+for (const kw of keywords) {
+  let idx = fillText.indexOf(kw);
+  while (idx !== -1) {
+    for (let k = 0; k < kw.length; k++) hlFlags[idx + k] = true;
+    idx = fillText.indexOf(kw, idx + kw.length);
+  }
+}
+const chars = [...fillText];
 ---
-<BaseLayout title="关于" description="关于梦与远方 · 写给自己看的角落">
-  <div class="bento-hero">
-    <article class="bento-card bento-intro" style="grid-column: span 8; padding: 40px 44px;">
-      <div>
-        <div class="intro-badge">✦ ABOUT THIS CORNER</div>
-        <h1 class="intro-title" style="font-size:40px;margin-bottom:20px;">关于「梦与远方」</h1>
-        <div class="prose" style="font-size:16px;">
-          <p>这里是一个写给自己看的角落。</p>
-          <p>
-            白天去远方，夜里做奇怪又温柔的梦。<strong>梦境</strong>是凌晨醒来随手记下的微光，<strong>游记</strong>是想把去过的山海与古镇留下点什么，<strong>小说</strong>是在讲一个关于灯塔、海底城和母亲的故事，<strong>日记</strong>是田里的草木和心里的话。
-          </p>
-          <p>
-            没有什么宏大的目的，只是不想让那些转瞬即逝的东西就这么散掉。如果你偶然路过这片星空，恰好读到了某一段，那就当我们也在某个瞬间，有过一点交集。
-          </p>
-        </div>
-      </div>
+<BaseLayout title="关于" description="关于梦与远方 · 写给自己看的角落" totalPosts={posts.length}>
+  <section class="ahero">
+    <h1 class="ahero-words" aria-label="关于">
+      <b id="ab-a" aria-hidden="true">关</b>
+      <b id="ab-b" aria-hidden="true">于</b>
+    </h1>
+    <div class="ahero-meta">
+      <span class="tag dream">{posts.length} 篇存档</span>
+      <span class="tag travel">{cities.length} 座城市</span>
+      <span class="tag diary">Astro 纯静态</span>
+    </div>
+  </section>
 
-      <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--glass-border);font-family:var(--font-mono);font-size:12px;color:var(--ink-muted);">
-        ✦ Built with Astro · Starry Night & Aurora Bento Design System
+  <section class="fill" aria-label="站点自白">
+    <p id="fp" aria-label={fillText}>
+      {chars.map((ch, i) => (
+        <span aria-hidden="true" class={hlFlags[i] ? 'hl' : undefined}>{ch}</span>
+      ))}
+    </p>
+  </section>
+
+  <section class="stack" aria-label="四个分类">
+    <article class="sc">
+      <div class="sc-head">
+        <h3>🌙 梦境</h3>
+        <span class="sc-cnt">{counts.dream} 篇</span>
       </div>
+      <p>凌晨三点醒来，趁着细节还没散去，把那些荒诞、失重又莫名温柔的画面匆忙记下来。</p>
     </article>
 
-    <aside class="bento-side-stack" style="grid-column: span 4;">
-      <div class="bento-card spotlight-card" style="justify-content:center;gap:14px;">
-        <div class="sidebar-label" style="margin-bottom:0;">✦ 站点星群统计</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div>
-            <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--c-dream);">{allPosts.length}</div>
-            <div style="font-size:12px;color:var(--ink-muted);">总文章数</div>
-          </div>
-          <div>
-            <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--c-travel);">{cities.length}</div>
-            <div style="font-size:12px;color:var(--ink-muted);">漫游城市</div>
-          </div>
-          <div style="grid-column:span 2;">
-            <div style="font-family:var(--font-mono);font-size:26px;font-weight:600;color:var(--c-novel);">
-              {(totalWords / 1000).toFixed(1)}k
-            </div>
-            <div style="font-size:12px;color:var(--ink-muted);">累计写下字数（约 {totalWords.toLocaleString()} 字）</div>
-          </div>
-        </div>
+    <article class="sc">
+      <div class="sc-head">
+        <h3>🧭 游记</h3>
+        <span class="sc-cnt">{counts.travel} 篇</span>
       </div>
+      <p>走过 {cities.length} 座城，淋过不同的雨。把青石板路、风声和陌生的烟火气留作路标。</p>
+    </article>
 
-      <div class="bento-card spotlight-card" style="gap:10px;">
-        <div class="sidebar-label" style="margin-bottom:0;">✦ 快捷键与小贴士</div>
-        <div style="font-size:13px;color:var(--ink-secondary);line-height:1.75;">
-          <div>• 按 <kbd class="search-kbd">⌘K</kbd> 或 <kbd class="search-kbd">Ctrl+K</kbd> 随时唤醒全局搜索</div>
-          <div>• 点击右上角太阳/月亮图标切换「暗夜极光 / 晨曦纸感」主题</div>
-          <div>• 文章页右侧可调节正文字号与章节目录跳转</div>
-        </div>
+    <article class="sc">
+      <div class="sc-head">
+        <h3>🌊 小说</h3>
+        <span class="sc-cnt">{counts.novel} 章</span>
       </div>
-    </aside>
+      <p>关于灯塔、海底城与漫长潮汐的连载。在虚构的水面之下，藏着比现实更诚实的回响。</p>
+    </article>
+
+    <article class="sc">
+      <div class="sc-head">
+        <h3>🌱 日记</h3>
+        <span class="sc-cnt">{counts.diary} 篇</span>
+      </div>
+      <p>菜园里的甲虫、屋檐下的雨声，和那些不想被时间轻易抹掉的寻常时刻。</p>
+    </article>
+  </section>
+
+  <div class="about-cta">
+    <a href="/#archive" class="btn on" style="font-size:20px;padding:16px 32px;">📚 去归档里逛逛 →</a>
   </div>
+
+  <script slot="scripts">
+    import '../scripts/about.js';
+  </script>
 </BaseLayout>
