@@ -33,8 +33,9 @@ const fullTitle = title === '梦与远方' ? '梦与远方 · 新粗野档案' :
     (function () {
       try {
         var fs = localStorage.getItem('fs');
-        if (fs === '17' || fs === '19' || fs === '22') {
-          document.documentElement.style.setProperty('--fs', fs + 'px');
+        var fsMap = { '17': '1.0625rem', '19': '1.1875rem', '22': '1.375rem' };
+        if (fs && fsMap[fs]) {
+          document.documentElement.style.setProperty('--fs', fsMap[fs]);
         }
       } catch (e) {}
     })();

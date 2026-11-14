@@ -6,8 +6,9 @@
   // 1. Font Size Switcher (17 / 19 / 22px, persisted in localStorage.fs)
   // ------------------------------------------------------------------------
   const fsBtns = Array.from(document.querySelectorAll('[data-fs]'));
+  const fsRemMap = { '17': '1.0625rem', '19': '1.1875rem', '22': '1.375rem' };
   function applyFs(fs) {
-    document.documentElement.style.setProperty('--fs', `${fs}px`);
+    document.documentElement.style.setProperty('--fs', fsRemMap[fs] || '1.1875rem');
     try {
       localStorage.setItem('fs', fs);
     } catch (e) {}

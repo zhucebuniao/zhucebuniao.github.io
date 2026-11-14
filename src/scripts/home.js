@@ -153,7 +153,7 @@
     for (const card of cards) {
       const okCat = cat === 'all' || card.dataset.c === cat;
       const okCity = !city || card.dataset.city === city;
-      const okQ = !q || (card.dataset.q || '').includes(q);
+      const okQ = !q || (card.dataset.q || '').toLowerCase().includes(q);
       const vis = okCat && okCity && okQ;
       card.hidden = !vis;
       if (vis) {
@@ -196,6 +196,17 @@
     if (window.observeReveal) window.observeReveal(document.getElementById('list'));
   }
 
+  function renderWithTransition() {
+    if (!RM && document.startViewTransition) {
+      const root = document.documentElement;
+      root.classList.add('vt-filter');
+      const vt = document.startViewTransition(() => render());
+      vt.finished.finally(() => root.classList.remove('vt-filter'));
+    } else {
+      render();
+    }
+  }
+
   catBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const next = btn.dataset.cat || 'all';
@@ -203,7 +214,7 @@
       if (next !== 'all' && next !== 'travel') {
         city = null;
       }
-      render();
+      renderWithTransition();
     });
   });
 
@@ -217,13 +228,13 @@
         cat = 'travel';
         archiveEl?.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' });
       }
-      render();
+      renderWithTransition();
     });
   });
 
   if (qInput) {
     qInput.addEventListener('input', () => {
-      q = qInput.value.trim();
+      q = qInput.value.trim().toLowerCase();
       render();
     });
   }
@@ -234,7 +245,7 @@
     dreamBtn.addEventListener('click', () => {
       cat = 'dream';
       city = null;
-      render();
+      renderWithTransition();
       archiveEl?.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' });
     });
   }

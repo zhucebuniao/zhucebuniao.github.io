@@ -180,7 +180,7 @@ const months = Array.from(monthMap.entries());
                 data-title={p.t}
                 data-st={p.st}
                 data-ex={p.ex.slice(0, 80)}
-                style={`--rot:${p.rot}deg;transition-delay:${(idx % 4) * 70}ms`}
+                style={`--rot:${p.rot}deg;transition-delay:${(idx % 4) * 70}ms;view-transition-name:card-${p.u.replace(/[^a-zA-Z0-9_-]/g, '-')}`}
               >
                 <div class="card-top">
                   <span class={`tag ${p.c}`}>{CI[p.c]} {CN[p.c]}</span>

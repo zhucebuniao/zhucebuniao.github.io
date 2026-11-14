@@ -98,10 +98,13 @@
   );
 
   // ------------------------------------------------------------------------
-  // 4. Footer #bye Scroll Hook
+  // 4. Footer #bye Scroll Hook (fallback when CSS view-timeline unsupported)
   // ------------------------------------------------------------------------
+  const supportsViewTimeline = CSS.supports(
+    '(animation-timeline: view()) and (animation-range: entry)'
+  );
   const bye = document.getElementById('bye');
-  if (bye) {
+  if (bye && !supportsViewTimeline) {
     window.SCROLL_HOOKS.push(() => {
       if (RM) return;
       const r = bye.getBoundingClientRect();
@@ -114,6 +117,7 @@
   // ------------------------------------------------------------------------
   // 5. Main rAF Loop
   // ------------------------------------------------------------------------
+  const supportsScrollTimeline = CSS.supports('animation-timeline', 'scroll()');
   const bar = document.getElementById('bar');
   const nav = document.querySelector('.nav');
   let lastY = window.scrollY;
@@ -139,8 +143,8 @@
       cur.style.transform = `translate3d(${cx - (cur.classList.contains('big') ? 32 : 11)}px, ${cy - (cur.classList.contains('big') ? 18 : 11)}px, 0)`;
     }
 
-    // Top progress bar
-    if (bar) {
+    // Top progress bar (fallback when CSS scroll-timeline unsupported)
+    if (bar && !supportsScrollTimeline) {
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const p = Math.min(1, Math.max(0, y / maxScroll));
       bar.style.transform = `scaleX(${p})`;
