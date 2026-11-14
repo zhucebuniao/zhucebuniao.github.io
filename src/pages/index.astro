@@ -25,6 +25,43 @@ const months = Array.from(monthMap.entries());
 ---
 <BaseLayout title="梦与远方" description="夜里写下的梦境，白天去过的远方" totalPosts={posts.length}>
   <section id="hero">
+    <div class="naive-canvas" aria-hidden="true">
+      <svg viewBox="0 0 560 176" width="560" height="176" xmlns="http://www.w3.org/2000/svg">
+        <!-- Starry night sky & warm horizon -->
+        <rect x="0" y="0" width="560" height="176" rx="12" fill="#355070" />
+        <path d="M0,108 Q140,86 290,102 T560,96 L560,176 L0,176 Z" fill="#E8B84B" opacity="0.22" />
+        <!-- Naive crescent moon & folk stars -->
+        <g filter="url(#naive-sketch)">
+          <path d="M98,28 A26,26 0 1,0 122,64 A20,20 0 1,1 98,28 Z" fill="#F2C14E" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M168,36 L172,44 L180,45 L173,50 L175,58 L168,53 L161,58 L163,50 L156,45 L164,44 Z" fill="#FFFDF8" />
+          <circle cx="228" cy="28" r="3" fill="#E8B84B" />
+          <circle cx="312" cy="40" r="2.5" fill="#FFFDF8" />
+          <circle cx="390" cy="24" r="3.5" fill="#E8B84B" />
+          <circle cx="486" cy="42" r="2.5" fill="#FFFDF8" />
+          <!-- Rolling hills & distant sea -->
+          <path d="M0,124 Q95,92 210,120 T420,114 Q490,104 560,120 L560,176 L0,176 Z" fill="#52796F" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M0,140 Q130,118 270,136 T560,130 L560,176 L0,176 Z" fill="#C85A32" opacity="0.88" stroke="#3A2A1E" stroke-width="2" />
+          <!-- Sea waves on right -->
+          <path d="M350,146 Q372,138 394,146 T438,146 T482,146 T526,146 T560,146 L560,176 L340,176 Z" fill="#4A7294" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M366,158 Q384,153 402,158 T438,158 T474,158 T510,158" fill="none" stroke="#FFFDF8" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+          <!-- Small storybook lighthouse -->
+          <path d="M432,142 L438,88 L454,88 L460,142 Z" fill="#FFFDF8" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M435,112 L457,112 L458,124 L434,124 Z" fill="#C85A32" />
+          <rect x="436" y="76" width="20" height="12" rx="2" fill="#E8B84B" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M433,76 L446,64 L459,76 Z" fill="#C85A32" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M459,80 L515,66 L515,94 Z" fill="#F2C14E" opacity="0.38" />
+          <!-- Folk botanical trees & flowers on left -->
+          <path d="M52,158 L52,126" stroke="#3A2A1E" stroke-width="2.5" stroke-linecap="round" />
+          <ellipse cx="52" cy="116" rx="18" ry="22" fill="#749E82" stroke="#3A2A1E" stroke-width="2" />
+          <path d="M126,162 L126,136" stroke="#3A2A1E" stroke-width="2.5" stroke-linecap="round" />
+          <circle cx="126" cy="128" r="14" fill="#E8B84B" stroke="#3A2A1E" stroke-width="2" />
+          <circle cx="126" cy="128" r="5" fill="#C85A32" />
+          <circle cx="240" cy="148" r="6" fill="#FFFDF8" stroke="#3A2A1E" stroke-width="1.5" />
+          <circle cx="240" cy="148" r="2.2" fill="#E8B84B" />
+          <circle cx="282" cy="156" r="5" fill="#E8B84B" stroke="#3A2A1E" stroke-width="1.5" />
+        </g>
+      </svg>
+    </div>
     <h1 id="ttl" aria-label="梦与远方">
       <b aria-hidden="true">梦</b>
       <b aria-hidden="true">与</b>

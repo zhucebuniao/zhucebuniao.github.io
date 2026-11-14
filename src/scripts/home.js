@@ -113,7 +113,7 @@
         const screenCenter = cardCenters[i] - tx;
         const off = Math.max(-1.2, Math.min(1.2, (screenCenter - halfW) / halfW));
         const absOff = Math.abs(off);
-        hCards[i].style.transform = `rotate(${off * 14}deg) translateY(${absOff * 90}px) scale(${1 - absOff * 0.18})`;
+        hCards[i].style.transform = `rotate(${off * 4}deg) translateY(${absOff * 24}px) scale(${1 - absOff * 0.06})`;
       }
     });
   }

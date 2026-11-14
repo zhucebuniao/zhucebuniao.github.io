@@ -156,9 +156,9 @@
       else if (dy < -4 || y <= 40) nav.classList.remove('hide');
     }
 
-    // Velocity skew
+    // Velocity skew (gentle storybook sway)
     if (!RM) {
-      const targetSkew = Math.max(-12, Math.min(12, vel * 0.35));
+      const targetSkew = Math.max(-2.5, Math.min(2.5, vel * 0.08));
       skew += (targetSkew - skew) * 0.15;
       if (Math.abs(skew) > 0.01) {
         document.documentElement.style.setProperty('--skew', `${skew.toFixed(2)}deg`);
