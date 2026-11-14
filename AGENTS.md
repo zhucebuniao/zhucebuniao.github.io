@@ -42,7 +42,7 @@ Posts in `_posts/*.md` follow the schema in `src/content.config.ts`:
 - **Reduced Motion**: Always respect both CSS `@media (prefers-reduced-motion: no-preference | reduce)` and JS `window.RM`. Gate `scroll-behavior: smooth`, `@view-transition`, and scroll-driven animations behind `prefers-reduced-motion: no-preference`.
 - **View Transitions**:
   - Cross-document MPA transitions are enabled via `@view-transition { navigation: auto; }`.
-  - Same-document archive filtering uses `document.startViewTransition` with per-card `view-transition-name` and shared `view-transition-class: archive-card`, temporarily applying `vt-filter` on `:root` (`view-transition-name: none`) while filtering.
+  - Same-document archive filtering uses `document.startViewTransition` with per-card `--vt-name` (`:root.vt-filter .card` applies `view-transition-name: var(--vt-name)` and `view-transition-class: archive-card`), temporarily applying `vt-filter` on `:root` (`view-transition-name: none`) while filtering.
 - **Typography & Accessibility**:
   - Use `rem` for `--fs` and body font-size controls (`17 -> 1.0625rem`, `19 -> 1.1875rem`, `22 -> 1.375rem`) to respect browser root font-size settings.
   - Keep `text-wrap: balance` off elements with visible borders/backgrounds; use `text-wrap: pretty` on `.prose p`.

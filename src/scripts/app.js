@@ -124,6 +124,7 @@
   let vel = 0;
   let skew = 0;
   let rafId = 0;
+  let firstFrame = true;
 
   function frame() {
     if (document.hidden) {
@@ -180,10 +181,13 @@
       }
     }
 
-    // Registered scroll hooks
-    const hooks = window.SCROLL_HOOKS;
-    for (let i = 0; i < hooks.length; i++) {
-      hooks[i](y, vel);
+    // Registered scroll hooks (only on first frame or when scrolling / settling)
+    if (firstFrame || dy !== 0 || Math.abs(vel) > 0.01) {
+      const hooks = window.SCROLL_HOOKS;
+      for (let i = 0; i < hooks.length; i++) {
+        hooks[i](y, vel);
+      }
+      firstFrame = false;
     }
 
     rafId = requestAnimationFrame(frame);

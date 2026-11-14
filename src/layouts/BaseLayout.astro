@@ -27,9 +27,6 @@ const fullTitle = title === '梦与远方' ? '梦与远方 · 稚拙手账' : `$
   <meta name="description" content={description} />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
   <link rel="alternate" type="application/rss+xml" title="梦与远方 RSS" href="/rss.xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap" />
   <script is:inline>
     window.SCROLL_HOOKS = [];
     window.RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -46,14 +43,6 @@ const fullTitle = title === '梦与远方' ? '梦与远方 · 稚拙手账' : `$
 </head>
 <body>
   <a href="#main" class="skip">跳到正文</a>
-  <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none">
-    <defs>
-      <filter id="naive-sketch">
-        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" />
-      </filter>
-    </defs>
-  </svg>
   <div id="bar" aria-hidden="true"></div>
   <div id="cur" aria-hidden="true"><span>看 ✦</span></div>
 

@@ -31,7 +31,7 @@ const months = Array.from(monthMap.entries());
         <rect x="0" y="0" width="560" height="176" rx="12" fill="#355070" />
         <path d="M0,108 Q140,86 290,102 T560,96 L560,176 L0,176 Z" fill="#E8B84B" opacity="0.22" />
         <!-- Naive crescent moon & folk stars -->
-        <g filter="url(#naive-sketch)">
+        <g>
           <path d="M98,28 A26,26 0 1,0 122,64 A20,20 0 1,1 98,28 Z" fill="#F2C14E" stroke="#3A2A1E" stroke-width="2" />
           <path d="M168,36 L172,44 L180,45 L173,50 L175,58 L168,53 L161,58 L163,50 L156,45 L164,44 Z" fill="#FFFDF8" />
           <circle cx="228" cy="28" r="3" fill="#E8B84B" />
@@ -217,7 +217,7 @@ const months = Array.from(monthMap.entries());
                 data-title={p.t}
                 data-st={p.st}
                 data-ex={p.ex.slice(0, 80)}
-                style={`--rot:${p.rot}deg;transition-delay:${(idx % 4) * 70}ms;view-transition-name:card-${p.u.replace(/[^a-zA-Z0-9_-]/g, '-')}`}
+                style={`--rot:${p.rot}deg;transition-delay:${(idx % 4) * 70}ms;--vt-name:card-${p.u.replace(/[^a-zA-Z0-9_-]/g, '-')}`}
               >
                 <div class="card-top">
                   <span class={`tag ${p.c}`}>{CI[p.c]} {CN[p.c]}</span>
