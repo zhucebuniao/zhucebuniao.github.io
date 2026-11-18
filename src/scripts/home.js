@@ -3,7 +3,7 @@
   const HOOKS = (window.SCROLL_HOOKS = window.SCROLL_HOOKS || []);
 
   // ------------------------------------------------------------------------
-  // 1. Hero 4-character scatter on scroll (#3, after drop animation ends)
+  // 1. Hero 4-character scatter & Theatrical Set Disassembly on scroll
   // ------------------------------------------------------------------------
   const ttlChars = Array.from(document.querySelectorAll('#ttl b'));
   const fly = [
@@ -16,6 +16,11 @@
   if (ttlChars.length && !RM) {
     let finished = 0;
     ttlChars.forEach((b) => {
+      if (b.getAnimations && b.getAnimations().length === 0) {
+        finished++;
+        if (finished >= ttlChars.length) heroAnimDone = true;
+        return;
+      }
       b.addEventListener(
         'animationend',
         () => {
@@ -46,6 +51,94 @@
         b.style.opacity = String(Math.max(0, 1 - p * 1.15));
       }
     });
+  }
+
+  const heroCanvas = document.querySelector('#hero .naive-canvas');
+  const heroSub = document.querySelector('#hero .hero-sub');
+  const heroCta = document.querySelector('#hero .hero-cta');
+  const setLayers = Array.from(document.querySelectorAll('#hero .naive-canvas [data-layer]'));
+  const layerVectors = {
+    sky: (p) => [`translate3d(0, ${-p * 28}px, 0) scale(${1 + p * 0.06})`, String(Math.max(0, 1 - p * 0.4))],
+    celestial: (p) => [`translate3d(${-p * 42}px, ${-p * 54}px, 0) rotate(${-p * 14}deg)`, String(Math.max(0, 1 - p * 0.75))],
+    hills: (p) => [`translate3d(0, ${p * 34}px, 0) scaleY(${1 - p * 0.15})`, String(Math.max(0, 1 - p * 0.55))],
+    sea: (p) => [`translate3d(${p * 48}px, ${p * 28}px, 0)`, String(Math.max(0, 1 - p * 0.65))],
+    lighthouse: (p) => [`translate3d(${p * 26}px, ${-p * 36}px, 0) rotate(${p * 9}deg)`, String(Math.max(0, 1 - p * 0.65))],
+    botanical: (p) => [`translate3d(${-p * 52}px, ${p * 36}px, 0) rotate(${-p * 12}deg)`, String(Math.max(0, 1 - p * 0.75))],
+  };
+
+  if (!RM && (heroCanvas || setLayers.length)) {
+    HOOKS.push((y) => {
+      const p = Math.min(1, Math.max(0, y / (window.innerHeight * 0.85)));
+      if (p <= 0.001) {
+        if (heroCanvas) heroCanvas.style.transform = '';
+        if (heroSub) {
+          heroSub.style.transform = '';
+          heroSub.style.opacity = '';
+        }
+        if (heroCta) {
+          heroCta.style.transform = '';
+          heroCta.style.opacity = '';
+        }
+        for (let i = 0; i < setLayers.length; i++) {
+          setLayers[i].style.transform = '';
+          setLayers[i].style.opacity = '';
+        }
+        return;
+      }
+
+      if (heroCanvas) heroCanvas.style.transform = `translate3d(0, ${-p * 26}px, 0)`;
+      if (heroSub) {
+        heroSub.style.animation = 'none';
+        heroSub.style.transform = `translate3d(0, ${-p * 18}px, 0)`;
+        heroSub.style.opacity = String(Math.max(0, 1 - p * 1.25));
+      }
+      if (heroCta) {
+        heroCta.style.animation = 'none';
+        heroCta.style.transform = `translate3d(0, ${-p * 12}px, 0)`;
+        heroCta.style.opacity = String(Math.max(0, 1 - p * 1.35));
+      }
+      for (let i = 0; i < setLayers.length; i++) {
+        const layer = setLayers[i];
+        const fn = layerVectors[layer.dataset.layer || ''];
+        if (!fn) continue;
+        const [tf, op] = fn(p);
+        layer.style.transform = tf;
+        layer.style.opacity = op;
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 1b. Manifesto Bridge Word Illumination & Line/Beat Reveals
+  // ------------------------------------------------------------------------
+  const bridge = document.getElementById('manifesto-bridge');
+  const bridgeLines = bridge ? Array.from(bridge.querySelectorAll('.ln-in')) : [];
+  const bridgeWords = bridge ? Array.from(bridge.querySelectorAll('.md-word')) : [];
+  const bridgeBeats = bridge ? Array.from(bridge.querySelectorAll('.beat-frag')) : [];
+
+  if (bridge) {
+    if (RM) {
+      bridgeLines.forEach((el) => el.classList.add('is-on'));
+      bridgeBeats.forEach((el) => el.classList.add('is-on'));
+      bridgeWords.forEach((el) => el.style.setProperty('--lit', '1'));
+    } else {
+      HOOKS.push(() => {
+        const vh = window.innerHeight || 1;
+        const rect = bridge.getBoundingClientRect();
+        const p = Math.min(1, Math.max(0, (vh * 0.88 - rect.top) / Math.max(1, vh * 0.72)));
+
+        for (let i = 0; i < bridgeLines.length; i++) {
+          bridgeLines[i].classList.toggle('is-on', p > 0.05 + i * 0.14);
+        }
+        for (let i = 0; i < bridgeWords.length; i++) {
+          const lit = Math.min(1, Math.max(0, (p - i * 0.13) / 0.28));
+          bridgeWords[i].style.setProperty('--lit', lit.toFixed(3));
+        }
+        for (let i = 0; i < bridgeBeats.length; i++) {
+          bridgeBeats[i].classList.toggle('is-on', p > 0.54 + i * 0.12);
+        }
+      });
+    }
   }
 
   // ------------------------------------------------------------------------

@@ -115,7 +115,173 @@
   }
 
   // ------------------------------------------------------------------------
-  // 5. Main rAF Loop
+  // 5. Scene Crumb Tracker & Watch Mode (#story-hud)
+  // ------------------------------------------------------------------------
+  const hud = document.getElementById('story-hud');
+  const hudCrumb = document.getElementById('hud-crumb');
+  const hudCrumbText = document.getElementById('hud-crumb-text');
+  const hudTopBtn = document.getElementById('hud-top-btn');
+  const hudWatchBtn = document.getElementById('hud-watch');
+  const scenes = Array.from(document.querySelectorAll('[data-scene]'));
+  let activeScene = '';
+  let watching = false;
+
+  const setWatching = (next) => {
+    watching = Boolean(next);
+    document.documentElement.classList.toggle('is-watching', watching);
+    if (hudWatchBtn) {
+      hudWatchBtn.textContent = watching ? '⏸ 暂停' : '▶ 巡礼';
+    }
+  };
+
+  if (hud && scenes.length) {
+    hud.hidden = false;
+
+    window.SCROLL_HOOKS.push(() => {
+      const thresh = window.innerHeight * 0.45;
+      let curScene = scenes[0];
+      for (let i = 0; i < scenes.length; i++) {
+        if (scenes[i].getBoundingClientRect().top <= thresh) {
+          curScene = scenes[i];
+        } else {
+          break;
+        }
+      }
+      const name = curScene?.dataset.scene || '';
+      if (name && name !== activeScene) {
+        activeScene = name;
+        if (hudCrumbText) hudCrumbText.textContent = name;
+        if (hudCrumb) {
+          hudCrumb.classList.remove('is-change');
+          void hudCrumb.offsetWidth;
+          hudCrumb.classList.add('is-change');
+        }
+      }
+    });
+
+    hudTopBtn?.addEventListener('click', () => {
+      if (watching) setWatching(false);
+      window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' });
+    });
+
+    hudWatchBtn?.addEventListener('click', () => {
+      if (RM) {
+        const thresh = window.innerHeight * 0.45;
+        const nextScene = scenes.find((s) => s.getBoundingClientRect().top > thresh + 16) || scenes[0];
+        nextScene?.scrollIntoView({ behavior: 'auto' });
+        return;
+      }
+      setWatching(!watching);
+    });
+
+    const stopWatchOnInput = (e) => {
+      if (!watching) return;
+      if (e.target?.closest?.('#story-hud')) return;
+      setWatching(false);
+    };
+    window.addEventListener('wheel', () => {
+      if (watching) setWatching(false);
+    }, { passive: true });
+    window.addEventListener('touchstart', stopWatchOnInput, { passive: true });
+    window.addEventListener('pointerdown', stopWatchOnInput, { passive: true });
+    window.addEventListener('keydown', (e) => {
+      if (!watching) return;
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Escape'].includes(e.key)) {
+        setWatching(false);
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 6. Protagonist Orb Choreography (#story-orb)
+  // ------------------------------------------------------------------------
+  const orb = document.getElementById('story-orb');
+  const orbAnchors = Array.from(document.querySelectorAll('[data-orb-anchor]'));
+  let orbTargetX = -100;
+  let orbTargetY = -100;
+  let orbTargetScale = 1;
+  let orbX = -100;
+  let orbY = -100;
+  let orbScale = 1;
+  let orbReady = false;
+  let lastAnchorIdx = -1;
+
+  if (orb && orbAnchors.length && !RM) {
+    orb.classList.add('is-active');
+    window.SCROLL_HOOKS.push(() => {
+      const focalY = window.innerHeight * 0.42;
+      const pts = orbAnchors.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left + r.width * 0.5, y: r.top + r.height * 0.5 };
+      });
+
+      let currIdx = 0;
+      for (let i = 0; i < pts.length; i++) {
+        if (pts[i].y <= focalY) currIdx = i;
+      }
+      const nextIdx = Math.min(pts.length - 1, currIdx + 1);
+
+      if (currIdx !== nextIdx) {
+        const span = Math.max(1, pts[nextIdx].y - pts[currIdx].y);
+        const t = Math.min(1, Math.max(0, (focalY - pts[currIdx].y) / span));
+        const e = t * t * (3 - 2 * t);
+        const arcY = -Math.sin(e * Math.PI) * 32;
+        orbTargetX = pts[currIdx].x + (pts[nextIdx].x - pts[currIdx].x) * e;
+        orbTargetY = pts[currIdx].y + (pts[nextIdx].y - pts[currIdx].y) * e + arcY;
+        orbTargetScale = 1 + Math.sin(e * Math.PI) * 0.35;
+      } else {
+        orbTargetX = pts[currIdx].x;
+        orbTargetY = pts[currIdx].y;
+        orbTargetScale = 1;
+      }
+
+      let nearestIdx = 0;
+      let minDist = Infinity;
+      for (let i = 0; i < pts.length; i++) {
+        const d = Math.abs(pts[i].y - focalY);
+        if (d < minDist) {
+          minDist = d;
+          nearestIdx = i;
+        }
+      }
+      if (nearestIdx !== lastAnchorIdx) {
+        if (lastAnchorIdx !== -1) {
+          orb.classList.remove('is-strike');
+          void orb.offsetWidth;
+          orb.classList.add('is-strike');
+        }
+        lastAnchorIdx = nearestIdx;
+      }
+
+      if (!orbReady) {
+        orbX = orbTargetX;
+        orbY = orbTargetY;
+        orbScale = orbTargetScale;
+        orbReady = true;
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 7. Circular Iris Stages (.iris-stage)
+  // ------------------------------------------------------------------------
+  const irisStages = Array.from(document.querySelectorAll('.iris-stage'));
+  if (irisStages.length && !RM) {
+    window.SCROLL_HOOKS.push(() => {
+      const vh = window.innerHeight || 1;
+      const startY = vh * 0.92;
+      const endY = vh * 0.25;
+      for (let i = 0; i < irisStages.length; i++) {
+        const el = irisStages[i];
+        const top = el.getBoundingClientRect().top;
+        const p = Math.min(1, Math.max(0, (startY - top) / Math.max(1, startY - endY)));
+        el.style.setProperty('--iris-r', `${(8 + p * 115).toFixed(1)}%`);
+      }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 8. Main rAF Loop
   // ------------------------------------------------------------------------
   const supportsScrollTimeline = CSS.supports('animation-timeline', 'scroll()');
   const bar = document.getElementById('bar');
@@ -126,10 +292,25 @@
   let rafId = 0;
   let firstFrame = true;
 
+  window.addEventListener(
+    'resize',
+    () => {
+      firstFrame = true;
+    },
+    { passive: true }
+  );
+
   function frame() {
     if (document.hidden) {
       rafId = 0;
       return;
+    }
+
+    if (watching && !RM) {
+      window.scrollBy(0, 1.8);
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
+        setWatching(false);
+      }
     }
 
     const y = window.scrollY;
@@ -142,6 +323,14 @@
       cx += (mx - cx) * 0.25;
       cy += (my - cy) * 0.25;
       cur.style.transform = `translate3d(${cx - (cur.classList.contains('big') ? 32 : 11)}px, ${cy - (cur.classList.contains('big') ? 18 : 11)}px, 0)`;
+    }
+
+    // Protagonist orb easing
+    if (orb && orbReady && !RM) {
+      orbX += (orbTargetX - orbX) * 0.22;
+      orbY += (orbTargetY - orbY) * 0.22;
+      orbScale += (orbTargetScale - orbScale) * 0.22;
+      orb.style.transform = `translate3d(${orbX.toFixed(1)}px, ${orbY.toFixed(1)}px, 0) scale(${orbScale.toFixed(3)})`;
     }
 
     // Top progress bar (fallback when CSS scroll-timeline unsupported)

@@ -24,33 +24,43 @@ for (const p of posts) {
 const months = Array.from(monthMap.entries());
 ---
 <BaseLayout title="梦与远方" description="夜里写下的梦境，白天去过的远方" totalPosts={posts.length}>
-  <section id="hero">
+  <section id="hero" data-scene="序幕 · 梦与远方">
     <div class="naive-canvas" aria-hidden="true">
       <svg viewBox="0 0 560 176" width="560" height="176" xmlns="http://www.w3.org/2000/svg">
         <!-- Starry night sky & warm horizon -->
-        <rect x="0" y="0" width="560" height="176" rx="12" fill="#355070" />
-        <path d="M0,108 Q140,86 290,102 T560,96 L560,176 L0,176 Z" fill="#E8B84B" opacity="0.22" />
+        <g class="set-layer" data-layer="sky">
+          <rect x="0" y="0" width="560" height="176" rx="12" fill="#355070" />
+          <path d="M0,108 Q140,86 290,102 T560,96 L560,176 L0,176 Z" fill="#E8B84B" opacity="0.22" />
+        </g>
         <!-- Naive crescent moon & folk stars -->
-        <g>
+        <g class="set-layer" data-layer="celestial">
           <path d="M98,28 A26,26 0 1,0 122,64 A20,20 0 1,1 98,28 Z" fill="#F2C14E" stroke="#3A2A1E" stroke-width="2" />
           <path d="M168,36 L172,44 L180,45 L173,50 L175,58 L168,53 L161,58 L163,50 L156,45 L164,44 Z" fill="#FFFDF8" />
           <circle cx="228" cy="28" r="3" fill="#E8B84B" />
           <circle cx="312" cy="40" r="2.5" fill="#FFFDF8" />
           <circle cx="390" cy="24" r="3.5" fill="#E8B84B" />
           <circle cx="486" cy="42" r="2.5" fill="#FFFDF8" />
-          <!-- Rolling hills & distant sea -->
+        </g>
+        <!-- Rolling hills & distant sea -->
+        <g class="set-layer" data-layer="hills">
           <path d="M0,124 Q95,92 210,120 T420,114 Q490,104 560,120 L560,176 L0,176 Z" fill="#52796F" stroke="#3A2A1E" stroke-width="2" />
           <path d="M0,140 Q130,118 270,136 T560,130 L560,176 L0,176 Z" fill="#C85A32" opacity="0.88" stroke="#3A2A1E" stroke-width="2" />
-          <!-- Sea waves on right -->
+        </g>
+        <!-- Sea waves on right -->
+        <g class="set-layer" data-layer="sea">
           <path d="M350,146 Q372,138 394,146 T438,146 T482,146 T526,146 T560,146 L560,176 L340,176 Z" fill="#4A7294" stroke="#3A2A1E" stroke-width="2" />
           <path d="M366,158 Q384,153 402,158 T438,158 T474,158 T510,158" fill="none" stroke="#FFFDF8" stroke-width="2" stroke-linecap="round" opacity="0.8" />
-          <!-- Small storybook lighthouse -->
+        </g>
+        <!-- Small storybook lighthouse -->
+        <g class="set-layer" data-layer="lighthouse">
           <path d="M432,142 L438,88 L454,88 L460,142 Z" fill="#FFFDF8" stroke="#3A2A1E" stroke-width="2" />
           <path d="M435,112 L457,112 L458,124 L434,124 Z" fill="#C85A32" />
           <rect x="436" y="76" width="20" height="12" rx="2" fill="#E8B84B" stroke="#3A2A1E" stroke-width="2" />
           <path d="M433,76 L446,64 L459,76 Z" fill="#C85A32" stroke="#3A2A1E" stroke-width="2" />
-          <path d="M459,80 L515,66 L515,94 Z" fill="#F2C14E" opacity="0.38" />
-          <!-- Folk botanical trees & flowers on left -->
+          <path class="lh-beam" d="M459,80 L515,66 L515,94 Z" fill="#F2C14E" opacity="0.38" />
+        </g>
+        <!-- Folk botanical trees & flowers on left -->
+        <g class="set-layer" data-layer="botanical">
           <path d="M52,158 L52,126" stroke="#3A2A1E" stroke-width="2.5" stroke-linecap="round" />
           <ellipse cx="52" cy="116" rx="18" ry="22" fill="#749E82" stroke="#3A2A1E" stroke-width="2" />
           <path d="M126,162 L126,136" stroke="#3A2A1E" stroke-width="2.5" stroke-linecap="round" />
@@ -68,7 +78,7 @@ const months = Array.from(monthMap.entries());
       <b aria-hidden="true">远</b>
       <b aria-hidden="true">方</b>
     </h1>
-    <p class="hero-sub">夜里写下的梦境，白天去过的远方。</p>
+    <p class="hero-sub"><b class="md-sym" aria-hidden="true">&gt;</b> 夜里写下的梦境，白天去过的远方<span class="orb-slot" data-orb-anchor>。</span></p>
     <div class="hero-cta">
       <button type="button" class="btn o" id="hero-dream-btn">🌙 读一个梦</button>
       <a href="#archive" class="btn on">📚 浏览全部</a>
@@ -78,6 +88,22 @@ const months = Array.from(monthMap.entries());
       <span>{cities.length} 座城</span>
     </div>
     <div class="scroll-hint" aria-hidden="true">↓ 往下滚</div>
+  </section>
+
+  <section id="manifesto-bridge" class="stage-interlude iris-stage" data-scene="01 · 昼夜手记" aria-label="昼夜手记宣言">
+    <div class="iris-backdrop" aria-hidden="true"></div>
+    <div class="interlude-inner">
+      <p class="md-kicker"><b class="md-sym" aria-hidden="true">##</b> what we keep · 留存之物</p>
+      <p class="interlude-lead" id="home-lit-text">
+        <span class="ln-mask"><span class="ln-in"><span class="md-word">白昼走过的山海</span><span class="md-word">只是表面，</span></span></span>
+        <span class="ln-mask"><span class="ln-in"><span class="md-word">夜半醒来的梦境</span><span class="md-word">才是底下的引擎</span><span class="orb-slot" data-orb-anchor>。</span></span></span>
+      </p>
+      <div class="interlude-beats" aria-label="三个支点">
+        <span class="beat-frag"><em class="beat-w">一盏灯塔</em><i class="beat-dot" aria-hidden="true">·</i></span>
+        <span class="beat-frag"><em class="beat-w">几座孤岛</em><i class="beat-dot" aria-hidden="true">·</i></span>
+        <span class="beat-frag"><em class="beat-w">写给自己的手稿</em><span class="orb-slot" data-orb-anchor>。</span></span>
+      </div>
+    </div>
   </section>
 
   <div class="mq" id="mq1" aria-hidden="true">
@@ -105,7 +131,7 @@ const months = Array.from(monthMap.entries());
     </div>
   </div>
 
-  <section class="wrap" aria-label="站点统计">
+  <section class="wrap" data-scene="02 · 旅途刻度" aria-label="站点统计">
     <div id="stats">
       <div class="stat rv">
         <div class="n" data-n={posts.length}>{posts.length}</div>
@@ -126,10 +152,10 @@ const months = Array.from(monthMap.entries());
     </div>
   </section>
 
-  <section id="hz" aria-label="最近 8 篇文章">
+  <section id="hz" data-scene="03 · 最近八篇" aria-label="最近 8 篇文章">
     <div class="pin">
       <div class="hz-head">
-        <h2 class="sec sk">最近 <em>8</em> 篇</h2>
+        <h2 class="sec sk"><b class="md-sym" aria-hidden="true">##</b> 最近 <em>8</em> 篇 <span class="orb-slot" data-orb-anchor></span></h2>
         <span class="tag">← 横向漫游 →</span>
       </div>
       <div id="rail">
@@ -157,9 +183,10 @@ const months = Array.from(monthMap.entries());
     </div>
   </section>
 
-  <section id="cities" class="wrap" style="max-width:none;padding:96px 24px;" aria-label="漫游城市">
-    <div style="max-width:1220px;margin:0 auto;">
-      <h2 class="sec sk">{cities.length} 座城，<em>{counts.travel}</em> 场远行</h2>
+  <section id="cities" class="wrap iris-stage" style="max-width:none;padding:96px 24px;" data-scene="04 · 漫游城邦" aria-label="漫游城市">
+    <div class="iris-backdrop cities-iris" aria-hidden="true"></div>
+    <div style="max-width:1220px;margin:0 auto;position:relative;z-index:1;">
+      <h2 class="sec sk"><b class="md-sym" aria-hidden="true">##</b> {cities.length} 座城，<em>{counts.travel}</em> 场远行 <span class="orb-slot" data-orb-anchor></span></h2>
       <div id="cloud">
         {cities.map((c, i) => (
           <button
@@ -176,8 +203,8 @@ const months = Array.from(monthMap.entries());
     </div>
   </section>
 
-  <section id="archive" class="wrap" aria-label="文章归档">
-    <h2 class="sec sk">全部 <em>归档</em></h2>
+  <section id="archive" class="wrap" data-scene="05 · 记忆归档" aria-label="文章归档">
+    <h2 class="sec sk"><b class="md-sym" aria-hidden="true">##</b> 全部 <em>归档</em> <span class="orb-slot" data-orb-anchor></span></h2>
 
     <div class="tools">
       <div class="filters" role="group" aria-label="分类筛选">
